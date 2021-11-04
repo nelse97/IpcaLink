@@ -3,11 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLinkApp/app/src/main/res/layout/activity_login.xml" value="0.22" />
+        <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLinkApp/app/src/main/res/layout/activity_main.xml" value="0.3569230769230769" />
+        <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLinkApp/app/src/main/res/layout/activity_register.xml" value="0.1" />
+        <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLinkApp/app/src/main/res/layout/activity_splash.xml" value="0.1" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
