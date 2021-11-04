@@ -8,18 +8,18 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:533922160882:android:424904950af50c7219306b",
+        "mobilesdk_app_id": "1:533922160882:android:6db107cb608b886219306b",
         "android_client_info": {
           "package_name": "com.example.ipcalink"
         }
       },
       "oauth_client": [
         {
-          "client_id": "533922160882-i5atfu989s53adttbvqu1imt4ar5meph.apps.googleusercontent.com",
+          "client_id": "533922160882-uqdk1483fjlpinpodo0ovkc4t66ijhv5.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.ipcalink",
-            "certificate_hash": "59ecf1d51dbd32a34b5491b0f3589c7a99401bae"
+            "certificate_hash": "01af421762f8a37a0a106b42a0e46fdbb23e23d7"
           }
         },
         {
