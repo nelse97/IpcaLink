@@ -32,6 +32,8 @@ class RegisterActivity : AppCompatActivity() {
                 binding.editTextTextPassword.error = "Preencha este campo"
             }else if (binding.editTextTextPasswordConfirm.text.isEmpty()){
                 binding.editTextTextPasswordConfirm.error = "Preencha este campo"
+            }else if(binding.editTextTextPassword.text.length < 6) {
+                binding.editTextTextPassword.error = "password tem que ter pelo menos 6 caracteres"
             }else{
 
                 auth.createUserWithEmailAndPassword(email, password)
@@ -44,7 +46,7 @@ class RegisterActivity : AppCompatActivity() {
                                     Toast.LENGTH_SHORT).show()
                                 finish()
 
-                            } else {
+                            }else {
                                 binding.editTextEmail.error = "Email inválido"
                             }
                         } else{
