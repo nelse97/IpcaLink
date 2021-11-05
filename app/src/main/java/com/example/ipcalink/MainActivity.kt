@@ -2,6 +2,7 @@ package com.example.ipcalink
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.ipcalink.databinding.ActivityMainBinding
 import com.example.ipcalink.login.LoginActivity
@@ -20,13 +21,12 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.buttonSignOut.setOnClickListener{
+    }
 
-            Firebase.auth.signOut()
-            startActivity(Intent(this, LoginActivity::class.java ))
-            finish()
-
-        }
+    fun signOut(view: View) {
+        Firebase.auth.signOut()
+        startActivity(Intent(this, LoginActivity::class.java ))
+        finish()
     }
 
 
