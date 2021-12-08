@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "533922160882",
+    "firebase_url": "https://ipcalink-dd785-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "ipcalink-dd785",
+    "storage_bucket": "ipcalink-dd785.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:533922160882:android:6db107cb608b886219306b",
+        "android_client_info": {
+          "package_name": "com.example.ipcalink"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "533922160882-uqdk1483fjlpinpodo0ovkc4t66ijhv5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ipcalink",
+            "certificate_hash": "01af421762f8a37a0a106b42a0e46fdbb23e23d7"
+          }
+        },
+        {
+          "client_id": "533922160882-lnudrop442ran49o9lpjh7dqguun42e0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIa8H2-N3pJf7tzHKnEPoFDzUjsFuPGk0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "533922160882-lnudrop442ran49o9lpjh7dqguun42e0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
