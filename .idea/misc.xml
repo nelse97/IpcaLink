@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/Jorge/Desktop/IpcaLinkApp-Jorge/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.1" />
+        <entry key="..\:/Users/Jorge/Desktop/IpcaLinkApp-Jorge/app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.22135416666666666" />
+        <entry key="..\:/Users/Jorge/Desktop/IpcaLinkApp-Jorge/app/src/main/res/drawable/image.xml" value="0.34814814814814815" />
+        <entry key="..\:/Users/Jorge/Desktop/IpcaLinkApp-Jorge/app/src/main/res/drawable/rounded_corner_square.xml" value="0.1" />
+        <entry key="..\:/Users/Jorge/Desktop/IpcaLinkApp-Jorge/app/src/main/res/layout/activity_login.xml" value="0.25" />
+        <entry key="..\:/Users/Jorge/Desktop/IpcaLinkApp-Jorge/app/src/main/res/layout/activity_main.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/Jorge/Desktop/IpcaLinkApp-Jorge/app/src/main/res/layout/activity_push_notification.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/Jorge/Desktop/IpcaLinkApp-Jorge/app/src/main/res/layout/activity_register.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/Jorge/Desktop/IpcaLinkApp-Jorge/app/src/main/res/layout/activity_start.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/Jorge/Desktop/IpcaLinkApp-Jorge/app/src/main/res/layout/alert_discard.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/Jorge/Desktop/IpcaLinkApp-Jorge/app/src/main/res/layout/fragment_home.xml" value="0.1" />
+        <entry key="..\:/Users/Jorge/Desktop/IpcaLinkApp-Jorge/app/src/main/res/layout/fragment_push_notification.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/Jorge/Desktop/IpcaLinkApp-Jorge/app/src/main/res/layout/fragment_show_notificacoes.xml" value="0.33" />
+        <entry key="..\:/Users/Jorge/Desktop/IpcaLinkApp-Jorge/app/src/main/res/layout/list_item.xml" value="0.18" />
+        <entry key="..\:/Users/Jorge/Desktop/IpcaLinkApp-Jorge/app/src/main/res/layout/notification.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Jorge/Desktop/IpcaLinkApp-Jorge/app/src/main/res/layout/row_view_notification.xml" value="0.5" />
+        <entry key="..\:/Users/Jorge/Desktop/IpcaLinkApp-Jorge/app/src/main/res/menu/menu_main.xml" value="0.22" />
+        <entry key="..\:/Users/jorge/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/activity_list_item.xml" value="0.22083333333333333" />
+        <entry key="..\:/Users/jorge/Desktop/IpcaLinkApp-Jorge/app/src/main/res/drawable/circle.xml" value="0.24114583333333334" />
+        <entry key="..\:/Users/jorge/Desktop/IpcaLinkApp-Jorge/app/src/main/res/drawable/image.xml" value="0.24114583333333334" />
+        <entry key="..\:/Users/jorge/Desktop/IpcaLinkApp-Jorge/app/src/main/res/drawable/img.xml" value="0.24114583333333334" />
+        <entry key="..\:/Users/jorge/Desktop/IpcaLinkApp-Jorge/app/src/main/res/drawable/shape_circle.xml" value="0.24114583333333334" />
+        <entry key="..\:/Users/jorge/Desktop/IpcaLinkApp-Jorge/app/src/main/res/layout/activity_start.xml" value="0.2" />
+        <entry key="..\:/Users/jorge/Desktop/IpcaLinkApp-Jorge/app/src/main/res/layout/alert_discard.xml" value="0.22083333333333333" />
+        <entry key="..\:/Users/jorge/Desktop/IpcaLinkApp-Jorge/app/src/main/res/layout/fragment_push_notification.xml" value="0.22083333333333333" />
+        <entry key="..\:/Users/jorge/Desktop/IpcaLinkApp-Jorge/app/src/main/res/layout/notification.xml" value="0.22083333333333333" />
+        <entry key="..\:/Users/jorge/Desktop/IpcaLinkApp-Jorge/app/src/main/res/layout/row_view_notifications.xml" value="0.4" />
+        <entry key="..\:/Users/jorge/Desktop/IpcaLinkApp-Jorge/app/src/main/res/layout/show_notificacoes.xml" value="0.4" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
