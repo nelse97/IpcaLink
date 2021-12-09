@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">IPCALink</string>
+    <string name="app_name">IpcaLink</string>
+    <string name="home_fragment_label">Home</string>
+    <string name="push_notification_fragment_label">Push notification</string>
+    <string name="title_home">home</string>
+    <string name="title_push_notifications">Push notification</string>
+    <string name="title_show_notifications">Show Notifications</string>
+    <string name="show_notification_fragment_label">Show notification</string>
 </resources>

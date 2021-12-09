@@ -1,64 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".login.LoginActivity">
-
-    <ImageView
-    android:id="@+id/imageView"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="89dp"
-    android:scaleX="0.5"
-    android:scaleY="0.5"
-    app:layout_constraintBottom_toTopOf="@+id/editTextEmail"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+    android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/editTextEmail"
-        android:layout_width="wrap_content"
+        android:id="@+id/Email"
+        android:hint="Email"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:ems="10"
-        android:hint="email"
-        android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/editTextTextPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_marginTop="150dp" />
 
     <EditText
-        android:id="@+id/editTextTextPassword"
-        android:layout_width="wrap_content"
+        android:id="@+id/Password"
+        android:hint="Password"
+        android:layout_below="@id/Email"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="password"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="10dp" />
 
     <Button
-        android:id="@+id/buttonLogin"
-        android:layout_width="wrap_content"
+        android:id="@+id/Login"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Login"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword" />
-    <Button
-        android:id="@+id/buttonRegister"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Register"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonLogin" />
+        android:layout_below="@id/Password"
+        android:layout_marginTop="50dp"
+        android:hint="Login" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
