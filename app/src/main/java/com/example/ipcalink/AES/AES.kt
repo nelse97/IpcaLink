@@ -25,6 +25,11 @@ object AES {
 
         try {
 
+            val message: ByteArray = text.toByteArray()
+            val md = MessageDigest.getInstance("SHA-256")
+            val digest: ByteArray = md.digest(message)
+
+
             //i feed ivParams to the encryption so that if two message are the same they will never have the same encryption value.
             val ivParams = GCMParameterSpec(128, iv)
 

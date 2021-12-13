@@ -8,6 +8,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot
 import javax.crypto.spec.SecretKeySpec
 
 class Notification {
+    var id : String? = null
     var title : String? = null
     var body : String? = null
     var secretKey : String? = null
@@ -15,8 +16,8 @@ class Notification {
     var sendDate : String? = null
     var senderId : String? = null
 
-
     constructor(
+        id: String?,
         title: String?,
         body: String?,
         secretKey: String?,
@@ -24,6 +25,7 @@ class Notification {
         sendDate: String?,
         senderId: String?
     ) {
+        this.id = id
         this.title = title
         this.body = body
         this.secretKey = secretKey
@@ -36,6 +38,7 @@ class Notification {
     fun toHash() : HashMap<String, Any>{
         val hashMap = HashMap<String, Any>()
 
+        hashMap["id"] = id!!
         hashMap["title"] = title!!
         hashMap["body"] = body!!
         hashMap["secretKey"] = secretKey!!
@@ -47,7 +50,9 @@ class Notification {
     }
 
     companion object {
-        fun fromHash(hashMap: QueryDocumentSnapshot, context: Context, chatId : String): Notification {
+        fun fromHash(hashMap: QueryDocumentSnapshot, context: Context): Notification {
+
+            val notifId = hashMap["id"] as String
 
             val keys = ESP(context).keysPref
 
@@ -74,8 +79,8 @@ class Notification {
 
             //Here i search for the key that corresponds to the group
             for (k in keys){
-                if (k.contains(chatId)){
-                    val key = k.removePrefix("$chatId - ")
+                if (k.contains(notifId)){
+                    val key = k.removePrefix("$notifId - ")
                     secretKeyString = key
                 }
             }
@@ -93,6 +98,7 @@ class Notification {
             val body = AesDecrypt(hashMap["body"] as String, iv, secretKey)
 
             return Notification(
+                notifId,
                 title,
                 body,
                 hashMap["secretKey"] as String,

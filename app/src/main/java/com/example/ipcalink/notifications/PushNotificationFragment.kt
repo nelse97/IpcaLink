@@ -643,42 +643,40 @@ class PushNotificationFragment : Fragment() {
 
         var queryId = ""
 
-        //Here i find the chat i want to save the notification
-        dbFirebase.collection("chats").
-        whereEqualTo("chatId", "ka4vgKgo8QzsVkdn5brt").
-        get().addOnCompleteListener {
-            for (query in it.result!!) {
-                if (it.isSuccessful) {
-                    //I get the query id so i can access the broadcast part of the
-                    queryId = query.id
-                    Log.d(TAG, "Successfully found query: ${query.id}")
 
-                    //here i access the broadcast part of the chat and then save the notification
-                    val broadcast =
-                        dbFirebase.collection("chats").
-                        document(queryId).
-                        collection("notifications").
-                        document()
+        val notificationChat =
+            dbFirebase.collection("chats").
+            document("S77po7vNGjtKja2Rinyb").
+            collection("notifications").
+            document()
 
-                    //Send Date needs to be formatted in this way 14/11/2021 16:38
-                    val calendar = Calendar.getInstance()
-                    val format = SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
-
-                    val notification = Notification(title, body, secretKey, iv, format.format(calendar.time), senderId)
+        //Send Date needs to be formatted in this way 14/11/2021 16:38
+        val calendar = Calendar.getInstance()
+        val format = SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
 
 
-                    broadcast.set(notification.toHash()).addOnCompleteListener {
-                        if (!it.isSuccessful) {
-                            Log.d(TAG, "Error adding notif: $notification")
-                        } else {
-                            Log.d(TAG, "Notif added: $notification")
-                        }
-                    }
-                } else {
-                    it.exception?.let {
-                        throw it
-                    }
-                }
+        val notification = Notification(notificationChat.id, title, body, secretKey, iv, format.format(calendar.time), senderId).toHash()
+
+
+        notificationChat.set(notification).addOnCompleteListener {
+            if (!it.isSuccessful) {
+                Log.d(TAG, "Error adding notif to chat: $notificationChat")
+            } else {
+                Log.d(TAG, "Notif added to chat: $notificationChat")
+            }
+        }
+
+        val notificationUser =
+            dbFirebase.collection("users").
+            document("EJ1NUwpOoziRyiWWzNej").
+            collection("notifications").
+            document()
+
+        notificationUser.set(notification).addOnCompleteListener {
+            if (!it.isSuccessful) {
+                Log.d(TAG, "Error adding notif to user: $notificationChat")
+            } else {
+                Log.d(TAG, "Notif added to user: $notificationChat")
             }
         }
     }

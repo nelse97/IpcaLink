@@ -1,6 +1,8 @@
 package com.example.ipcalink.notifications
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,45 +56,28 @@ class ShowNotificationsFragment : Fragment() {
         binding.recyclerView.itemAnimator = DefaultItemAnimator()
         binding.recyclerView.adapter = mAdapter
 
-        getNotifications()
+        getNotifications(requireContext())
     }
 
-    private fun getNotifications() {
+    private fun getNotifications(context: Context) {
 
-        dbFirebase.collection("chats").get().addOnCompleteListener { task1 ->
-            for(query1 in task1.result!!){
-                if(task1.isSuccessful) {
-                    dbFirebase.collection("chats")
-                        .document(query1.id)
-                        .collection("users")
-                        .whereEqualTo("userId", "ewf342f3")
-                        .get().addOnCompleteListener { task2 ->
-                            list = ArrayList()
-                            for(query2 in task2.result!!){
-                                if(task2.isSuccessful) {
-                                    dbFirebase.collection("chats")
-                                        .document(query1.id)
-                                        .collection("notifications")
-                                        .get()
-                                        .addOnCompleteListener { task3 ->
-                                            for(query3 in task3.result!!){
-                                                val chatId = query1["chatId"] as String
-                                                val notification = Notification.fromHash(query3, requireContext(), chatId)
+        dbFirebase.collection("users").document("EJ1NUwpOoziRyiWWzNej").collection("notifications").addSnapshotListener { value, error ->
 
-
-
-                                                val date = notification.sendDate!!.removeRange(5, 19)
-
-                                                list.add(Notification(notification.title, notification.body, notification.secretKey, notification.iv, date, notification.senderId))
-
-                                                binding.recyclerView.adapter!!.notifyItemInserted(list.size - 1)
-                                            }
-                                        }
-                                }
-                            }
-                        }
-                }
+            if (error != null) {
+                Log.w("ShowNotificationsFragment", "Listen failed.", error)
+                return@addSnapshotListener
             }
+
+            for(query in value!!){
+
+                val notification = Notification.fromHash(query, context)
+
+                val date = notification.sendDate!!.removeRange(5, 19)
+
+                list.add(Notification(notification.id, notification.title, notification.body, notification.secretKey, notification.iv, date, notification.senderId))
+            }
+
+            binding.recyclerView.adapter!!.notifyItemInserted(list.size - 1)
         }
     }
 
