@@ -36,15 +36,13 @@ class SplashActivity : AppCompatActivity() {
         if(currentUser != null){
             GlobalScope.launch (Dispatchers.Main){
                 delay(2000)
-                val intent = Intent(this@SplashActivity, MainActivity::class.java)
-                startActivity(intent)
+                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
                 finish()
             }
         }else {
             GlobalScope.launch (Dispatchers.Main){
                 delay(2000)
-                val intent = Intent(this@SplashActivity, LoginActivity::class.java)
-                startActivity(intent)
+                startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
                 finish()
             }
         }
