@@ -1,5 +1,6 @@
 package com.example.ipcalink.login
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -23,6 +24,12 @@ class Boarding3Fragment : Fragment() {
         binding = FragmentBoarding3Binding.inflate(layoutInflater)
 
         binding.buttonNext.setOnClickListener {
+
+            val sp = activity?.getSharedPreferences("firstlogin", Activity.MODE_PRIVATE)
+            val editor = sp?.edit()
+            editor?.putBoolean("firstlogin", false)
+            editor?.apply()
+
             activity?.startActivity(Intent(activity, MainActivity::class.java))
             activity?.finish()
         }

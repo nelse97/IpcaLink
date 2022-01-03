@@ -1,5 +1,6 @@
 package com.example.ipcalink.login
 
+import android.app.Activity
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
@@ -85,8 +86,17 @@ class LoginActivity : AppCompatActivity() {
         val user = FirebaseAuth.getInstance().currentUser
 
         if(user!!.isEmailVerified){
-            startActivity(Intent(this@LoginActivity, BoardingActivity::class.java))
-            finish()
+
+            val sp = getSharedPreferences("firstlogin", Activity.MODE_PRIVATE)
+            val firstlogin = sp.getBoolean("firstlogin",true)
+
+            if(firstlogin){
+                startActivity(Intent(this@LoginActivity, BoardingActivity::class.java))
+                finish()
+            }else{
+                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                finish()
+            }
         } else{
             FirebaseAuth.getInstance().signOut()
             binding.editTextEmail.error = "Email não verificado"
