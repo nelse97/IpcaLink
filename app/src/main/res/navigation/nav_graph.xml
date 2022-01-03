@@ -10,7 +10,6 @@
         android:name="com.example.ipcalink.ui.home.HomeFragment"
         android:label="@string/home_fragment_label"
         tools:layout="@layout/fragment_home">
-
     </fragment>
 
     <fragment
@@ -18,7 +17,6 @@
         android:name="com.example.ipcalink.notifications.PushNotificationFragment"
         android:label="@string/push_notification_fragment_label"
         tools:layout="@layout/fragment_push_notification">
-
     </fragment>
 
     <fragment
@@ -26,7 +24,13 @@
         android:name="com.example.ipcalink.notifications.ShowNotificationsFragment"
         android:label="@string/show_notification_fragment_label"
         tools:layout="@layout/fragment_show_notificacoes">
+    </fragment>
 
+    <fragment
+        android:id="@+id/CalendarFragment"
+        android:name="com.example.ipcalink.Calendar.CalendarFragment"
+        android:label="@string/calendar_fragment_label"
+        tools:layout="@layout/fragment_calendar">
     </fragment>
 
 </navigation>

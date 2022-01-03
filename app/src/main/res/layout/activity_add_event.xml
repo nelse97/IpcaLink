@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/editTextTitle"
+        android:layout_width="285dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="32dp"
+        android:hint="Título"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextDecription"
+        android:layout_width="285dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="32dp"
+        android:hint="Descrição"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTitle" />
+
+    <EditText
+        android:id="@+id/editTextStartDate"
+        android:layout_width="245dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:hint="Qui, 18 Nov 2021"
+        android:clickable="false"
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewStart" />
+
+    <EditText
+        android:id="@+id/editTextEndDate"
+        android:layout_width="245dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:hint="Qui, 18 Nov 2021"
+        android:clickable="false"
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewEnd" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="20dp"
+        android:layout_marginBottom="25dp"
+        app:backgroundTint="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_baseline_add_24"
+        app:tint="@color/white" />
+
+    <TextView
+        android:id="@+id/textViewStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="59dp"
+        android:layout_marginTop="32dp"
+        android:text="Ínicio"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextDecription" />
+
+    <TextView
+        android:id="@+id/textViewEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="59dp"
+        android:layout_marginTop="24dp"
+        android:text="Fim"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextStartDate" />
+
+    <EditText
+        android:id="@+id/editTextStartTime"
+        android:layout_width="70dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="60dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="08:00"
+        app:layout_constraintStart_toEndOf="@+id/editTextStartDate"
+        app:layout_constraintTop_toBottomOf="@+id/editTextDecription" />
+
+    <EditText
+        android:id="@+id/editTextEndTime"
+        android:layout_width="77dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="50dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="09:00"
+        app:layout_constraintStart_toEndOf="@+id/editTextEndDate"
+        app:layout_constraintTop_toBottomOf="@+id/editTextStartTime" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

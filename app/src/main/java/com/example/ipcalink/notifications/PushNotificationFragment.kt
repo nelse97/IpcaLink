@@ -43,11 +43,10 @@ class PushNotificationFragment : Fragment() {
     private val binding get() = _binding!!
 
     //Devices to be added to a group
-    //private var device1Token : String = "dwFz7PlAQ9OC0qFi94D87e:APA91bE6bIP1O9g0nbZLNF5PWh5f15Ijdda_AdJZAC4Kwenus91A-HcpN3e3Pek_Jft4vQb3Vf_62w_KzJz4GXQhgiTEWPuvu2WXiU81f8rr0DgfsiLR79WXlF094rQnttGfCNMr_f9s"
-    //private var device5Token : String = "eF8gwoN_T5G-9jCZO0nd4q:APA91bH4YMv6S0k5mj7faNR-LiQ7voUkWyb9f_VUfQVlSclPJYSBjMx56JLH3X90A3w7VydFrmJC_xbqEamMlnfv8EoPL-hewVY7RGL7Gq-6-apV4m-uccSDezIWDTzpIL1Jj_81mJSE"
-
+    private var device2Token : String = "cXtIQXZITeOTHdZH7lknhh:APA91bHabEw7IwNHIk4Ga0pdUbBjfegNjZI2qhHAaEDL4OnGvIHO_rLCSNc2A9Ix83q3V-d1tnh1Gpwg9NoC_QE9neGm3nWD13eC7ua_te9TP4-FdcJIqpoCxCWf7Np-evpKnONj4ZJ7"
+    private var device3Token : String = "cCPpFmDjS_2JTzyB9HDoVb:APA91bGD-OcyZ9cET00MrF1TzpLWzw_1UHV8a4TQF69p7BJTjq6IFB_KGYNN55UQ0h14ZKHM8RskV06rSudb3pG5w5XfQw4v5CH8x8u--NoFVJylXarKa5wdi5exUeEv0yt6bVb7T6qk"
     //Notification Group Info
-    private var notificationKey : String = "APA91bGa25amJWt9mkzV7SHc1XQ4kuPOWKs84snl5orrvDP44wnOONF0pqorW84dOicdoSuqbbqbgvpqq2EurvSfpWtPfobpfx9H_BOZ5Mc8fOCjjkM-zjHz0zt3uaddViMeF48zsPZhTVksjxxEIgz_gJpXK1CuuA"
+    private var notificationKey : String = "APA91bGNFa83cbX4lV9blvXVStnwJzL2Dvs0eY3QDlrjwuep6IQhy68VCPVN5gnW0_WQ4xobwUqB0BIylmg4-VkmkbB3yrRSktdOVfx3FITwrkmIQhWEvrw"
     lateinit var notificationKeyName : String
 
     private var fcmToken : String = "cbTnqtSCQ66yt7ZMj6qaMU:APA91bGuUEHDHr3YcqxPqq_VsyV8C_guLdARu0hhziThefQLYovzKGb7MjiBN5108YhiCr_e6gft66d2G2XUyeQxEqlrvvSVV8EjJ8DYTbH1oBAtyier1a_BkAX881AIiZmnbEPlTMuZ"
@@ -74,9 +73,9 @@ class PushNotificationFragment : Fragment() {
         //Hides top bar
         (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
 
-        //val list : List<String> = listOf(device5Token)
+        val list : List<String> = listOf(device2Token, device3Token)
 
-        //val registrationIds = JSONArray(list)
+        val registrationIds = JSONArray(list)
 
 
         binding.buttonPushNotif.setOnClickListener {
@@ -102,7 +101,7 @@ class PushNotificationFragment : Fragment() {
 
                 //I create a notification group
                 //createNotificationGroup("Aplicacoes Moveis S77po7vNGjtKja2Rinyb", registrationIds)
-
+                //createNotificationGroup("qualquer coisa5", registrationIds)
 
                 //I generate a random iv
                 val iv = GeneratingRandomIv()
@@ -132,18 +131,20 @@ class PushNotificationFragment : Fragment() {
                 val ivTitleString = Base64.encodeToString(iv, Base64.DEFAULT)
 
                 //I encrypt the data that the user is sending
-                val encryptedTitle = AesEncrypt(title, iv, secretKey)
-                val encryptedMessage = AesEncrypt(message, iv, secretKey)
+                //val encryptedTitle = AesEncrypt(title, iv, secretKey)
+                //val encryptedMessage = AesEncrypt(message, iv, secretKey)
 
 
                 //I send a message/notification to the broadcast of the group so its stored
-                 sendChatMessageToFirebase(encryptedTitle, encryptedMessage, secretKeyString, ivTitleString, "axcf6d67")
+                //sendChatMessageToFirebase(encryptedTitle, encryptedMessage, secretKeyString, ivTitleString, "axcf6d67")
 
                 //I send a notification to a group of users
-                //sendNotificationToGroup(encryptedTitle, encryptedMessage, notificationKey)
+                sendNotificationToGroup(title, message, notificationKey)
+
+
 
                 //I send a notification to a user
-                //sendNotificationToUser(encryptedTitle, encryptedMessage, fcmToken)
+                //sendNotificationToUser(title, message, fcmToken)
             }
         }
     }
@@ -640,8 +641,6 @@ class PushNotificationFragment : Fragment() {
     private suspend fun sendChatMessageToFirebase(title: String, body: String, secretKey : String, iv : String, senderId : String) {
 
         delay(1500)
-
-        var queryId = ""
 
 
         val notificationChat =

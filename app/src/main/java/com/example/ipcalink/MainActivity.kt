@@ -66,7 +66,8 @@ class MainActivity : AppCompatActivity() {
             setOf(
                 R.id.HomeFragment,
                 R.id.PushNotificationFragment,
-                R.id.ShowNotificationFragment
+                R.id.ShowNotificationFragment,
+                R.id.CalendarFragment
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

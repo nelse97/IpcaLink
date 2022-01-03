@@ -272,8 +272,6 @@ class HomeFragment : Fragment() {
                 IMAGE_REQUEST -> {
                     val imageUri = data?.data
 
-                    println("#######imageUri###########")
-                    println(imageUri)
 
                     val parcelFileDescriptor =
                         imageUri?.let { requireContext().contentResolver.openFileDescriptor(it, "r") }
@@ -299,7 +297,6 @@ class HomeFragment : Fragment() {
         auth.signOut()
         Toast.makeText(context, "User Signed Out", Toast.LENGTH_SHORT).show()
         startActivity(Intent(context, StartActivity::class.java))
-        //finish()
     }
 
     inner class Adapter : RecyclerView.Adapter<Adapter.ViewHolder>() {

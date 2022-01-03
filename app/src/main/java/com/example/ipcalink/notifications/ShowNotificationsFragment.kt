@@ -17,6 +17,9 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import androidx.appcompat.app.AppCompatActivity
 import com.example.ipcalink.databinding.FragmentShowNotificacoesBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class ShowNotificationsFragment : Fragment() {
@@ -56,7 +59,9 @@ class ShowNotificationsFragment : Fragment() {
         binding.recyclerView.itemAnimator = DefaultItemAnimator()
         binding.recyclerView.adapter = mAdapter
 
-        getNotifications(requireContext())
+        GlobalScope.launch(Dispatchers.IO) {
+            getNotifications(requireContext())
+        }
     }
 
     private fun getNotifications(context: Context) {

@@ -2,8 +2,10 @@
     <string name="app_name">IpcaLink</string>
     <string name="home_fragment_label">Home</string>
     <string name="push_notification_fragment_label">Push notification</string>
-    <string name="title_home">home</string>
+    <string name="title_home">Home</string>
     <string name="title_push_notifications">Push notification</string>
     <string name="title_show_notifications">Show Notifications</string>
     <string name="show_notification_fragment_label">Show notification</string>
+    <string name="title_calendar">Calendar</string>
+    <string name="calendar_fragment_label">Calendar</string>
 </resources>

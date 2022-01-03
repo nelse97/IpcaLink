@@ -108,8 +108,4 @@ class Notification {
             )
         }
     }
-
-    private fun databaseSecretKeyRemoval(secretKey : String) {
-
-    }
 }

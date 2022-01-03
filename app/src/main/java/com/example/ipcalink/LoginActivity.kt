@@ -53,7 +53,6 @@ class LoginActivity : AppCompatActivity() {
 
                 //This needs to be execute when a user creates a group
 
-
                 //Here i generate an encrypted key and save it in encrypted shared preferences
                 val secretKey = AES.generateAESKey()
                 val secretKeyString = Base64.encodeToString(secretKey, Base64.DEFAULT)

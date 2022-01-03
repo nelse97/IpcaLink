@@ -26,7 +26,7 @@ class ESP {
         )
     }
 
-    //Here i save the keys this way "GroupName - key value"
+    //Here i save the keys this way "GroupId - key value"
     //i use the group name so i can identify the keys
     var keysPref : MutableSet<String>
         get() = encryptedSharedPreferences.getStringSet("KEY_PREF", HashSet<String>()) as MutableSet<String>
