@@ -161,6 +161,7 @@ class AddEventActivity : AppCompatActivity() {
                 val dateFormattedString = DateFormaterCalendarIngToCalendarPt(calendar.time.toString())
                 //val chosenDate = LocalDate.parse(dateFormattedString)
                 binding.editTextStartDate.setText(dateFormattedString)
+
             }
 
         val endDateSetListener =
@@ -179,7 +180,6 @@ class AddEventActivity : AppCompatActivity() {
         binding.editTextStartDate.setOnClickListener {
             DatePickerDialog(
                 this,
-                R.style.MyAppTheme,
                 startDateSetListener,
                 // set DatePickerDialog to point to today's date when it loads up
                 calendar.get(Calendar.YEAR),
@@ -191,7 +191,6 @@ class AddEventActivity : AppCompatActivity() {
         binding.editTextEndDate.setOnClickListener {
             DatePickerDialog(
                 this,
-                R.style.MyAppTheme,
                 endDateSetListener,
                 // set DatePickerDialog to point to today's date when it loads up
                 calendar.get(Calendar.YEAR),

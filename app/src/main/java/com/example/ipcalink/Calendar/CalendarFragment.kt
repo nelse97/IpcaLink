@@ -15,6 +15,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.doOnEnd
 import androidx.core.animation.doOnStart
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
@@ -62,6 +63,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
+import com.google.type.DayOfWeekProto
+import com.kizitonwose.calendarview.model.OutDateStyle
 
 
 class CalendarFragment : Fragment() {
@@ -132,7 +135,6 @@ class CalendarFragment : Fragment() {
 
     private var control = 1
 
-
     private lateinit var registration : ListenerRegistration
 
     override fun onCreateView(
@@ -159,27 +161,21 @@ class CalendarFragment : Fragment() {
         binding.recyclerView.itemAnimator = null
         binding.recyclerView.adapter = adapter
 
-        insertingEventsIntoCalendar()
 
         val daysOfWeek = daysOfWeekFromLocale()
+
         val currentMonth = YearMonth.now()
-
-
+        val startMonth = currentMonth.minusMonths(3)
         val endMonth = currentMonth.plusMonths(3)
 
 
         binding.calendar.apply {
-            setup(currentMonth, endMonth, daysOfWeek.first())
+            setup(startMonth, endMonth, daysOfWeek.first())
             scrollToMonth(currentMonth)
         }
 
 
-        if (savedInstanceState == null) {
-            binding.calendar.post {
-                // Show today's events initially.
-                selectDate(today)
-            }
-        }
+        insertingEventsIntoCalendar()
 
 
         class DayViewContainer(view: View) : ViewContainer(view) {
@@ -209,21 +205,20 @@ class CalendarFragment : Fragment() {
 
                 textView.text = day.date.dayOfMonth.toString()
 
-
                 if (day.owner == DayOwner.THIS_MONTH) {
                     textView.makeVisible()
                     when (day.date) {
                         /*today -> {
                             textView.setTextColorRes(R.color.white)
                             textView.setBackgroundResource(R.drawable.calendar_day_selected)
-                            dotView.makeInVisible()
+                            cardView.isVisible = eventsMap[day.date].orEmpty().isNotEmpty()
+                            cardView.setBackgroundResource(R.color.white)
                         }*/
                         selectedDate -> {
                             textView.setTextColorRes(R.color.white)
                             textView.setBackgroundResource(R.drawable.calendar_day_selected)
                             cardView.isVisible = eventsMap[day.date].orEmpty().isNotEmpty()
                             cardView.setBackgroundResource(R.color.white)
-
                         }
                         else -> {
                             textView.setTextColorRes(R.color.black)
@@ -256,8 +251,8 @@ class CalendarFragment : Fragment() {
                 if (firstDate.yearMonth == lastDate.yearMonth) {
                     binding.textViewYear.text = firstDate.yearMonth.year.toString()
                     binding.textViewMonth.text = monthTitleFormatter.format(firstDate)
-
                 } else {
+
                     binding.textViewMonth.text =
                         monthTitleFormatter.format(lastDate)
                     if (firstDate.year == lastDate.year) {
@@ -267,7 +262,6 @@ class CalendarFragment : Fragment() {
                     }
                 }
             }
-            //selectDate(it.yearMonth.atDay(1))
         }
 
         binding.imageArrow.setImageResource(R.drawable.round_keyboard_arrow_up_black_36)
@@ -315,6 +309,7 @@ class CalendarFragment : Fragment() {
                 if (control %2 != 0) {
                     binding.calendar.updateMonthConfiguration(
                         inDateStyle = InDateStyle.ALL_MONTHS,
+                        outDateStyle = OutDateStyle.END_OF_ROW,
                         maxRowCount = 6,
                         hasBoundaries = true
                     )
@@ -324,6 +319,7 @@ class CalendarFragment : Fragment() {
                 if (control %2 == 0) {
                     binding.calendar.updateMonthConfiguration(
                         inDateStyle = InDateStyle.FIRST_MONTH,
+                        outDateStyle = OutDateStyle.END_OF_ROW,
                         maxRowCount = 1,
                         hasBoundaries = false
                     )
@@ -332,6 +328,7 @@ class CalendarFragment : Fragment() {
                 if (control % 2 == 0) {
                     // We want the first visible day to remain
                     // visible when we change to week mode.
+
                     binding.calendar.scrollToDate(firstDate)
                 } else {
                     // When changing to month mode, we choose current
@@ -396,6 +393,13 @@ class CalendarFragment : Fragment() {
                 updateAdapterForDate(it)
             }
         }
+
+
+        binding.calendar.post {
+            // Show today's events initially.
+            selectDate(today)
+        }
+
     }
 
     fun DateFormater(date: String): String {
