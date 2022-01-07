@@ -26,8 +26,10 @@ class BoardingActivity : AppCompatActivity() {
         binding = ActivityBoardingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //remove top bar
         supportActionBar?.hide()
 
+        //set notification bar to right color
         when (this.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
             Configuration.UI_MODE_NIGHT_YES -> {
                 this.window.statusBarColor = getColor(R.color.background_color)
@@ -53,6 +55,7 @@ class BoardingActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        //skip button/start main activity
         binding.buttonSkip.setOnClickListener {
 
             val sp = getSharedPreferences("firstlogin", Activity.MODE_PRIVATE)

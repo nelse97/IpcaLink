@@ -13,15 +13,27 @@
         <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLink/app/src/main/res/drawable/no_background.xml" value="0.19722222222222222" />
         <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLink/app/src/main/res/drawable/selector.xml" value="0.19722222222222222" />
         <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLink/app/src/main/res/drawable/temp_icon.xml" value="0.37864583333333335" />
+        <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLink/app/src/main/res/layout/activity_add_event.xml" value="0.24166666666666667" />
         <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLink/app/src/main/res/layout/activity_boarding.xml" value="0.386881600889383" />
-        <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLink/app/src/main/res/layout/activity_login.xml" value="0.25" />
-        <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLink/app/src/main/res/layout/activity_main.xml" value="0.3625" />
+        <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLink/app/src/main/res/layout/activity_login.xml" value="0.67" />
+        <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLink/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLink/app/src/main/res/layout/activity_register.xml" value="0.33" />
         <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLink/app/src/main/res/layout/activity_reset_password.xml" value="0.22" />
         <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLink/app/src/main/res/layout/activity_splash.xml" value="0.3625" />
+        <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLink/app/src/main/res/layout/activity_start.xml" value="0.24166666666666667" />
+        <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLink/app/src/main/res/layout/calendar_day.xml" value="0.32447552447552447" />
+        <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLink/app/src/main/res/layout/calendar_day_legend.xml" value="0.24166666666666667" />
         <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLink/app/src/main/res/layout/fragment_boarding1.xml" value="0.33" />
         <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLink/app/src/main/res/layout/fragment_boarding2.xml" value="0.1" />
         <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLink/app/src/main/res/layout/fragment_boarding3.xml" value="0.2" />
+        <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLink/app/src/main/res/layout/fragment_calendar.xml" value="0.25" />
+        <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLink/app/src/main/res/layout/fragment_home.xml" value="0.24166666666666667" />
+        <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLink/app/src/main/res/layout/fragment_push_notification.xml" value="0.24166666666666667" />
+        <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLink/app/src/main/res/layout/fragment_show_notificacoes.xml" value="0.24166666666666667" />
+        <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLink/app/src/main/res/layout/list_item.xml" value="0.24166666666666667" />
+        <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLink/app/src/main/res/layout/notification.xml" value="0.24166666666666667" />
+        <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLink/app/src/main/res/layout/row_view_calendar.xml" value="0.24166666666666667" />
+        <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLink/app/src/main/res/layout/row_view_notification.xml" value="0.24166666666666667" />
         <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLink/app/src/main/res/layout/selector.xml" value="0.1" />
         <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLink/app/src/main/res/menu/bottom_nav_menu.xml" value="0.1" />
         <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLink/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.37864583333333335" />

@@ -21,8 +21,10 @@ class ResetPasswordActivity : AppCompatActivity() {
         binding = ActivityResetPasswordBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //remove top bar
         supportActionBar?.hide()
 
+        //set notification bar to right color
         when (this.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
             Configuration.UI_MODE_NIGHT_YES -> {
                 this.window.statusBarColor = getColor(R.color.background_color)
@@ -35,14 +37,17 @@ class ResetPasswordActivity : AppCompatActivity() {
                 this.window.statusBarColor = getColor(R.color.white)}
         }
 
+        //enter performs click on send email button
         binding.editTextEmailAddress.setOnEditorActionListener { _, _, _ -> binding.buttonSendEmail.performClick() }
 
+        //send email button
         binding.buttonSendEmail.setOnClickListener {
 
             auth = Firebase.auth
 
             val email = binding.editTextEmailAddress.text.toString()
 
+            //check erros
             when {
                 binding.editTextEmailAddress.text.isEmpty() ->{
                     binding.editTextEmailAddress.error = "Campo de email vazio"
@@ -51,6 +56,7 @@ class ResetPasswordActivity : AppCompatActivity() {
                     binding.editTextEmailAddress.error = "O email não pertence ao IPCA."
                 }
                 else ->{
+                    //send email
                     auth
                         .sendPasswordResetEmail(email)
                         .addOnCompleteListener(this){ task ->

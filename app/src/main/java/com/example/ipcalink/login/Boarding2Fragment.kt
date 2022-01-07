@@ -20,6 +20,7 @@ class Boarding2Fragment : Fragment() {
 
         binding = FragmentBoarding2Binding.inflate(layoutInflater)
 
+        //navegate next fragment
         binding.buttonNext.setOnClickListener {
             view?.findNavController()?.navigate(R.id.navigation_boarding3)
         }

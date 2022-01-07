@@ -23,6 +23,7 @@ class Boarding3Fragment : Fragment() {
 
         binding = FragmentBoarding3Binding.inflate(layoutInflater)
 
+        //start main activity
         binding.buttonNext.setOnClickListener {
 
             val sp = activity?.getSharedPreferences("firstlogin", Activity.MODE_PRIVATE)
