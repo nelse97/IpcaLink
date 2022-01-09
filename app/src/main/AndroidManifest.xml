@@ -43,7 +43,7 @@
         </activity>
 
         <activity
-            android:name=".Calendar.AddEventActivity"
+            android:name=".calendar.AddEventActivity"
             android:exported="false" />
 
         <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.

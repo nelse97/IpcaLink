@@ -28,7 +28,7 @@
 
     <fragment
         android:id="@+id/CalendarFragment"
-        android:name="com.example.ipcalink.Calendar.CalendarFragment"
+        android:name="com.example.ipcalink.calendar.CalendarFragment"
         android:label="@string/calendar_fragment_label"
         tools:layout="@layout/fragment_calendar">
     </fragment>

@@ -1,10 +1,8 @@
-package com.example.ipcalink.Calendar
+package com.example.ipcalink.calendar
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Context
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Base64
@@ -13,18 +11,17 @@ import android.view.Gravity
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.example.ipcalink.AES.AES
+import com.example.ipcalink.encryption_algorithm.AES
 import com.example.ipcalink.R
 import com.example.ipcalink.databinding.ActivityAddEventBinding
 import com.example.ipcalink.encryptedSharedPreferences.ESP
-import com.example.ipcalink.models.Event
+import com.example.ipcalink.models.Events
 import com.example.ipcalink.notifications.PushNotificationFragment
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -32,8 +29,6 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 import javax.crypto.SecretKey
 import javax.crypto.spec.SecretKeySpec
-import java.time.temporal.TemporalQueries.localDate
-import kotlin.collections.ArrayList
 
 
 class AddEventActivity : AppCompatActivity() {
@@ -67,7 +62,14 @@ class AddEventActivity : AppCompatActivity() {
 
         Locale.setDefault(myLocale)
 
+        Locale.setDefault(myLocale)
+        val config = baseContext.resources.configuration
+        config.setLocale(myLocale)
+        createConfigurationContext(config)
+
         val dateString = intent.getStringExtra("date")
+        val chatId = intent.getStringExtra("chatId")
+        val chatName = intent.getStringExtra("chatName")
 
         val date = LocalDate.parse(dateString)
 
@@ -115,7 +117,7 @@ class AddEventActivity : AppCompatActivity() {
                     //EventEncryption(this@AddEventActivity, title, description)
 
 
-                    sendEventToFirebase(title, description, sendDate, "gh", timeStampStart, timeStampEnd, "Web Design")
+                    sendEventToFirebase(title, description, chatId!!, chatName!!, sendDate, "gh", timeStampStart, timeStampEnd)
                 }
 
             } else if (binding.editTextTitle.text.isNullOrEmpty()) {
@@ -152,11 +154,11 @@ class AddEventActivity : AppCompatActivity() {
 
         // create an OnDateSetListener
         val startDateSetListener =
-            DatePickerDialog.OnDateSetListener { _, _, _, _ ->
+            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
 
-                calendar.set(Calendar.YEAR, date.year)
-                calendar.set(Calendar.MONTH, date.monthValue - 1)
-                calendar.set(Calendar.DAY_OF_MONTH, date.dayOfMonth)
+                calendar.set(Calendar.YEAR, year)
+                calendar.set(Calendar.MONTH, monthOfYear - 1)
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
                 val dateFormattedString = DateFormaterCalendarIngToCalendarPt(calendar.time.toString())
                 //val chosenDate = LocalDate.parse(dateFormattedString)
@@ -165,11 +167,11 @@ class AddEventActivity : AppCompatActivity() {
             }
 
         val endDateSetListener =
-            DatePickerDialog.OnDateSetListener { _, _, _, _ ->
+            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
 
-                calendar.set(Calendar.YEAR, date.year)
-                calendar.set(Calendar.MONTH, date.monthValue - 1)
-                calendar.set(Calendar.DAY_OF_MONTH, date.dayOfMonth)
+                calendar.set(Calendar.YEAR, year)
+                calendar.set(Calendar.MONTH, monthOfYear - 1)
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
                 val dateFormattedString = DateFormaterCalendarIngToCalendarPt(calendar.time.toString())
                 //val chosenDate = LocalDate.parse(dateFormattedString)
@@ -180,6 +182,7 @@ class AddEventActivity : AppCompatActivity() {
         binding.editTextStartDate.setOnClickListener {
             DatePickerDialog(
                 this,
+                R.style.MyDatePickerDialogTheme,
                 startDateSetListener,
                 // set DatePickerDialog to point to today's date when it loads up
                 calendar.get(Calendar.YEAR),
@@ -191,6 +194,7 @@ class AddEventActivity : AppCompatActivity() {
         binding.editTextEndDate.setOnClickListener {
             DatePickerDialog(
                 this,
+                R.style.MyDatePickerDialogTheme,
                 endDateSetListener,
                 // set DatePickerDialog to point to today's date when it loads up
                 calendar.get(Calendar.YEAR),
@@ -202,19 +206,17 @@ class AddEventActivity : AppCompatActivity() {
 
     @SuppressLint("SimpleDateFormat")
     @RequiresApi(Build.VERSION_CODES.O)
-    private suspend fun sendEventToFirebase(title: String, body: String, sendDate : String, senderId : String, startDate: Timestamp, endDate : Timestamp, subject : String) {
-
-        delay(1500)
+    private fun sendEventToFirebase(title: String, description: String, chatId : String, chatName : String, sendDate : String, senderId : String, startDate: Timestamp, endDate : Timestamp) {
 
 
-        val eventChat =
+        /*val eventChat =
             dbFirebase.collection("chats").
             document("S77po7vNGjtKja2Rinyb").
             collection("events").
             document()
 
 
-        val event = Event(eventChat.id, title, body, sendDate, senderId, startDate, endDate, subject).toHash()
+        val event = Events(eventChat.id, title, chatId, chatName, body, sendDate, senderId, startDate, endDate).toHash()
 
 
         eventChat.set(event).addOnCompleteListener {
@@ -223,19 +225,22 @@ class AddEventActivity : AppCompatActivity() {
             } else {
                 Log.d(PushNotificationFragment.TAG, "Event added to chat: $eventChat")
             }
-        }
+        }*/
 
-        val notificationUser =
+
+        val eventUser =
             dbFirebase.collection("users").
             document("EJ1NUwpOoziRyiWWzNej").
             collection("events").
             document()
 
-        notificationUser.set(event).addOnCompleteListener {
+        val event = Events(eventUser.id, chatId, chatName, title, description, sendDate, senderId, startDate, endDate).toHash()
+
+        eventUser.set(event).addOnCompleteListener {
             if (!it.isSuccessful) {
-                Log.d(PushNotificationFragment.TAG, "Error adding event to user: $notificationUser")
+                Log.d(PushNotificationFragment.TAG, "Error adding event to user: $eventUser")
             } else {
-                Log.d(PushNotificationFragment.TAG, "Event added to user: $notificationUser")
+                Log.d(PushNotificationFragment.TAG, "Event added to user: $eventUser")
             }
         }
 

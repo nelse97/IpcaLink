@@ -2,7 +2,7 @@ package com.example.ipcalink.models
 
 import android.content.Context
 import android.util.Base64
-import com.example.ipcalink.AES.AES.AesDecrypt
+import com.example.ipcalink.encryption_algorithm.AES.AesDecrypt
 import com.example.ipcalink.encryptedSharedPreferences.ESP
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import javax.crypto.spec.SecretKeySpec

@@ -11,9 +11,7 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.example.ipcalink.AES.AES.AesDecrypt
-import com.example.ipcalink.AES.AES.AesEncrypt
-import com.example.ipcalink.AES.AES.GeneratingRandomIv
+import com.example.ipcalink.encryption_algorithm.AES.GeneratingRandomIv
 import com.example.ipcalink.databinding.FragmentPushNotificationBinding
 import com.example.ipcalink.encryptedSharedPreferences.ESP
 import com.example.ipcalink.models.Notification
@@ -100,7 +98,7 @@ class PushNotificationFragment : Fragment() {
 
 
                 //I create a notification group
-                //createNotificationGroup("Aplicacoes Moveis S77po7vNGjtKja2Rinyb", registrationIds)
+                createNotificationGroup("Aplicacoes Moveis S77po7vNGjtKja2Rinyb", registrationIds)
                 //createNotificationGroup("qualquer coisa5", registrationIds)
 
                 //I generate a random iv
@@ -368,7 +366,7 @@ class PushNotificationFragment : Fragment() {
             httpsURLConnection.doInput = true
             httpsURLConnection.doOutput = true
 
-            //Here i give my server key so i can make a request to fcm (Firebase Cloud Messaging) of my application (FirebaseDemo)
+            //Here i give my server key so i can make a request to fcm (Firebase Cloud Messaging) of my application
             //and i define as well the type of content that i will be sending (json object)
             httpsURLConnection.setRequestProperty("Content-Type", "application/json")
             httpsURLConnection.setRequestProperty("authorization", "key=$KEY")
@@ -447,7 +445,7 @@ class PushNotificationFragment : Fragment() {
             //The url of the API i want to access (Firebase Cloud Messaging)
             val endPoint = URL("https://fcm.googleapis.com/fcm/notification")
 
-            //Establish a connection to fcm (Firebase Cloud Messaging) so i can send a push notification to a specific topic
+            //Establish a connection to fcm (Firebase Cloud Messaging) so i can remove elements to a specific group
             val httpsURLConnection: HttpsURLConnection =
                 endPoint.openConnection() as HttpsURLConnection
 
@@ -545,7 +543,7 @@ class PushNotificationFragment : Fragment() {
             //The url of the API i want to access (Firebase Cloud Messaging)
             val endPoint = URL("https://fcm.googleapis.com/fcm/notification")
 
-            //Establish a connection to fcm (Firebase Cloud Messaging) so i can send a push notification to a specific topic
+            //Establish a connection to fcm (Firebase Cloud Messaging) so i can add elements to a specific group
             val httpsURLConnection: HttpsURLConnection =
                 endPoint.openConnection() as HttpsURLConnection
 

@@ -1,4 +1,4 @@
-package com.example.ipcalink.Calendar
+package com.example.ipcalink.calendar
 
 import android.content.Context
 import android.graphics.drawable.GradientDrawable

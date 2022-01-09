@@ -1,4 +1,4 @@
-package com.example.ipcalink.AES
+package com.example.ipcalink.encryption_algorithm
 
 import android.util.Base64
 import java.security.*

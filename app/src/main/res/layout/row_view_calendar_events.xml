@@ -61,7 +61,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
 
         <TextView
-            android:id="@+id/textViewSubject"
+            android:id="@+id/textViewChatName"
             android:layout_width="wrap_content"
             android:layout_height="15dp"
             android:layout_marginStart="76dp"

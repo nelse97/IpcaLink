@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.util.Base64
 import android.util.Log
 import android.widget.Toast
-import com.example.ipcalink.AES.AES
+import com.example.ipcalink.encryption_algorithm.AES
 import com.example.ipcalink.databinding.ActivityLoginBinding
 import com.example.ipcalink.encryptedSharedPreferences.ESP
 import com.google.firebase.auth.FirebaseAuth
