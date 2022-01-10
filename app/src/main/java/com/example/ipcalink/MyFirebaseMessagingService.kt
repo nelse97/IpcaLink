@@ -128,7 +128,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         remoteView.setTextViewText(R.id.title, messageTitle)
         remoteView.setTextViewText(R.id.message, messageBody)
-        remoteView.setImageViewResource(R.id.app_logo, R.drawable.gfg)
+        //remoteView.setImageViewResource(R.id.app_logo, R.drawable.gfg)
 
         return remoteView
     }
@@ -152,7 +152,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         //Configuring the notification
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(R.drawable.gfg)
+            .setSmallIcon(R.drawable.image)
             .setContentTitle(messageTitle)
             .setContentText(messageBody)
             .setAutoCancel(true)

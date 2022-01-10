@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import com.example.ipcalink.encryption_algorithm.AES.GeneratingRandomIv
 import com.example.ipcalink.databinding.FragmentPushNotificationBinding
 import com.example.ipcalink.encryptedSharedPreferences.ESP
+import com.example.ipcalink.encryption_algorithm.AES.AesEncrypt
 import com.example.ipcalink.models.Notification
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -101,11 +102,13 @@ class PushNotificationFragment : Fragment() {
                 createNotificationGroup("Aplicacoes Moveis S77po7vNGjtKja2Rinyb", registrationIds)
                 //createNotificationGroup("qualquer coisa5", registrationIds)
 
+
+                //I will use this code to encrypt data
+
                 //I generate a random iv
                 val iv = GeneratingRandomIv()
 
-
-                //I have to get all the key and search for the key that corresponds to the group
+                //I have to get all the key and search for the key that corresponds to the group where the user is situated
                 val keys = ESP(requireContext()).keysPref
                 var secretKeyString = ""
                 val correspondingGroupId = "ka4vgKgo8QzsVkdn5brt"
@@ -126,24 +129,24 @@ class PushNotificationFragment : Fragment() {
                     SecretKeySpec(secretKeyBytes, 0, secretKeyBytes.size, "AES")
 
 
-                val ivTitleString = Base64.encodeToString(iv, Base64.DEFAULT)
-
                 //I encrypt the data that the user is sending
                 //val encryptedTitle = AesEncrypt(title, iv, secretKey)
                 //val encryptedMessage = AesEncrypt(message, iv, secretKey)
 
 
-                //I send a message/notification to the broadcast of the group so its stored
-                //sendChatMessageToFirebase(encryptedTitle, encryptedMessage, secretKeyString, ivTitleString, "axcf6d67")
+                val ivTitleString = Base64.encodeToString(iv, Base64.DEFAULT)
 
                 //I send a notification to a group of users
-                sendNotificationToGroup(title, message, notificationKey)
+                //sendNotificationToGroup(title, message, notificationKey)
 
 
 
                 //I send a notification to a user
                 //sendNotificationToUser(title, message, fcmToken)
             }
+
+            //I save a message that has been send from a group to the firebase
+            //sendChatMessageToFirebase(encryptedTitle, encryptedMessage, secretKeyString, ivTitleString, "axcf6d67")
         }
     }
 
