@@ -29,6 +29,9 @@ class MessagesFragment : Fragment() {
         //initialize private messages fragment
         replaceFragment(privateMessagesFragment)
 
+        binding.tvPrivateMessagesTopBar.setTypeface(null, Typeface.BOLD)
+        binding.tvSchoolMessagesTopBar.setTypeface(null, Typeface.NORMAL)
+
         binding.llPrivateMessages.setOnClickListener {
             replaceFragment(privateMessagesFragment)
 
