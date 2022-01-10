@@ -471,11 +471,8 @@ class PushNotificationFragment : Fragment() {
             println("jsonArray")
             println(registrationIds)
 
-            //Here i need to verify if the chat has already been created
-            //----------------------------------------------------------
 
-            //Here i define the name of the group "chatName" and
-            //the fcm tokens of the users that are going to be in the group "registrationIds"
+            //Here i define the user i want to remove from the group
             json.put("operation", "remove")
             json.put("notification_key_name", notificationKeyName)
             json.put("notification_key", notificationKey)
@@ -569,11 +566,7 @@ class PushNotificationFragment : Fragment() {
             println("jsonArray")
             println(registrationIds)
 
-            //Here i need to verify if the chat has already been created
-            //----------------------------------------------------------
-
-            //Here i define the name of the group "chatName" and
-            //the fcm tokens of the users that are going to be in the group "registrationIds"
+            //Here i define the user i want to add to a certain group
             json.put("operation", "add")
             json.put("notification_key_name", notificationKeyName)
             json.put("notification_key", notificationKey)
