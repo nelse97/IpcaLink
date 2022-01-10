@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="35dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/llPrivateMessages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvPrivateMessagesTopBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:fontFamily="@font/montserrat_regular"
+                android:text="Geral"
+                android:textColor="@color/colorPrimary"
+                android:textSize="26sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/underlinePrivateMessagesHighlight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:src="@drawable/ic_bottom_nav_selected_underline" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llSchoolMessages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvSchoolMessagesTopBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_regular"
+                android:text="Disciplinas"
+                android:textColor="@color/black"
+                android:textSize="26sp"
+                android:textStyle="normal" />
+
+            <ImageView
+                android:id="@+id/underlineSchoolMessagesHighlight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_bottom_nav_selected_underline"
+                android:visibility="invisible" />
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/ibReminder"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_margin="4dp"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_search" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/messagesFrameContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+
+    </FrameLayout>
+
+</LinearLayout>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/menuIconMessages"
+        android:icon="@drawable/ic_unselected_messages_icon"
+        android:title="Mensagens"
+        app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/menuIconCalendar"
+        android:icon="@drawable/ic_selected_messages_icon"
+        android:title="Calendário"
+        app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/temSpacing"
+        android:title=""
+        app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/menuIconReminders"
+        android:icon="@drawable/ic_selected_messages_icon"
+        android:title="Lembretes"
+        app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/menuIconProfile"
+        android:icon="@drawable/ic_selected_messages_icon"
+        android:title="Perfil"
+        app:showAsAction="ifRoom" />
+
+</menu>
