@@ -2,13 +2,16 @@ package com.example.ipcalink.calendar
 
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -30,6 +33,7 @@ import com.example.ipcalink.databinding.CalendarDayBinding
 import com.example.ipcalink.databinding.FragmentCalendarBinding
 import com.example.ipcalink.models.Chats
 import com.example.ipcalink.models.Events
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.kizitonwose.calendarview.model.CalendarDay
@@ -118,6 +122,8 @@ class CalendarFragment : Fragment() {
     private lateinit var currentChatId : String
     private lateinit var currentChatName : String
 
+    private val userUID = Firebase.auth.uid
+
     val myLocale = Locale("pt", "PT")
     private val monthTitleFormatter = DateTimeFormatter.ofPattern("MMMM", myLocale)
 
@@ -166,10 +172,20 @@ class CalendarFragment : Fragment() {
         val endMonth = currentMonth.plusMonths(60)
 
 
+        // Setup custom day size to fit two months on the screen.
+        val dm = DisplayMetrics()
+        val wm = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
         binding.calendar.apply {
 
-            daySize = Size(140, 95)
+            //daySize = Size(140, 95)
+
+            // We want the immediately following/previous month to be
+            // partially visible so we multiply the total width by 0.73
+            val monthWidth = (dm.widthPixels * 0.73).toInt()
+            val dayWidth = monthWidth / 7
+            val dayHeight = (dayWidth * 1.73).toInt() // We don't want a square calendar.
+            daySize = Size(dayWidth, dayHeight)
 
             // Add margins around our card view.
             val horizontalMargin = dpToPx(20, requireContext())
@@ -611,7 +627,7 @@ class CalendarFragment : Fragment() {
 
     private fun searchingEvents() {
 
-        registration = dbFirebase.collection("users").document("EJ1NUwpOoziRyiWWzNej").collection("events").addSnapshotListener { value, error ->
+        registration = dbFirebase.collection("users").document(userUID!!).collection("events").addSnapshotListener { value, error ->
 
             if (error != null) {
                 Log.w("ShowNotificationsFragment", "Listen failed.", error)
@@ -626,7 +642,7 @@ class CalendarFragment : Fragment() {
 
     private fun searchingEventsFromAChat() {
 
-        dbFirebase.collection("users").document("EJ1NUwpOoziRyiWWzNej").collection("events").whereEqualTo("chatId", currentChatId).addSnapshotListener { value, error ->
+        dbFirebase.collection("users").document(userUID!!).collection("events").whereEqualTo("chatId", currentChatId).addSnapshotListener { value, error ->
 
             if (error != null) {
                 Log.w("ShowNotificationsFragment", "Listen failed.", error)

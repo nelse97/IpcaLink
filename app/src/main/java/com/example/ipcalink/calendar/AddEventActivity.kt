@@ -18,6 +18,7 @@ import com.example.ipcalink.encryptedSharedPreferences.ESP
 import com.example.ipcalink.models.Events
 import com.example.ipcalink.notifications.PushNotificationFragment
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
@@ -40,6 +41,9 @@ class AddEventActivity : AppCompatActivity() {
     private val myLocale = Locale("pt", "PT")
 
     var calendar = Calendar.getInstance()
+
+    private val userUID = Firebase.auth.uid
+
 
     //private lateinit var encryptedTitle : String
     //private lateinit var encryptedDescription : String
@@ -230,7 +234,7 @@ class AddEventActivity : AppCompatActivity() {
 
         val eventUser =
             dbFirebase.collection("users").
-            document("EJ1NUwpOoziRyiWWzNej").
+            document(userUID!!).
             collection("events").
             document()
 
