@@ -169,7 +169,7 @@ class CalendarFragment : Fragment() {
 
         binding.calendar.apply {
 
-            daySize = Size(140, 90)
+            daySize = Size(140, 95)
 
             // Add margins around our card view.
             val horizontalMargin = dpToPx(20, requireContext())
@@ -219,8 +219,8 @@ class CalendarFragment : Fragment() {
                 container.day = day
 
                 val textView = container.binding.textViewDay
-                val cardView = container.binding.cardView
-                val imageView = container.binding.DotView
+                val cardView1 = container.binding.cardView1
+                val cardView2 = container.binding.cardView2
 
                 textView.text = day.date.dayOfMonth.toString()
 
@@ -236,20 +236,20 @@ class CalendarFragment : Fragment() {
                         selectedDate -> {
                             textView.setTextColorRes(R.color.white)
                             textView.setBackgroundResource(R.drawable.calendar_day_selected)
-                            cardView.isVisible = eventsMap[day.date].orEmpty().isNotEmpty()
-                            cardView.setBackgroundResource(R.color.white)
+                            cardView1.isVisible = eventsMap[day.date].orEmpty().isNotEmpty()
+                            cardView2.setBackgroundResource(R.color.white)
                         }
                         else -> {
                             textView.setTextColorRes(R.color.black)
                             textView.setBackgroundResource(R.drawable.calendar_day_not_selected)
-                            cardView.isVisible = eventsMap[day.date].orEmpty().isNotEmpty()
-                            cardView.setBackgroundResource(R.color.colorPrimary)
+                            cardView1.isVisible = eventsMap[day.date].orEmpty().isNotEmpty()
+                            cardView2.setBackgroundResource(R.color.colorPrimary)
                         }
                     }
                 } else {
                     textView.setTextColorRes(R.color.gray_155)
                     textView.setBackgroundResource(R.drawable.calendar_day_not_selected)
-                    cardView.makeInVisible()
+                    cardView1.makeInVisible()
                 }
             }
         }
@@ -257,12 +257,6 @@ class CalendarFragment : Fragment() {
         binding.calendar.monthScrollListener = {
 
             if (binding.calendar.maxRowCount == 6) {
-
-                val year = it.yearMonth.year.toString()
-                val upperString: String =
-                    year.substring(0, 1).toUpperCase() + year.substring(1).toLowerCase()
-
-                println(upperString)
 
                 binding.textViewYear.text = it.yearMonth.year.toString()
                 binding.textViewMonth.text = monthTitleFormatter.format(it.yearMonth)
@@ -283,7 +277,9 @@ class CalendarFragment : Fragment() {
                     if (firstDate.year == lastDate.year) {
                         binding.textViewYear.text = firstDate.yearMonth.year.toString()
                     } else {
-                        //binding.textViewYear.text = "${firstDate.yearMonth.year} - ${lastDate.yearMonth.year}"
+                        /*binding.textViewMonth.text =
+                            monthTitleFormatter.format(firstDate) + "-" + monthTitleFormatter.format(lastDate)*/
+                        binding.textViewYear.text = "${firstDate.yearMonth.year} - ${lastDate.yearMonth.year}"
                     }
                 }
             }

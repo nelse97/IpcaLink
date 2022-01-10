@@ -43,7 +43,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewGroupChats"
             android:layout_width="match_parent"
-            android:layout_height="91dp"
+            android:layout_height="95dp"
             android:layout_marginTop="28dp"
             app:layout_constraintBottom_toTopOf="@+id/legendLayout"
             app:layout_constraintEnd_toEndOf="parent"
@@ -79,8 +79,8 @@
 
         <TextView
             android:id="@+id/textViewYear"
-            android:layout_width="100dp"
-            android:layout_height="26dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginTop="51dp"
             android:fontFamily="@font/montserrat_medium"
@@ -96,7 +96,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="21dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="21dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -124,6 +124,7 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginTop="3dp"
             android:backgroundTint="#004E38"
             android:padding="2dp"
             android:textSize="18sp"
@@ -133,7 +134,7 @@
 
         <TextView
             android:id="@+id/textView3"
-            android:layout_width="75dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="21dp"
             android:layout_marginTop="5dp"
@@ -170,13 +171,11 @@
             android:id="@+id/imageHamburger"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_marginStart="169dp"
             android:layout_marginTop="51dp"
-            android:layout_marginEnd="15dp"
+            android:layout_marginEnd="30dp"
             android:background="@drawable/outline_tune_black_24dp"
             android:backgroundTint="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textViewYear"
             app:layout_constraintTop_toTopOf="parent" />
 
 

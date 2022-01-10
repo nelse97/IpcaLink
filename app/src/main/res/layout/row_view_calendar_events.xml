@@ -62,10 +62,10 @@
 
         <TextView
             android:id="@+id/textViewChatName"
-            android:layout_width="wrap_content"
-            android:layout_height="15dp"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
             android:layout_marginStart="76dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="25dp"
             android:layout_marginEnd="22dp"
             android:layout_marginBottom="25dp"
             android:fontFamily="@font/montserrat_light"
