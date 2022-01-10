@@ -45,12 +45,6 @@ class AddEventActivity : AppCompatActivity() {
     private val userUID = Firebase.auth.uid
 
 
-    //private lateinit var encryptedTitle : String
-    //private lateinit var encryptedDescription : String
-    private lateinit var ivString : String
-    private var secretKeyString = ""
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -80,8 +74,8 @@ class AddEventActivity : AppCompatActivity() {
         calendar.set(date.year, date.monthValue-1, date.dayOfMonth)
 
         val dateFormattedString = DateFormaterCalendarIngToCalendarPt(calendar.time.toString())
-        binding.editTextStartDate.setText(dateFormattedString)
-        binding.editTextEndDate.setText(dateFormattedString)
+        binding.editTextStartDate.text = dateFormattedString
+        binding.editTextEndDate.text = dateFormattedString
 
 
         binding.addButton.setOnClickListener {
@@ -117,12 +111,10 @@ class AddEventActivity : AppCompatActivity() {
                 val sendDate = format.format(calendar.time)
 
 
-                GlobalScope.launch(Dispatchers.IO) {
-                    //EventEncryption(this@AddEventActivity, title, description)
-
-
-                    sendEventToFirebase(title, description, chatId!!, chatName!!, sendDate, "gh", timeStampStart, timeStampEnd)
-                }
+                if(chatId != null && chatName != null)
+                    saveEventToGroup(title, description, chatId, chatName, sendDate, userUID!!, timeStampStart, timeStampEnd)
+                else
+                    saveEventToUser(title, description, sendDate, timeStampStart, timeStampEnd)
 
             } else if (binding.editTextTitle.text.isNullOrEmpty()) {
                 val toast = Toast.makeText(this, "Por favor insira um título", Toast.LENGTH_SHORT)
@@ -210,17 +202,17 @@ class AddEventActivity : AppCompatActivity() {
 
     @SuppressLint("SimpleDateFormat")
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun sendEventToFirebase(title: String, description: String, chatId : String, chatName : String, sendDate : String, senderId : String, startDate: Timestamp, endDate : Timestamp) {
+    private fun saveEventToGroup(title: String, description: String, chatId : String, chatName : String, sendDate : String, senderId : String, startDate: Timestamp, endDate : Timestamp) {
 
 
-        /*val eventChat =
+        val eventChat =
             dbFirebase.collection("chats").
-            document("S77po7vNGjtKja2Rinyb").
+            document(chatId).
             collection("events").
             document()
 
 
-        val event = Events(eventChat.id, title, chatId, chatName, body, sendDate, senderId, startDate, endDate).toHash()
+        val event = Events(eventChat.id, chatId, chatName, title, description, sendDate, senderId, startDate, endDate).toHash()
 
 
         eventChat.set(event).addOnCompleteListener {
@@ -229,7 +221,7 @@ class AddEventActivity : AppCompatActivity() {
             } else {
                 Log.d(PushNotificationFragment.TAG, "Event added to chat: $eventChat")
             }
-        }*/
+        }
 
 
         val eventUser =
@@ -237,8 +229,6 @@ class AddEventActivity : AppCompatActivity() {
             document(userUID!!).
             collection("events").
             document()
-
-        val event = Events(eventUser.id, chatId, chatName, title, description, sendDate, senderId, startDate, endDate).toHash()
 
         eventUser.set(event).addOnCompleteListener {
             if (!it.isSuccessful) {
@@ -262,36 +252,38 @@ class AddEventActivity : AppCompatActivity() {
 
     }
 
-    fun EventEncryption(context : Context, title: String, description : String) {
-        //I generate a random iv
-        val iv = AES.GeneratingRandomIv()
+    @SuppressLint("SimpleDateFormat")
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun saveEventToUser(title: String, description: String, sendDate : String, startDate: Timestamp, endDate : Timestamp) {
 
+        val eventUser =
+            dbFirebase.collection("users").
+            document(userUID!!).
+            collection("events").
+            document()
 
-        //I have to get all the key and search for the key that corresponds to the group
-        val keys = ESP(context).keysPref
-        val correspondingGroupId = "ka4vgKgo8QzsVkdn5brt"
+        val event = Events(eventUser.id, null, null, title, description, sendDate, null, startDate, endDate).toHash()
 
-
-        //I search for the key that corresponds to the group
-        for (k in keys){
-            if (k.contains(correspondingGroupId)){
-                val key = k.removePrefix("$correspondingGroupId - ")
-                secretKeyString = key
+        eventUser.set(event).addOnCompleteListener {
+            if (!it.isSuccessful) {
+                Log.d(PushNotificationFragment.TAG, "Error adding event to user: $eventUser")
+            } else {
+                Log.d(PushNotificationFragment.TAG, "Event added to user: $eventUser")
             }
         }
 
-        //I get the key as bytes array and then rebuild the Secret key from the bytes array
-        val secretKeyBytes = Base64.decode(secretKeyString, Base64.DEFAULT)
+        /*val startDate = getDate(timeStampStart.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
+        val endDate = getDate(timeStampEnd.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
 
-        val secretKey : SecretKey =
-            SecretKeySpec(secretKeyBytes, 0, secretKeyBytes.size, "AES")
+        val even = Event(eventChat.id, title, body, sendDate, senderId, startDate, endDate, subject).toHash()
 
+        //Return to Profile view activity the edited user
+        returnIntent.putExtra("event", startDate)
+        returnIntent.putExtra("end_date", endDate)
+        setResult(Activity.RESULT_OK, returnIntent)*/
 
-        ivString = Base64.encodeToString(iv, Base64.DEFAULT)
+        finish()
 
-        //I encrypt the data that the user is sending
-        //encryptedTitle = AES.AesEncrypt(title, iv, secretKey)
-        //encryptedDescription = AES.AesEncrypt(description, iv, secretKey)
     }
 
     fun CalendarDateFormatter(date: String): String {

@@ -119,8 +119,8 @@ class CalendarFragment : Fragment() {
 
     private var chatsList : ArrayList<Chats> = ArrayList()
 
-    private lateinit var currentChatId : String
-    private lateinit var currentChatName : String
+    private var currentChatId : String? = null
+    private var currentChatName : String? = null
 
     private val userUID = Firebase.auth.uid
 
@@ -174,7 +174,7 @@ class CalendarFragment : Fragment() {
 
         // Setup custom day size to fit two months on the screen.
         val dm = DisplayMetrics()
-        val wm = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        //val wm = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
         binding.calendar.apply {
 

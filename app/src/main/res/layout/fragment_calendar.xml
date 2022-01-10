@@ -121,10 +121,10 @@
 
         <ImageView
             android:id="@+id/imageArrow"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginTop="3dp"
+            android:layout_marginTop="6dp"
             android:backgroundTint="#004E38"
             android:padding="2dp"
             android:textSize="18sp"

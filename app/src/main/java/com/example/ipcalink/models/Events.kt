@@ -9,7 +9,6 @@ class Events {
     var id : String? = null
     var chatId : String? = null
     var chatName : String? = null
-
     var title : String? = null
     var description : String? = null
     var sendDate : String? = null
@@ -40,16 +39,16 @@ class Events {
     }
 
 
-    fun toHash() : HashMap<String, Any>{
-        val hashMap = HashMap<String, Any>()
+    fun toHash() : HashMap<String, Any?>{
+        val hashMap = HashMap<String, Any?>()
 
         hashMap["id"] = id!!
-        hashMap["chatId"] = chatId!!
-        hashMap["chatName"] = chatName!!
+        hashMap["chatId"] = chatId
+        hashMap["chatName"] = chatName
         hashMap["title"] = title!!
         hashMap["description"] = description!!
         hashMap["sendDate"] = sendDate!!
-        hashMap["senderId"] = senderId!!
+        hashMap["senderId"] = senderId
         hashMap["startDate"] = startDate!!
         hashMap["endDate"] = endDate!!
 
@@ -62,12 +61,12 @@ class Events {
 
             return Events(
                 hashMap["id"] as String,
-                hashMap["chatId"] as String,
-                hashMap["chatName"] as String,
+                hashMap["chatId"] as String?,
+                hashMap["chatName"] as String?,
                 hashMap["title"] as String,
                 hashMap["description"] as String,
                 hashMap["sendDate"] as String,
-                hashMap["senderId"] as String,
+                hashMap["senderId"] as String?,
                 hashMap["startDate"] as Timestamp,
                 hashMap["endDate"] as Timestamp
             )
