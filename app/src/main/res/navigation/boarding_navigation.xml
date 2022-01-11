@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_boarding1">
+
+    <fragment
+        android:id="@+id/navigation_boarding1"
+        android:name="com.example.ipcalink.login.Boarding1Fragment"
+        tools:layout="@layout/fragment_boarding1" />
+
+    <fragment
+        android:id="@+id/navigation_boarding2"
+        android:name="com.example.ipcalink.login.Boarding2Fragment"
+        tools:layout="@layout/fragment_boarding2" />
+
+    <fragment
+        android:id="@+id/navigation_boarding3"
+        android:name="com.example.ipcalink.login.Boarding3Fragment"
+        tools:layout="@layout/fragment_boarding3" />
+</navigation>
