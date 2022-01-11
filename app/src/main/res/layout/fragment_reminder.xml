@@ -14,7 +14,7 @@
         android:layout_marginTop="30dp"
         android:layout_marginBottom="30dp"
         android:fontFamily="@font/montserrat_bold"
-        android:text="Notificações"
+        android:text="Eventos"
         android:textColor="#FFFFFF"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
@@ -30,21 +30,18 @@
         android:background="@drawable/custom_card_view"
         android:clipToPadding="false"
         android:elevation="5dp"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <TextView
+            android:id="@+id/textView4"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="38dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="TextView" />
     </LinearLayout>
 
 </LinearLayout>

@@ -60,7 +60,6 @@ class MessagesFragment : Fragment() {
             binding.underlineSchoolMessagesHighlight.visibility = View.VISIBLE
         }
 
-
         // return the fragment layout
         return binding.root
     }

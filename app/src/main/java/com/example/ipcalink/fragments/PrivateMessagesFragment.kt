@@ -103,7 +103,7 @@ class PrivateMessagesFragment : Fragment() {
                         "Ocorreu um erro ao tentar listar todos os seus chats. Tente novamente mais tarde.",
                         Toast.LENGTH_SHORT
                     ).show()
-                    Log.d("chatsFragment", e.message.toString())
+                    Log.d("chatsFragment22", e.message.toString())
                     return@addSnapshotListener
                 }
                 userExistingPrivateChats.clear()
@@ -112,11 +112,10 @@ class PrivateMessagesFragment : Fragment() {
                     val newChat = chat.toObject<UserChat>()
                     userChats.add(newChat)
                 }
-                Log.d("PrivateMessages", userChats.size.toString())
+                Log.d("PrivateMessages", userChats[0].photoUrl)
                 if(userChats.size == 0) {
                     noChatsShowNotice()
                 } else {
-                    noChatsHideNotice()
                     //get a list of the users current private chats
                     verifyCurrentPrivateChats()
                     chatsAdapter.notifyDataSetChanged()
@@ -195,10 +194,5 @@ class PrivateMessagesFragment : Fragment() {
     private fun noChatsShowNotice() {
         binding.rvPrivateChats.visibility = View.INVISIBLE
         binding.tvNoChats.visibility = View.VISIBLE
-    }
-
-    private fun noChatsHideNotice() {
-        binding.rvPrivateChats.visibility = View.VISIBLE
-        binding.tvNoChats.visibility = View.INVISIBLE
     }
 }

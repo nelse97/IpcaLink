@@ -10,6 +10,7 @@ class UserChat {
     var chatType : String = ""
     var photoUrl : String = ""
     var lastMessageTimestamp : String = ""
+    var lastMessageSenderId : String = ""
     var lastMessage: String = ""
 
     constructor()
@@ -20,6 +21,7 @@ class UserChat {
         chatType    : String,
         photoUrl       : String,
         lastMessageTimestamp: String,
+        lastMessageSenderId: String,
         lastMessage: String
     ) {
         this.chatId      = chatId
@@ -27,6 +29,7 @@ class UserChat {
         this.chatType = chatType
         this.photoUrl     = photoUrl
         this.lastMessageTimestamp = lastMessageTimestamp
+        this.lastMessageSenderId = lastMessageSenderId
         this.lastMessage = lastMessage
     }
 
@@ -37,6 +40,7 @@ class UserChat {
         hashMap.put("chatType", chatType)
         hashMap.put("photoUrl"  , photoUrl)
         hashMap.put("lastMessageTimestamp", lastMessageTimestamp)
+        hashMap.put("lastMessageSenderId", lastMessageSenderId)
         hashMap.put("lastMessage", lastMessage)
         return hashMap
     }
@@ -49,6 +53,7 @@ class UserChat {
                 hashMap["chatType"] as String,
                 hashMap["photoUrl"] as String,
                 hashMap["lastMessageTimestamp"] as String,
+                hashMap["lastMessageSenderId"] as String,
                 hashMap["lastMessage"] as String
             )
             return userChat
