@@ -8,6 +8,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.ipcalink.FcmToken.fcmToken
 import com.example.ipcalink.databinding.ActivityStartBinding
+import com.example.ipcalink.login.LoginActivity
+import com.example.ipcalink.login.RegisterActivity
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -19,7 +21,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 
 class StartActivity : AppCompatActivity() {
 
-    /*private lateinit var binding: ActivityStartBinding
+    private lateinit var binding: ActivityStartBinding
 
     public override fun onStart() {
         super.onStart()
@@ -58,5 +60,5 @@ class StartActivity : AppCompatActivity() {
                 finish()
             }
         }
-    }*/
+    }
 }
