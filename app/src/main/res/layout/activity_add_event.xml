@@ -71,7 +71,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextDecription" />
 
     <TextView
-        android:id="@+id/editTextStartDate"
+        android:id="@+id/textViewStartDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="44dp"
@@ -84,7 +84,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewStart" />
 
     <TextView
-        android:id="@+id/editTextEndDate"
+        android:id="@+id/textViewEndDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="44dp"
@@ -137,8 +137,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
-    <EditText
-        android:id="@+id/editTextStartTime"
+    <TextView
+        android:id="@+id/textViewStartTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="136dp"
@@ -147,11 +147,11 @@
         android:hint="08:00"
         android:textColor="#272727"
         android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/editTextStartDate"
+        app:layout_constraintStart_toEndOf="@+id/textViewStartDate"
         app:layout_constraintTop_toBottomOf="@+id/textViewStart" />
 
-    <EditText
-        android:id="@+id/editTextEndTime"
+    <TextView
+        android:id="@+id/textViewEndTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="136dp"
@@ -160,7 +160,7 @@
         android:hint="09:00"
         android:textColor="#272727"
         android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/editTextEndDate"
+        app:layout_constraintStart_toEndOf="@+id/textViewEndDate"
         app:layout_constraintTop_toBottomOf="@+id/textViewEnd" />
 
     <TextView
@@ -174,7 +174,7 @@
         android:background="#272727"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextStartDate" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewStartDate" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

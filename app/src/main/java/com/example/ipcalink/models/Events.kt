@@ -11,7 +11,7 @@ class Events {
     var chatName : String? = null
     var title : String? = null
     var description : String? = null
-    var sendDate : String? = null
+    var sendDate : Timestamp? = null
     var senderId : String? = null
     var startDate : Timestamp? = null
     var endDate : Timestamp? = null
@@ -22,7 +22,7 @@ class Events {
         chatName: String?,
         title: String?,
         description: String?,
-        sendDate: String?,
+        sendDate: Timestamp?,
         senderId: String?,
         startDate: Timestamp?,
         endDate: Timestamp?
@@ -65,7 +65,7 @@ class Events {
                 hashMap["chatName"] as String?,
                 hashMap["title"] as String,
                 hashMap["description"] as String,
-                hashMap["sendDate"] as String,
+                hashMap["sendDate"] as Timestamp,
                 hashMap["senderId"] as String?,
                 hashMap["startDate"] as Timestamp,
                 hashMap["endDate"] as Timestamp

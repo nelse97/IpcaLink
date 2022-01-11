@@ -10,6 +10,10 @@ import com.example.ipcalink.FcmToken.fcmToken
 import com.example.ipcalink.databinding.ActivityStartBinding
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 
 
@@ -55,20 +59,5 @@ class StartActivity : AppCompatActivity() {
                 finish()
             }
         }
-
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                Log.w(ContentValues.TAG, "Fetching FCM registration token failed", task.exception)
-                return@OnCompleteListener
-            }
-
-            // Get new FCM registration token
-            fcmToken = task.result
-
-            // Log and toast
-            Log.d(ContentValues.TAG, "O FCM é $fcmToken")
-            Toast.makeText(this, "O FCM é $fcmToken", Toast.LENGTH_SHORT).show()
-        })
-
     }
 }

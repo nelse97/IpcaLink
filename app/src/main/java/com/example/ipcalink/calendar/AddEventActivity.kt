@@ -2,6 +2,7 @@ package com.example.ipcalink.calendar
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
@@ -74,24 +75,24 @@ class AddEventActivity : AppCompatActivity() {
         calendar.set(date.year, date.monthValue-1, date.dayOfMonth)
 
         val dateFormattedString = DateFormaterCalendarIngToCalendarPt(calendar.time.toString())
-        binding.editTextStartDate.text = dateFormattedString
-        binding.editTextEndDate.text = dateFormattedString
+        binding.textViewStartDate.text = dateFormattedString
+        binding.textViewEndDate.text = dateFormattedString
 
 
         binding.addButton.setOnClickListener {
             if(!binding.editTextTitle.text.isNullOrEmpty() &&
                 !binding.editTextDecription.text.isNullOrEmpty() &&
-                !binding.editTextStartDate.text.isNullOrEmpty() &&
-                !binding.editTextEndDate.text.isNullOrEmpty() &&
-                !binding.editTextStartTime.text.isNullOrEmpty() &&
-                !binding.editTextEndTime.text.isNullOrEmpty()  ) {
+                !binding.textViewStartDate.text.isNullOrEmpty() &&
+                !binding.textViewEndDate.text.isNullOrEmpty() &&
+                !binding.textViewStartTime.text.isNullOrEmpty() &&
+                !binding.textViewEndTime.text.isNullOrEmpty()  ) {
 
 
                 val title = binding.editTextTitle.text.toString()
                 val description = binding.editTextDecription.text.toString()
 
-                val startDateString = CalendarDateFormatter(binding.editTextStartDate.text.toString()) + " " + binding.editTextStartTime.text.toString()
-                val endDateString = CalendarDateFormatter(binding.editTextEndDate.text.toString()) + " " + binding.editTextEndTime.text.toString()
+                val startDateString = CalendarDateFormatter(binding.textViewStartDate.text.toString()) + " " + binding.textViewStartTime.text.toString()
+                val endDateString = CalendarDateFormatter(binding.textViewEndDate.text.toString()) + " " + binding.textViewEndTime.text.toString()
 
                 println(startDateString)
 
@@ -108,13 +109,17 @@ class AddEventActivity : AppCompatActivity() {
                 //Send Date needs to be formatted in this way 14/11/2021 16:38
                 val calendar = Calendar.getInstance()
                 val format = SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
-                val sendDate = format.format(calendar.time)
+                val sendDateString = format.format(calendar.time)
+
+                val sendDateLong = Date.parse(sendDateString)
+                val sendDate = Date(sendDateLong)
+                val timeStampSend = Timestamp(sendDate)
 
 
                 if(chatId != null && chatName != null)
-                    saveEventToGroup(title, description, chatId, chatName, sendDate, userUID!!, timeStampStart, timeStampEnd)
+                    saveEventToGroup(title, description, chatId, chatName, timeStampSend, userUID!!, timeStampStart, timeStampEnd)
                 else
-                    saveEventToUser(title, description, sendDate, timeStampStart, timeStampEnd)
+                    saveEventToUser(title, description, timeStampSend, timeStampStart, timeStampEnd)
 
             } else if (binding.editTextTitle.text.isNullOrEmpty()) {
                 val toast = Toast.makeText(this, "Por favor insira um título", Toast.LENGTH_SHORT)
@@ -124,19 +129,19 @@ class AddEventActivity : AppCompatActivity() {
                 val toast = Toast.makeText(this, "Por favor insira uma descrição", Toast.LENGTH_SHORT)
                 toast.setGravity(Gravity.CENTER, 0, 0)
                 toast.show()
-            } else if (binding.editTextStartDate.text.isNullOrEmpty()) {
+            } else if (binding.textViewStartDate.text.isNullOrEmpty()) {
                 val toast = Toast.makeText(this, "Por favor insira a data de inicio", Toast.LENGTH_SHORT)
                 toast.setGravity(Gravity.CENTER, 0, 0)
                 toast.show()
-            } else if (binding.editTextEndDate.text.isNullOrEmpty()) {
+            } else if (binding.textViewEndDate.text.isNullOrEmpty()) {
                 val toast = Toast.makeText(this, "Por favor insira a data de fim", Toast.LENGTH_SHORT)
                 toast.setGravity(Gravity.CENTER, 0, 0)
                 toast.show()
-            } else if (binding.editTextStartTime.text.isNullOrEmpty()) {
+            } else if (binding.textViewStartTime.text.isNullOrEmpty()) {
                 val toast = Toast.makeText(this, "Por favor insira a hora de inicio", Toast.LENGTH_SHORT)
                 toast.setGravity(Gravity.CENTER, 0, 0)
                 toast.show()
-            } else if (binding.editTextEndTime.text.isNullOrEmpty()) {
+            } else if (binding.textViewEndTime.text.isNullOrEmpty()) {
                 val toast =
                     Toast.makeText(this, "Por favor insira a hora de fim", Toast.LENGTH_SHORT)
                 toast.setGravity(Gravity.CENTER, 0, 0)
@@ -148,6 +153,41 @@ class AddEventActivity : AppCompatActivity() {
             }
         }
 
+        val startTimeSetListener = TimePickerDialog.OnTimeSetListener { view, hour, minute ->
+            calendar.set(Calendar.HOUR_OF_DAY, hour)
+            calendar.set(Calendar.MINUTE, minute)
+            binding.textViewStartTime.text = SimpleDateFormat("HH:mm").format(calendar.time)
+        }
+
+        val endTimeSetListener = TimePickerDialog.OnTimeSetListener { view, hour, minute ->
+            calendar.set(Calendar.HOUR_OF_DAY, hour)
+            calendar.set(Calendar.MINUTE, minute)
+
+            binding.textViewEndTime.text = SimpleDateFormat("HH:mm").format(calendar.time)
+        }
+
+        binding.textViewStartTime.setOnClickListener {
+            TimePickerDialog(
+                this,
+                startTimeSetListener,
+                // set DatePickerDialog to point to today's date when it loads up
+                calendar.get(Calendar.HOUR_OF_DAY,),
+                calendar.get(Calendar.MINUTE),
+                true
+            ).show()
+        }
+
+
+        binding.textViewEndTime.setOnClickListener {
+            TimePickerDialog(
+                this,
+                endTimeSetListener,
+                // set DatePickerDialog to point to today's date when it loads up
+                calendar.get(Calendar.HOUR_OF_DAY,),
+                calendar.get(Calendar.MINUTE),
+                true
+            ).show()
+        }
         // create an OnDateSetListener
         val startDateSetListener =
             DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
@@ -158,7 +198,7 @@ class AddEventActivity : AppCompatActivity() {
 
                 val dateFormattedString = DateFormaterCalendarIngToCalendarPt(calendar.time.toString())
                 //val chosenDate = LocalDate.parse(dateFormattedString)
-                binding.editTextStartDate.setText(dateFormattedString)
+                binding.textViewStartDate.text = dateFormattedString
 
             }
 
@@ -171,11 +211,11 @@ class AddEventActivity : AppCompatActivity() {
 
                 val dateFormattedString = DateFormaterCalendarIngToCalendarPt(calendar.time.toString())
                 //val chosenDate = LocalDate.parse(dateFormattedString)
-                binding.editTextEndDate.setText(dateFormattedString)
+                binding.textViewEndDate.text = dateFormattedString
             }
 
         // when you click on the button, show DatePickerDialog that is set with OnDateSetListener
-        binding.editTextStartDate.setOnClickListener {
+        binding.textViewStartDate.setOnClickListener {
             DatePickerDialog(
                 this,
                 R.style.MyDatePickerDialogTheme,
@@ -187,7 +227,7 @@ class AddEventActivity : AppCompatActivity() {
             ).show()
         }
 
-        binding.editTextEndDate.setOnClickListener {
+        binding.textViewEndDate.setOnClickListener {
             DatePickerDialog(
                 this,
                 R.style.MyDatePickerDialogTheme,
@@ -202,7 +242,7 @@ class AddEventActivity : AppCompatActivity() {
 
     @SuppressLint("SimpleDateFormat")
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun saveEventToGroup(title: String, description: String, chatId : String, chatName : String, sendDate : String, senderId : String, startDate: Timestamp, endDate : Timestamp) {
+    private fun saveEventToGroup(title: String, description: String, chatId : String, chatName : String, sendDate : Timestamp, senderId : String, startDate: Timestamp, endDate : Timestamp) {
 
 
         val eventChat =
@@ -254,7 +294,7 @@ class AddEventActivity : AppCompatActivity() {
 
     @SuppressLint("SimpleDateFormat")
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun saveEventToUser(title: String, description: String, sendDate : String, startDate: Timestamp, endDate : Timestamp) {
+    private fun saveEventToUser(title: String, description: String, sendDate : Timestamp, startDate: Timestamp, endDate : Timestamp) {
 
         val eventUser =
             dbFirebase.collection("users").

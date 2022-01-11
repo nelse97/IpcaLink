@@ -403,7 +403,7 @@ class CalendarFragment : Fragment() {
     private fun insertingChats() {
 
 
-        dbFirebase.collection("users").document("EJ1NUwpOoziRyiWWzNej").collection("chats").addSnapshotListener { value, error ->
+        dbFirebase.collection("users").document(userUID!!).collection("chats").addSnapshotListener { value, error ->
 
             if (error != null) {
                 Log.w("ShowNotificationsFragment", "Listen failed.", error)
@@ -586,7 +586,7 @@ class CalendarFragment : Fragment() {
 
             holder.v.setOnClickListener {
                 currentChatId = chatsList[position].chatId!!
-                currentChatName = chatsList[position].chatId!!
+                currentChatName = chatsList[position].chatName!!
                 searchingEventsFromAChat()
             }
 

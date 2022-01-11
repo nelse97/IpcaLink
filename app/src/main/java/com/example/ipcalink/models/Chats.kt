@@ -1,5 +1,6 @@
 package com.example.ipcalink.models
 
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.QueryDocumentSnapshot
 
 class Chats {
@@ -12,7 +13,7 @@ class Chats {
     var photoUrl : String? = null
     var lastMessage : String? = null
     var lastMessageSenderId : String? = null
-    var lastMessageTimestamp : String? = null
+    var lastMessageTimestamp : Timestamp? = null
 
 
     constructor(
@@ -24,7 +25,7 @@ class Chats {
         photoUrl: String?,
         lastMessage: String?,
         lastMessageSenderId: String?,
-        lastMessageTimestamp: String?
+        lastMessageTimestamp: Timestamp?
     ) {
         this.chatId = chatId
         this.chatName = chatName
@@ -65,7 +66,7 @@ class Chats {
                 hashMap["photoUrl"] as String,
                 hashMap["lastMessage"] as String?,
                 hashMap["lastMessageSenderId"] as String?,
-                hashMap["lastMessageTimestamp"] as String?
+                hashMap["lastMessageTimestamp"] as Timestamp?
             )
         }
     }
