@@ -28,7 +28,7 @@ import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    /*private lateinit var binding: ActivityMainBinding
     private val messagesFragment = MessagesFragment()
     private val calendarFragment = CalendarFragment()
     private val reminderFragment = ReminderFragment()
@@ -198,5 +198,5 @@ class MainActivity : AppCompatActivity() {
         finish()
     }
 
-
+*/
 }
