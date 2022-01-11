@@ -1,5 +1,6 @@
 package com.example.ipcalink.fragments
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -200,5 +201,16 @@ class PrivateMessagesFragment : Fragment() {
     private fun noChatsHideNotice() {
         binding.rvPrivateChats.visibility = View.VISIBLE
         binding.tvNoChats.visibility = View.INVISIBLE
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    fun getDate(milliSeconds: Long, dateFormat: String?): String {
+        // Create a DateFormatter object for displaying date in specified format.
+        val formatter = SimpleDateFormat(dateFormat)
+
+        // Create a calendar object that will convert the date and time value in milliseconds to date.
+        val calendar: Calendar = Calendar.getInstance()
+        calendar.timeInMillis = milliSeconds
+        return formatter.format(calendar.time)
     }
 }
