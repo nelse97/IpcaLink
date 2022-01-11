@@ -205,6 +205,8 @@ class CalendarFragment : Fragment() {
                 binding.recyclerViewGroupChats.visibility = View.VISIBLE
                 insertingChats()
             } else {
+                currentChatId = null
+                currentChatName = null
                 chatsList.clear()
                 binding.recyclerViewGroupChats.visibility = View.GONE
                 searchingEvents()
