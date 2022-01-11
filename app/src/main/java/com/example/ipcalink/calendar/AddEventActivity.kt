@@ -17,7 +17,6 @@ import com.example.ipcalink.R
 import com.example.ipcalink.databinding.ActivityAddEventBinding
 import com.example.ipcalink.encryptedSharedPreferences.ESP
 import com.example.ipcalink.models.Events
-import com.example.ipcalink.notifications.PushNotificationFragment
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
@@ -257,9 +256,9 @@ class AddEventActivity : AppCompatActivity() {
 
         eventChat.set(event).addOnCompleteListener {
             if (!it.isSuccessful) {
-                Log.d(PushNotificationFragment.TAG, "Error adding event to chat: $eventChat")
+                Log.d("", "Error adding event to chat: $eventChat")
             } else {
-                Log.d(PushNotificationFragment.TAG, "Event added to chat: $eventChat")
+                Log.d("", "Event added to chat: $eventChat")
             }
         }
 
@@ -272,9 +271,9 @@ class AddEventActivity : AppCompatActivity() {
 
         eventUser.set(event).addOnCompleteListener {
             if (!it.isSuccessful) {
-                Log.d(PushNotificationFragment.TAG, "Error adding event to user: $eventUser")
+                Log.d("", "Error adding event to user: $eventUser")
             } else {
-                Log.d(PushNotificationFragment.TAG, "Event added to user: $eventUser")
+                Log.d("", "Event added to user: $eventUser")
             }
         }
 
@@ -306,9 +305,9 @@ class AddEventActivity : AppCompatActivity() {
 
         eventUser.set(event).addOnCompleteListener {
             if (!it.isSuccessful) {
-                Log.d(PushNotificationFragment.TAG, "Error adding event to user: $eventUser")
+                Log.d("", "Error adding event to user: $eventUser")
             } else {
-                Log.d(PushNotificationFragment.TAG, "Event added to user: $eventUser")
+                Log.d("", "Event added to user: $eventUser")
             }
         }
 
