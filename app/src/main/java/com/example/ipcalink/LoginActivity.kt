@@ -35,7 +35,7 @@ class LoginActivity : AppCompatActivity() {
     public override fun onStart() {
         super.onStart()
 
-        val buttonLog = binding.Login
+        val buttonLog = binding.buttonLogin
 
         // Initialize Firebase Auth
         auth = Firebase.auth
@@ -43,8 +43,8 @@ class LoginActivity : AppCompatActivity() {
 
         buttonLog.setOnClickListener {
 
-            val email = binding.Email.text.toString()
-            val password = binding.Password.text.toString()
+            val email = binding.editTextEmail.text.toString()
+            val password = binding.editTextTextPassword.text.toString()
 
             login(email, password)
         }

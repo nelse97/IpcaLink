@@ -28,15 +28,15 @@ class RegisterActivity : AppCompatActivity() {
     public override fun onStart() {
         super.onStart()
 
-        val buttonReg = binding.Register
+        val buttonReg = binding.buttonRegister
 
         // Initialize Firebase Auth
         auth = Firebase.auth
 
         buttonReg.setOnClickListener {
 
-            val email = binding.Email.text.toString()
-            val password = binding.Password.text.toString()
+            val email = binding.editTextEmail.text.toString()
+            val password = binding.editTextTextPassword.text.toString()
 
             if(password.isEmpty()) {
                 Toast.makeText(this@RegisterActivity, "Empty Credentials", Toast.LENGTH_SHORT).show()
