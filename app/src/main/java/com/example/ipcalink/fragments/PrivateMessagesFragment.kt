@@ -156,7 +156,9 @@ class PrivateMessagesFragment : Fragment() {
             holder.chatTitle.text = userChat.chatName
             holder.chatLastMessage.text = userChat.lastMessage
 
-            holder.chatRowTime.text = getDateTime(userChat.lastMessageTimestamp.toString().toLong())
+            val date = getDate(userChat.lastMessageTimestamp!!.seconds * 1000, "mm:ss")
+
+            holder.chatRowTime.text = date
             holder.itemView.setOnClickListener {
                 clickListener(userChats[position])
             }
