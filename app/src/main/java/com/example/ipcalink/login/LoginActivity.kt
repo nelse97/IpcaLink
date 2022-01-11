@@ -24,6 +24,11 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val sp = getSharedPreferences("firstlogin", Activity.MODE_PRIVATE)
+        val editor = sp.edit()
+        editor.putBoolean("firstlogin", true)
+        editor.apply()
+
         //remove top bar
         supportActionBar?.hide()
 
