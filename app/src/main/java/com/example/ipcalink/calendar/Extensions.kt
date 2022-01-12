@@ -17,6 +17,9 @@ import java.time.temporal.WeekFields
 import java.util.*
 
 object Extensions {
+
+    val myLocale = Locale("pt", "PT")
+
     fun View.makeVisible() {
         visibility = View.VISIBLE
     }

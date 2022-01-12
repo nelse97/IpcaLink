@@ -2,6 +2,7 @@ package com.example.ipcalink.fragments
 
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -11,6 +12,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -48,6 +50,7 @@ import com.kizitonwose.calendarview.utils.yearMonth
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.YearMonth
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.regex.Pattern
@@ -214,30 +217,32 @@ AlertDialog.Builder(requireContext())
 
         val daysOfWeek = Extensions.daysOfWeekFromLocale()
 
-        val currentMonth = YearMonth.now()
+        val currentMonth = YearMonth.now(ZoneId.systemDefault())
         val startMonth = currentMonth.minusMonths(60)
         val endMonth = currentMonth.plusMonths(60)
 
 
         // Setup custom day size to fit two months on the screen.
-        val dm = DisplayMetrics()
-        //val wm = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        /*val dm = DisplayMetrics()
+        val wm = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        wm.defaultDisplay.getMetrics(dm)*/
 
         binding.calendar.apply {
 
-            //daySize = Size(140, 95)
+            daySize = Size(140, 100)
 
             // We want the immediately following/previous month to be
             // partially visible so we multiply the total width by 0.73
-            val monthWidth = (dm.widthPixels * 0.73).toInt()
+            /*val monthWidth = (dm.widthPixels * 1).toInt()
             val dayWidth = monthWidth / 7
-            val dayHeight = (dayWidth * 1.73).toInt() // We don't want a square calendar.
-            daySize = Size(dayWidth, dayHeight)
+            val dayHeight = (dayWidth * 1.25).toInt() // We don't want a square calendar.
 
-            // Add margins around our card view.
-            val horizontalMargin = Extensions.dpToPx(20, requireContext())
-            val verticalMargin = Extensions.dpToPx(0, requireContext())
-            setMonthMargins(start = horizontalMargin, end = horizontalMargin, top = verticalMargin, bottom = verticalMargin)
+            println("dayWidth")
+            println(dayWidth)
+            println("dayHeight")
+            println(dayHeight)
+            daySize = Size(dayWidth, dayHeight)*/
+
 
             setup(startMonth, endMonth, daysOfWeek.first())
             scrollToMonth(currentMonth)
@@ -319,24 +324,8 @@ AlertDialog.Builder(requireContext())
 
         binding.calendar.monthScrollListener = {
 
-            binding.calendar.apply {
-
-                //daySize = Size(140, 95)
-
-                // We want the immediately following/previous month to be
-                // partially visible so we multiply the total width by 0.73
-                val monthWidth = (dm.widthPixels * 0.73).toInt()
-                val dayWidth = monthWidth / 7
-                val dayHeight = (dayWidth * 1.73).toInt() // We don't want a square calendar.
-                daySize = Size(dayWidth, dayHeight)
-
-                // Add margins around our card view.
-                val horizontalMargin = Extensions.dpToPx(20, requireContext())
-                val verticalMargin = Extensions.dpToPx(0, requireContext())
-                setMonthMargins(start = horizontalMargin, end = horizontalMargin, top = verticalMargin, bottom = verticalMargin)
-            }
-
             if (binding.calendar.maxRowCount == 6) {
+
 
                 binding.textViewYear.text = it.yearMonth.year.toString()
                 binding.textViewMonth.text = monthTitleFormatter.format(it.yearMonth)
