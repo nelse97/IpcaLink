@@ -202,6 +202,8 @@ class CalendarFragment : Fragment() {
             imageHamburgerControl++
 
             if(imageHamburgerControl %2 == 0) {
+                currentChatId = null
+                currentChatName = null
                 binding.recyclerViewGroupChats.visibility = View.VISIBLE
                 insertingChats()
             } else {
@@ -384,7 +386,7 @@ class CalendarFragment : Fragment() {
             animator.start()
         }
 
-        binding.addButton.setOnClickListener {
+        /*binding.addButton.setOnClickListener {
 
             //val dayOfWeek = selectedDate!!.dayOfWeek
             val date = selectedDate
@@ -396,7 +398,7 @@ class CalendarFragment : Fragment() {
             intent.putExtra("chatName", currentChatName)
 
             startActivity(intent)
-        }
+        }*/
     }
 
     @SuppressLint("NotifyDataSetChanged")

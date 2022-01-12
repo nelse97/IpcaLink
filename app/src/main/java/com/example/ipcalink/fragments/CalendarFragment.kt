@@ -319,6 +319,23 @@ AlertDialog.Builder(requireContext())
 
         binding.calendar.monthScrollListener = {
 
+            binding.calendar.apply {
+
+                //daySize = Size(140, 95)
+
+                // We want the immediately following/previous month to be
+                // partially visible so we multiply the total width by 0.73
+                val monthWidth = (dm.widthPixels * 0.73).toInt()
+                val dayWidth = monthWidth / 7
+                val dayHeight = (dayWidth * 1.73).toInt() // We don't want a square calendar.
+                daySize = Size(dayWidth, dayHeight)
+
+                // Add margins around our card view.
+                val horizontalMargin = Extensions.dpToPx(20, requireContext())
+                val verticalMargin = Extensions.dpToPx(0, requireContext())
+                setMonthMargins(start = horizontalMargin, end = horizontalMargin, top = verticalMargin, bottom = verticalMargin)
+            }
+
             if (binding.calendar.maxRowCount == 6) {
 
                 binding.textViewYear.text = it.yearMonth.year.toString()
@@ -431,7 +448,7 @@ AlertDialog.Builder(requireContext())
             animator.start()
         }
 
-        binding.addButton.setOnClickListener {
+        /*binding.addButton.setOnClickListener {
 
             //val dayOfWeek = selectedDate!!.dayOfWeek
             val date = selectedDate
@@ -443,7 +460,7 @@ AlertDialog.Builder(requireContext())
             intent.putExtra("chatName", currentChatName)
 
             startActivity(intent)
-        }
+        }*/
     }
 
     @SuppressLint("NotifyDataSetChanged")
