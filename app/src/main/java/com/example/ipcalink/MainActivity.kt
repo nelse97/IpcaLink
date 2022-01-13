@@ -47,7 +47,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.ibMessages.setOnClickListener {
-
             replaceFragment(messagesFragment)
             disableAllUnderlines()
             replaceAllBottomNavIcons()
@@ -56,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.ibCalendar.setOnClickListener {
-            replaceFragment(calendarFragment, )
+            replaceFragment(calendarFragment)
             disableAllUnderlines()
             replaceAllBottomNavIcons()
             binding.mainBottomNavCalendarUnderline.visibility = View.VISIBLE
@@ -64,7 +63,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.ibReminder.setOnClickListener {
-            replaceFragment(reminderFragment, )
+            replaceFragment(reminderFragment)
             disableAllUnderlines()
             replaceAllBottomNavIcons()
             binding.mainBottomNavReminderUnderline.visibility = View.VISIBLE
@@ -72,7 +71,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.ibProfileImage.setOnClickListener {
-            replaceFragment(profileFragment, )
+            replaceFragment(profileFragment)
             disableAllUnderlines()
             replaceAllBottomNavIcons()
             binding.mainBottomNavProfileUnderline.visibility = View.VISIBLE

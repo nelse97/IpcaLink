@@ -1,7 +1,8 @@
 package com.example.ipcalink.models
-
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.QueryDocumentSnapshot
-import com.google.type.DateTime
+import java.util.*
+import kotlin.collections.HashMap
 
 class UserChat {
 
@@ -9,18 +10,18 @@ class UserChat {
     var chatName : String = ""
     var chatType : String = ""
     var photoUrl : String = ""
-    var lastMessageTimestamp : String = ""
+    lateinit var lastMessageTimestamp : Timestamp
     var lastMessageSenderId : String = ""
     var lastMessage: String = ""
 
     constructor()
 
     constructor(
-        chatId        : String,
-        chatName    : String,
-        chatType    : String,
-        photoUrl       : String,
-        lastMessageTimestamp: String,
+        chatId: String,
+        chatName: String,
+        chatType: String,
+        photoUrl: String,
+        lastMessageTimestamp: Timestamp,
         lastMessageSenderId: String,
         lastMessage: String
     ) {
@@ -52,7 +53,7 @@ class UserChat {
                 hashMap["chatName"] as String,
                 hashMap["chatType"] as String,
                 hashMap["photoUrl"] as String,
-                hashMap["lastMessageTimestamp"] as String,
+                hashMap["lastMessageTimestamp"] as Timestamp,
                 hashMap["lastMessageSenderId"] as String,
                 hashMap["lastMessage"] as String
             )

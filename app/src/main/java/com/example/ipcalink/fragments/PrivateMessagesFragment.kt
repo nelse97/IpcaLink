@@ -18,11 +18,10 @@ import com.example.ipcalink.R
 import com.example.ipcalink.databinding.FragmentPrivateMessagesBinding
 import com.example.ipcalink.models.User
 import com.example.ipcalink.models.UserChat
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
-import com.google.firebase.ktx.Firebase
 import de.hdodenhof.circleimageview.CircleImageView
 import java.lang.Exception
 import java.text.SimpleDateFormat
@@ -109,10 +108,39 @@ class PrivateMessagesFragment : Fragment() {
                 userExistingPrivateChats.clear()
                 userChats.clear()
                 for (chat in chats!!) {
-                    val newChat = chat.toObject<UserChat>()
+
+                    val newChat = UserChat()
+
+                    chat.getString("chatId")?.let {
+                        newChat.chatId = it
+                    }
+                    chat.getString("chatName")?.let {
+                        newChat.chatName = it
+                    }
+                    chat.getString("chatType")?.let {
+                        newChat.chatType = it
+                    }
+                    chat.getString("photoUrl")?.let {
+                        newChat.photoUrl = it
+                    }
+
+
+                    /*chat.getTimestamp("lastMessageTimestamp")?.let {
+                        newChat.lastMessageTimestamp = it
+                    }*/
+
+                    newChat.lastMessageTimestamp = Timestamp.now()
+
+                    chat.getString("lastMessageSenderId")?.let {
+                        newChat.lastMessageSenderId = it
+                    }
+                    chat.getString("lastMessage")?.let {
+                        newChat.lastMessage = it
+                    }
+
+                    //val newChat = chat.toObject<UserChat>()
                     userChats.add(newChat)
                 }
-                Log.d("PrivateMessages", userChats[0].photoUrl)
                 if(userChats.size == 0) {
                     noChatsShowNotice()
                 } else {
@@ -154,7 +182,7 @@ class PrivateMessagesFragment : Fragment() {
             holder.chatTitle.text = userChat.chatName
             holder.chatLastMessage.text = userChat.lastMessage
 
-            holder.chatRowTime.text = getDateTime(userChat.lastMessageTimestamp.toLong())
+            holder.chatRowTime.text = userChat.lastMessageTimestamp.toString()
             holder.itemView.setOnClickListener {
                 clickListener(userChats[position])
             }
