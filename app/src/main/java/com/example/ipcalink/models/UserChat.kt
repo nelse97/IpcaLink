@@ -6,7 +6,7 @@ import com.google.type.DateTime
 
 class UserChat {
 
-    var chatId   : String = ""
+    /*var chatId   : String = ""
     var chatName : String = ""
     var chatType : String = ""
     var photoUrl : String = ""
@@ -54,6 +54,6 @@ class UserChat {
             )
             return userChat
         }
-    }
+    }*/
 
 }

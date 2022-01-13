@@ -19,6 +19,7 @@ import com.example.ipcalink.R
 import com.example.ipcalink.databinding.FragmentPrivateMessagesBinding
 import com.example.ipcalink.models.User
 import com.example.ipcalink.models.UserChat
+import com.example.ipcalink.models.UsersChats
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -33,7 +34,7 @@ import kotlin.collections.ArrayList
 class PrivateMessagesFragment : Fragment() {
 
     private lateinit var binding: FragmentPrivateMessagesBinding
-    var userChats = mutableListOf<UserChat>()
+    var userChats = mutableListOf<UsersChats>()
     private lateinit var db: FirebaseFirestore
     private lateinit var chatsAdapter: PrivateChatsAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
@@ -79,7 +80,7 @@ class PrivateMessagesFragment : Fragment() {
     private fun verifyCurrentPrivateChats() {
         for (userChat in userChats) {
             if (userChat.chatType == "private") {
-                db.collection("chats").document(userChat.chatId).collection("users")
+                db.collection("chats").document(userChat.chatId!!).collection("users")
                     .get()
                     .addOnSuccessListener { documentSnapshot ->
                         for (document in documentSnapshot) {
@@ -110,7 +111,7 @@ class PrivateMessagesFragment : Fragment() {
                 userExistingPrivateChats.clear()
                 userChats.clear()
                 for (chat in chats!!) {
-                    val newChat = chat.toObject<UserChat>()
+                    val newChat = chat.toObject<UsersChats>()
                     userChats.add(newChat)
                 }
                 Log.d("PrivateMessages", userChats.size.toString())
@@ -131,7 +132,7 @@ class PrivateMessagesFragment : Fragment() {
         db.clearPersistence()
     }
 
-    inner class PrivateChatsAdapter (private val clickListener: (UserChat) -> Unit) :
+    inner class PrivateChatsAdapter (private val clickListener: (UsersChats) -> Unit) :
         RecyclerView.Adapter<PrivateChatsAdapter.MyViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -143,7 +144,7 @@ class PrivateMessagesFragment : Fragment() {
             val userChat = userChats[position]
 
             //set image chat row
-            if (userChat.photoUrl.isNotEmpty()) {
+            if (userChat.photoUrl!!.isNotEmpty()) {
                 try {
                     Glide.with(activity!!).load(userChat.photoUrl).into(holder.chatImage)
                 } catch (e: Exception) {

@@ -22,12 +22,12 @@
         android:id="@+id/editTextTitle"
         android:layout_width="285dp"
         android:layout_height="40dp"
+        android:layout_marginStart="44dp"
         android:layout_marginTop="10dp"
-        android:textSize="14sp"
         android:fontFamily="@font/montserrat_regular"
-        android:textColor="#C4C4C4"
         android:hint="Adicionar Título"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="#C4C4C4"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -48,12 +48,12 @@
         android:id="@+id/editTextDecription"
         android:layout_width="285dp"
         android:layout_height="40dp"
+        android:layout_marginStart="44dp"
         android:layout_marginTop="10dp"
-        android:textSize="14sp"
         android:fontFamily="@font/montserrat_regular"
-        android:textColor="#C4C4C4"
         android:hint="Descrição"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="#C4C4C4"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
@@ -99,15 +99,15 @@
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_gravity="end|bottom"
         android:layout_margin="20dp"
-        android:layout_marginBottom="25dp"
+        android:layout_marginTop="10dp"
         app:backgroundTint="@color/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.045"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView7"
         app:srcCompat="@drawable/ic_baseline_add_24"
         app:tint="@color/white" />
 
@@ -175,6 +175,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewStartDate" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Grupos"
+        android:textSize="18sp"
+        android:textColor="#004E38"
+        android:fontFamily="@font/montserrat_medium"
+        app:layout_constraintTop_toBottomOf="@+id/textViewEndDate"
+        tools:layout_editor_absoluteX="29dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -33,6 +33,7 @@ import com.example.ipcalink.databinding.CalendarDayBinding
 import com.example.ipcalink.databinding.FragmentCalendarBinding
 import com.example.ipcalink.models.Chats
 import com.example.ipcalink.models.Events
+import com.example.ipcalink.models.UsersChats
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
@@ -167,7 +168,7 @@ AlertDialog.Builder(requireContext())
     private val eventsMap = mutableMapOf<LocalDate, List<Events>>()
     private val eventsList = mutableListOf<Events>()
 
-    private var chatsList : ArrayList<Chats> = ArrayList()
+    private var chatsList : ArrayList<UsersChats> = ArrayList()
 
     private var currentChatId : String? = null
     private var currentChatName : String? = null
@@ -220,6 +221,8 @@ AlertDialog.Builder(requireContext())
         val currentMonth = YearMonth.now(ZoneId.systemDefault())
         val startMonth = currentMonth.minusMonths(60)
         val endMonth = currentMonth.plusMonths(60)
+        println("userUID")
+        println(userUID)
 
 
         // Setup custom day size to fit two months on the screen.
@@ -248,7 +251,7 @@ AlertDialog.Builder(requireContext())
             scrollToMonth(currentMonth)
         }
 
-        searchingEvents()
+        searchingEventsFromUser()
 
         binding.imageHamburger.setOnClickListener {
             imageHamburgerControl++
@@ -259,7 +262,7 @@ AlertDialog.Builder(requireContext())
             } else {
                 chatsList.clear()
                 binding.recyclerViewGroupChats.visibility = View.GONE
-                searchingEvents()
+                searchingEventsFromUser()
             }
         }
 
@@ -437,7 +440,7 @@ AlertDialog.Builder(requireContext())
             animator.start()
         }
 
-        /*binding.addButton.setOnClickListener {
+        binding.floatingActionButton.setOnClickListener {
 
             //val dayOfWeek = selectedDate!!.dayOfWeek
             val date = selectedDate
@@ -445,11 +448,11 @@ AlertDialog.Builder(requireContext())
             val intent = Intent(context, AddEventActivity::class.java)
             //intent.putExtra("dayOfWeek", dayOfWeek.toString())
             intent.putExtra("date", date.toString())
-            intent.putExtra("chatId", currentChatId)
-            intent.putExtra("chatName", currentChatName)
+            //intent.putExtra("chatId", currentChatId)
+            //intent.putExtra("chatName", currentChatName)
 
             startActivity(intent)
-        }*/
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -467,7 +470,7 @@ AlertDialog.Builder(requireContext())
 
             for (query in value!!) {
 
-                val chat = Chats.fromHash(query)
+                val chat = UsersChats.fromHash(query)
 
                 /*if(firstChat) {
                     currentChatId = chat.chatId!!
@@ -477,9 +480,7 @@ AlertDialog.Builder(requireContext())
                 firstChat = false*/
 
                 chatsList.add(
-                    Chats(chat.chatId, chat.chatName, chat.chatType, chat.notificationName,
-                    chat.notificationKey, chat.photoUrl, chat.lastMessage,
-                    chat.lastMessageSenderId, chat.lastMessageTimestamp)
+                    UsersChats(chat.chatId, chat.chatName, chat.chatType, chat.photoUrl, chat.lastMessage, chat.lastMessageSenderId, chat.lastMessageTimestamp)
                 )
 
             }
@@ -519,7 +520,7 @@ AlertDialog.Builder(requireContext())
 
 
             localStartDate?.let {
-                eventsMap[it] = eventsMap[it].orEmpty().plus(Events(event.id, event.chatId, event.chatName, event.title, event.description, event.sendDate, event.senderId, event.startDate, event.endDate))
+                eventsMap[it] = eventsMap[it].orEmpty().plus(Events(event.id, event.title, event.description, event.sendDate, event.senderId, event.startDate, event.endDate))
                 updateAdapterForDate(it)
             }
         }
@@ -553,20 +554,14 @@ AlertDialog.Builder(requireContext())
     @SuppressLint("NotifyDataSetChanged")
     private fun updateAdapterForDate(date: LocalDate) {
 
-        //adapter!!.notifyItemRemoved(events.size - 1)
-        //adapter!!.notifyItemRangeChanged(events.size - 1, events.size - 1)
         eventsList.clear()
 
 
         eventsList.addAll(this@CalendarFragment.eventsMap[date].orEmpty())
-        //adapter!!.notifyItemInserted(events.size - 1)
 
-        //eventsAdapter.apply {
-        //}
-
-        val month = monthTitleFormatter.format(date.month)
-        binding.textViewMonth.text = month
-        binding.textViewYear.text = date.year.toString()
+        //val month = monthTitleFormatter.format(date.month)
+        //binding.textViewMonth.text = month
+        //binding.textViewYear.text = date.year.toString()
 
 
         eventsAdapter?.notifyDataSetChanged()
@@ -617,7 +612,7 @@ AlertDialog.Builder(requireContext())
                 val textViewDuration = findViewById<TextView>(R.id.textViewDuration)
                 textViewDuration.text = "$startTime-$endTime"
                 val textViewChatName = findViewById<TextView>(R.id.textViewChatName)
-                textViewChatName.text = eventsList[position].chatName
+                textViewChatName.text = currentChatName
             }
         }
 
@@ -680,7 +675,7 @@ AlertDialog.Builder(requireContext())
         return strArray2[1].toString()
     }
 
-    private fun searchingEvents() {
+    private fun searchingEventsFromUser() {
 
         registration = dbFirebase.collection("users").document(userUID!!).collection("events").addSnapshotListener { value, error ->
 
@@ -697,7 +692,7 @@ AlertDialog.Builder(requireContext())
 
     private fun searchingEventsFromAChat() {
 
-        dbFirebase.collection("users").document(userUID!!).collection("events").whereEqualTo("chatId", currentChatId).addSnapshotListener { value, error ->
+        dbFirebase.collection("chats").document(currentChatId!!).collection("events").addSnapshotListener { value, error ->
 
             if (error != null) {
                 Log.w("ShowNotificationsFragment", "Listen failed.", error)

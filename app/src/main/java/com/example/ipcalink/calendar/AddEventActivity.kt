@@ -66,8 +66,6 @@ class AddEventActivity : AppCompatActivity() {
         createConfigurationContext(config)
 
         val dateString = intent.getStringExtra("date")
-        val chatId = intent.getStringExtra("chatId")
-        val chatName = intent.getStringExtra("chatName")
 
         val date = LocalDate.parse(dateString)
 
@@ -115,10 +113,7 @@ class AddEventActivity : AppCompatActivity() {
                 val timeStampSend = Timestamp(sendDate)
 
 
-                if(chatId != null && chatName != null)
-                    saveEventToGroup(title, description, chatId, chatName, timeStampSend, userUID!!, timeStampStart, timeStampEnd)
-                else
-                    saveEventToUser(title, description, timeStampSend, timeStampStart, timeStampEnd)
+                saveEventToUser(title, description, timeStampSend, timeStampStart, timeStampEnd)
 
             } else if (binding.editTextTitle.text.isNullOrEmpty()) {
                 val toast = Toast.makeText(this, "Por favor insira um título", Toast.LENGTH_SHORT)
@@ -241,7 +236,7 @@ class AddEventActivity : AppCompatActivity() {
 
     @SuppressLint("SimpleDateFormat")
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun saveEventToGroup(title: String, description: String, chatId : String, chatName : String, sendDate : Timestamp, senderId : String, startDate: Timestamp, endDate : Timestamp) {
+    private fun saveEventToGroup(title: String, description: String, chatId : String, sendDate : Timestamp, senderId : String, startDate: Timestamp, endDate : Timestamp) {
 
 
         val eventChat =
@@ -251,7 +246,7 @@ class AddEventActivity : AppCompatActivity() {
             document()
 
 
-        val event = Events(eventChat.id, chatId, chatName, title, description, sendDate, senderId, startDate, endDate).toHash()
+        val event = Events(eventChat.id, title, description, sendDate, senderId, startDate, endDate).toHash()
 
 
         eventChat.set(event).addOnCompleteListener {
@@ -301,7 +296,7 @@ class AddEventActivity : AppCompatActivity() {
             collection("events").
             document()
 
-        val event = Events(eventUser.id, null, null, title, description, sendDate, null, startDate, endDate).toHash()
+        val event = Events(eventUser.id, title, description, sendDate, userUID, startDate, endDate).toHash()
 
         eventUser.set(event).addOnCompleteListener {
             if (!it.isSuccessful) {

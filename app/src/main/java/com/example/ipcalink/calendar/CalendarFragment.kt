@@ -33,6 +33,7 @@ import com.example.ipcalink.databinding.CalendarDayBinding
 import com.example.ipcalink.databinding.FragmentCalendarBinding
 import com.example.ipcalink.models.Chats
 import com.example.ipcalink.models.Events
+import com.example.ipcalink.models.UsersChats
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -117,7 +118,7 @@ class CalendarFragment : Fragment() {
     private val eventsMap = mutableMapOf<LocalDate, List<Events>>()
     private val eventsList = mutableListOf<Events>()
 
-    private var chatsList : ArrayList<Chats> = ArrayList()
+    private var chatsList : ArrayList<UsersChats> = ArrayList()
 
     private var currentChatId : String? = null
     private var currentChatName : String? = null
@@ -416,7 +417,7 @@ class CalendarFragment : Fragment() {
 
             for (query in value!!) {
 
-                val chat = Chats.fromHash(query)
+                val usersChats = UsersChats.fromHash(query)
 
                 /*if(firstChat) {
                     currentChatId = chat.chatId!!
@@ -425,9 +426,8 @@ class CalendarFragment : Fragment() {
 
                 firstChat = false*/
 
-                chatsList.add(Chats(chat.chatId, chat.chatName, chat.chatType, chat.notificationName,
-                                    chat.notificationKey, chat.photoUrl, chat.lastMessage,
-                                    chat.lastMessageSenderId, chat.lastMessageTimestamp))
+                chatsList.add(UsersChats(usersChats.chatId, usersChats.chatName, usersChats.chatType, usersChats.photoUrl, usersChats.lastMessage,
+                    usersChats.lastMessageSenderId, usersChats.lastMessageTimestamp))
 
             }
             chatsAdapter?.notifyDataSetChanged()
@@ -466,7 +466,7 @@ class CalendarFragment : Fragment() {
 
 
             localStartDate?.let {
-                eventsMap[it] = eventsMap[it].orEmpty().plus(Events(event.id, event.chatId, event.chatName, event.title, event.description, event.sendDate, event.senderId, event.startDate, event.endDate))
+                eventsMap[it] = eventsMap[it].orEmpty().plus(Events(event.id, event.title, event.description, event.sendDate, event.senderId, event.startDate, event.endDate))
                 updateAdapterForDate(it)
             }
         }
@@ -564,7 +564,7 @@ class CalendarFragment : Fragment() {
                 val textViewDuration = findViewById<TextView>(R.id.textViewDuration)
                 textViewDuration.text = "$startTime-$endTime"
                 val textViewChatName = findViewById<TextView>(R.id.textViewChatName)
-                textViewChatName.text = eventsList[position].chatName
+                textViewChatName.text = currentChatName
             }
         }
 
