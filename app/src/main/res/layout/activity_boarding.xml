@@ -13,14 +13,15 @@
         android:layout_height="wrap_content"
         android:textColor="?attr/colorOnSecondary"
         android:textAllCaps="false"
-        android:textSize="10dp"
+        android:textSize="10sp"
         android:text="Skip"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:drawableTop="@drawable/ic_chevron_right_black_24dp"
-        android:background="@drawable/no_background"/>
+        android:background="@drawable/no_background"
+        tools:ignore="SmallSp" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
