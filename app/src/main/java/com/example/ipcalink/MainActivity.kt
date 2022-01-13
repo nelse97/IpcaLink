@@ -43,6 +43,9 @@ class MainActivity : AppCompatActivity() {
         //load user profile image
         //TO DO
 
+        //remove top bar better
+        supportActionBar?.hide()
+
         //Bottom app bar top left and top right corner radius
         val bottomAppBar = binding.bottomAppBar
         val bottomBarBackground = bottomAppBar.background as MaterialShapeDrawable
