@@ -27,6 +27,11 @@ class LoginActivity : AppCompatActivity() {
         //remove top bar
         supportActionBar?.hide()
 
+        val sp = getSharedPreferences("firstlogin", Activity.MODE_PRIVATE)
+        val editor = sp.edit()
+        editor.putBoolean("firstlogin", true)
+        editor.apply()
+
         //set notification bar to right color
         when (this.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
             Configuration.UI_MODE_NIGHT_YES -> {

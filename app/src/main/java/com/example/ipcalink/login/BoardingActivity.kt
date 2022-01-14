@@ -15,10 +15,13 @@ import com.example.ipcalink.MainActivity
 import com.example.ipcalink.R
 import com.example.ipcalink.databinding.ActivityBoardingBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 
 class BoardingActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityBoardingBinding
+
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

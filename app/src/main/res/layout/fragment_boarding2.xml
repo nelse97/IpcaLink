@@ -31,9 +31,11 @@
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="264dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:paddingLeft="80dp"
+        android:paddingRight="80dp"
+        android:layout_marginTop="40dp"
         android:layout_marginBottom="256dp"
         android:textAlignment="center"
         android:text="Descobre o que temos para ti, uma nova maneira de comunicar de uma forma fácil e rápida"
