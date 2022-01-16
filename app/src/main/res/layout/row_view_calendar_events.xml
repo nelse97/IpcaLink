@@ -2,14 +2,17 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="15dp"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
+    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="345dp"
         android:layout_height="64dp"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="10dp"
         android:layout_marginEnd="15dp"
         android:background="@drawable/row_view_calendar_color"
         app:layout_constraintEnd_toEndOf="parent"
@@ -18,16 +21,14 @@
 
         <TextView
             android:id="@+id/textViewTitle"
-            android:layout_width="0dp"
+            android:layout_width="200dp"
             android:layout_height="20dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="13dp"
-            android:layout_marginEnd="172dp"
             android:fontFamily="@font/montserrat_medium"
             android:text="Entrega Proposta 1"
             android:textColor="@color/white"
             android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -64,7 +65,6 @@
             android:id="@+id/textViewChatName"
             android:layout_width="100dp"
             android:layout_height="30dp"
-            android:layout_marginStart="76dp"
             android:layout_marginTop="25dp"
             android:layout_marginEnd="22dp"
             android:layout_marginBottom="25dp"
@@ -74,7 +74,6 @@
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textViewTitle"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

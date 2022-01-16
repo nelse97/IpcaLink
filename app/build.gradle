@@ -88,4 +88,8 @@ dependencies {
     //dependencia para arredondamentos de imagens
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
+    implementation 'com.github.Ibotta:Supported-Picker-Dialogs:1.0.0'
+
+    implementation 'it.xabaras.android:recyclerview-swipedecorator:1.2.3'
+
 }

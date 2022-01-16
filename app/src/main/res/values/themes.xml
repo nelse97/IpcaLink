@@ -37,8 +37,27 @@
         <item name="android:windowIsFloating">true</item>
     </style>
 
+
     <style name="DatePickerButtonStyle" parent="Base.Widget.AppCompat.Button.Borderless">
         <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:backgroundTint">@color/white</item>
     </style>
+
+
+    <style name="SheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+        <!--<item name="android:windowCloseOnTouchOutside">false</item>-->
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:colorBackground">     @android:color/transparent</item>aaaaaa
+        <item name="android:backgroundDimEnabled">false</item>
+        <!--<item name="android:backgroundDimAmount">1</item>-->
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="colorControlNormal">@color/transparent</item>
+    </style>
+
+    <style name="NumberPickerText">
+        <item name="android:textSize">36sp</item>
+    </style>
+
 </resources>

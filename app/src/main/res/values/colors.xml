@@ -18,4 +18,5 @@
   <color name="colorSecondary">#FFFFFF</color>
   <color name="gray_155">#9B9B9B</color>
   <color name="background_color">#121212</color>
+  <color name="transparent">#00FFFFFF</color>
 </resources>

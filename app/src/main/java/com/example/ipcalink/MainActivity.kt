@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.ipcalink.databinding.ActivityMainBinding
-import com.example.ipcalink.fragments.CalendarFragment
 import com.example.ipcalink.fragments.MessagesFragment
 import com.example.ipcalink.fragments.ProfileFragment
 import com.example.ipcalink.fragments.ReminderFragment
@@ -24,6 +23,7 @@ import com.google.android.material.shape.MaterialShapeDrawable
 import android.R.id
 import android.graphics.drawable.Drawable
 import com.bumptech.glide.Glide
+import com.example.ipcalink.calendar.CalendarFragment
 import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {

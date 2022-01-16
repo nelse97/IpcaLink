@@ -2,36 +2,30 @@ package com.example.ipcalink.calendar
 
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.doOnEnd
 import androidx.core.animation.doOnStart
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.*
 import com.example.ipcalink.calendar.Extensions.daysOfWeekFromLocale
-import com.example.ipcalink.calendar.Extensions.dpToPx
 import com.example.ipcalink.R
+import com.example.ipcalink.calendar.CalendarHelper.DateFormater
+import com.example.ipcalink.calendar.CalendarHelper.getDate
 import com.example.ipcalink.calendar.Extensions.makeInVisible
 import com.example.ipcalink.calendar.Extensions.makeVisible
 import com.example.ipcalink.calendar.Extensions.setTextColorRes
 import com.example.ipcalink.databinding.CalendarDayBinding
 import com.example.ipcalink.databinding.FragmentCalendarBinding
-import com.example.ipcalink.models.Chats
 import com.example.ipcalink.models.Events
 import com.example.ipcalink.models.UsersChats
 import com.google.firebase.auth.ktx.auth
@@ -44,7 +38,6 @@ import com.kizitonwose.calendarview.ui.DayBinder
 import com.kizitonwose.calendarview.ui.ViewContainer
 import com.kizitonwose.calendarview.utils.next
 import com.kizitonwose.calendarview.utils.yearMonth
-import java.text.SimpleDateFormat
 import java.time.*
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -52,7 +45,6 @@ import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
 import com.kizitonwose.calendarview.model.OutDateStyle
 import com.kizitonwose.calendarview.utils.Size
-import java.util.regex.Pattern
 
 
 class CalendarFragment : Fragment() {
@@ -120,9 +112,6 @@ class CalendarFragment : Fragment() {
 
     private var chatsList : ArrayList<UsersChats> = ArrayList()
 
-    private var currentChatId : String? = null
-    private var currentChatName : String? = null
-
     private val userUID = Firebase.auth.uid
 
     val myLocale = Locale("pt", "PT")
@@ -130,6 +119,7 @@ class CalendarFragment : Fragment() {
 
     private var imageArrowControl = 1
     private var imageHamburgerControl = 1
+
 
     private lateinit var registration : ListenerRegistration
 
@@ -151,18 +141,36 @@ class CalendarFragment : Fragment() {
         (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
 
 
-        layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        /*layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         binding.recyclerViewEvents.layoutManager = layoutManager
         eventsAdapter = EventsAdapter(null)
         binding.recyclerViewEvents.itemAnimator = null
-        binding.recyclerViewEvents.adapter = eventsAdapter
+        binding.recyclerViewEvents.adapter = eventsAdapter*/
+
+        //events recycler view
+        //sets the size of the recycler view to be fixed
+        //binding.recyclerViewEvents.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
+
+        //val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(requireContext())
+
+        //binding.recyclerViewEvents.setHasFixedSize(true)
+        //sets the layout of the RecyclerView to be vertical
 
 
+        calendarSharedPreferences(requireContext()).currentChatId = null
+        calendarSharedPreferences(requireContext()).currentChatName = null
+
+
+        setUpRecyclerView()
+
+
+        //chats recycler view
         layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
         binding.recyclerViewGroupChats.layoutManager = layoutManager
         chatsAdapter = ChatsAdapter()
         binding.recyclerViewGroupChats.itemAnimator = DefaultItemAnimator()
         binding.recyclerViewGroupChats.adapter = chatsAdapter
+
 
         binding.recyclerViewGroupChats.visibility = View.GONE
 
@@ -174,16 +182,16 @@ class CalendarFragment : Fragment() {
 
 
         // Setup custom day size to fit two months on the screen.
-        val dm = DisplayMetrics()
+        //val dm = DisplayMetrics()
         //val wm = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
         binding.calendar.apply {
 
-            //daySize = Size(140, 95)
+            daySize = Size(140, 95)
 
             // We want the immediately following/previous month to be
             // partially visible so we multiply the total width by 0.73
-            val monthWidth = (dm.widthPixels * 0.73).toInt()
+            /*val monthWidth = (dm.widthPixels * 0.73).toInt()
             val dayWidth = monthWidth / 7
             val dayHeight = (dayWidth * 1.73).toInt() // We don't want a square calendar.
             daySize = Size(dayWidth, dayHeight)
@@ -191,7 +199,7 @@ class CalendarFragment : Fragment() {
             // Add margins around our card view.
             val horizontalMargin = dpToPx(20, requireContext())
             val verticalMargin = dpToPx(0, requireContext())
-            setMonthMargins(start = horizontalMargin, end = horizontalMargin, top = verticalMargin, bottom = verticalMargin)
+            setMonthMargins(start = horizontalMargin, end = horizontalMargin, top = verticalMargin, bottom = verticalMargin)*/
 
             setup(startMonth, endMonth, daysOfWeek.first())
             scrollToMonth(currentMonth)
@@ -199,16 +207,18 @@ class CalendarFragment : Fragment() {
 
         searchingEvents()
 
+
         binding.imageHamburger.setOnClickListener {
             imageHamburgerControl++
 
             if(imageHamburgerControl %2 == 0) {
-                currentChatId = null
-                currentChatName = null
+
                 binding.recyclerViewGroupChats.visibility = View.VISIBLE
                 insertingChats()
             } else {
                 chatsList.clear()
+                calendarSharedPreferences(requireContext()).currentChatId = null
+                calendarSharedPreferences(requireContext()).currentChatName = null
                 binding.recyclerViewGroupChats.visibility = View.GONE
                 searchingEvents()
             }
@@ -237,14 +247,15 @@ class CalendarFragment : Fragment() {
             override fun bind(container: DayViewContainer, day: CalendarDay) {
                 container.day = day
 
-                val textView = container.binding.textViewDay
+                val textViewDay  = container.binding.textViewDay
                 val cardView1 = container.binding.cardView1
                 val cardView2 = container.binding.cardView2
+                val textView6 = binding.textView6
 
-                textView.text = day.date.dayOfMonth.toString()
+                textViewDay.text = day.date.dayOfMonth.toString()
 
                 if (day.owner == DayOwner.THIS_MONTH) {
-                    textView.makeVisible()
+                    textViewDay.makeVisible()
                     when (day.date) {
                         /*today -> {
                             textView.setTextColorRes(R.color.white)
@@ -253,21 +264,27 @@ class CalendarFragment : Fragment() {
                             cardView.setBackgroundResource(R.color.white)
                         }*/
                         selectedDate -> {
-                            textView.setTextColorRes(R.color.white)
-                            textView.setBackgroundResource(R.drawable.calendar_day_selected)
+                            textViewDay.setTextColorRes(R.color.white)
+                            textViewDay.setBackgroundResource(R.drawable.calendar_day_selected)
                             cardView1.isVisible = eventsMap[day.date].orEmpty().isNotEmpty()
                             cardView2.setBackgroundResource(R.color.white)
+
+                            if(eventsMap[day.date] != null) {
+                                textView6.visibility = View.GONE
+                            } else {
+                                textView6.visibility = View.VISIBLE
+                            }
                         }
                         else -> {
-                            textView.setTextColorRes(R.color.black)
-                            textView.setBackgroundResource(R.drawable.calendar_day_not_selected)
+                            textViewDay.setTextColorRes(R.color.black)
+                            textViewDay.setBackgroundResource(R.drawable.calendar_day_not_selected)
                             cardView1.isVisible = eventsMap[day.date].orEmpty().isNotEmpty()
                             cardView2.setBackgroundResource(R.color.colorPrimary)
                         }
                     }
                 } else {
-                    textView.setTextColorRes(R.color.gray_155)
-                    textView.setBackgroundResource(R.drawable.calendar_day_not_selected)
+                    textViewDay.setTextColorRes(R.color.gray_155)
+                    textViewDay.setBackgroundResource(R.drawable.calendar_day_not_selected)
                     cardView1.makeInVisible()
                 }
             }
@@ -387,7 +404,7 @@ class CalendarFragment : Fragment() {
             animator.start()
         }
 
-        /*binding.addButton.setOnClickListener {
+        binding.floatingActionButton.setOnClickListener {
 
             //val dayOfWeek = selectedDate!!.dayOfWeek
             val date = selectedDate
@@ -395,11 +412,9 @@ class CalendarFragment : Fragment() {
             val intent = Intent(context, AddEventActivity::class.java)
             //intent.putExtra("dayOfWeek", dayOfWeek.toString())
             intent.putExtra("date", date.toString())
-            intent.putExtra("chatId", currentChatId)
-            intent.putExtra("chatName", currentChatName)
 
             startActivity(intent)
-        }*/
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -479,16 +494,6 @@ class CalendarFragment : Fragment() {
 
     }
 
-    fun DateFormater(date: String): String {
-
-        val inputFormatter =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS",  Locale.ENGLISH)
-        val outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH)
-        val dateToFormat = LocalDate.parse(date, inputFormatter)
-        val formattedDate = outputFormatter.format(dateToFormat)
-
-        return formattedDate
-    }
 
     /*private fun deleteEvent(event: Event) {
         val date = event.calendarDate
@@ -511,16 +516,16 @@ class CalendarFragment : Fragment() {
         //eventsAdapter.apply {
         //}
 
-        val month = monthTitleFormatter.format(date.month)
+        /*val month = monthTitleFormatter.format(date.month)
         binding.textViewMonth.text = month
-        binding.textViewYear.text = date.year.toString()
+        binding.textViewYear.text = date.year.toString()*/
 
 
         eventsAdapter?.notifyDataSetChanged()
     }
 
 
-    inner class EventsAdapter(val onClick : ((Events) -> Unit)?) : RecyclerView.Adapter<EventsAdapter.ViewHolder>() {
+    /*inner class EventsAdapter(val onClick : ((Events) -> Unit)?) : RecyclerView.Adapter<EventsAdapter.ViewHolder>() {
 
         inner class ViewHolder(val v: View) : RecyclerView.ViewHolder(v)
 
@@ -571,7 +576,7 @@ class CalendarFragment : Fragment() {
         override fun getItemCount(): Int {
             return eventsList.size
         }
-    }
+    }*/
 
     inner class ChatsAdapter : RecyclerView.Adapter<ChatsAdapter.ViewHolder>() {
 
@@ -587,8 +592,9 @@ class CalendarFragment : Fragment() {
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
             holder.v.setOnClickListener {
-                currentChatId = chatsList[position].chatId!!
-                currentChatName = chatsList[position].chatName!!
+
+                calendarSharedPreferences(requireContext()).currentChatId = chatsList[position].chatId!!
+                calendarSharedPreferences(requireContext()).currentChatName = chatsList[position].chatName!!
                 searchingEventsFromAChat()
             }
 
@@ -604,28 +610,7 @@ class CalendarFragment : Fragment() {
         }
     }
 
-    fun getHours(dateTime: String): String {
 
-        // Split the date
-        val strArray = Pattern.compile("T").split(dateTime)
-        val strArray2 = Pattern.compile(":").split(strArray[1])
-
-        return strArray2[0].toString()
-    }
-
-
-    /*
-        This function split the date and return only the Minutes in text
-        @date = default date
-     */
-    fun getMinutes(dateTime: String): String {
-
-        // Split the date
-        val strArray = Pattern.compile("T").split(dateTime)
-        val strArray2 = Pattern.compile(":").split(strArray[1])
-
-        return strArray2[1].toString()
-    }
 
     private fun searchingEvents() {
 
@@ -644,33 +629,47 @@ class CalendarFragment : Fragment() {
 
     private fun searchingEventsFromAChat() {
 
-        dbFirebase.collection("users").document(userUID!!).collection("events").whereEqualTo("chatId", currentChatId).addSnapshotListener { value, error ->
+        dbFirebase.collection("chats").document(calendarSharedPreferences(requireContext()).currentChatId!!)
+            .collection("events").addSnapshotListener { value, error ->
 
-            if (error != null) {
-                Log.w("ShowNotificationsFragment", "Listen failed.", error)
-                return@addSnapshotListener
+                if (error != null) {
+                    Log.w("ShowNotificationsFragment", "Listen failed.", error)
+                    return@addSnapshotListener
+                }
+
+                if (value != null) {
+                    saveEvent(value)
+                }
             }
+    }
 
-            if (value != null) {
-                saveEvent(value)
+    private fun setUpRecyclerView() {
+
+        binding.recyclerViewEvents.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
+
+
+        eventsAdapter = RecyclerViewAdapter(eventsList, eventsMap, binding)
+        binding.recyclerViewEvents.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        binding.recyclerViewEvents.adapter = eventsAdapter
+
+        val swipeHandler = object : SwipeToDeleteCallback(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val adapter = binding.recyclerViewEvents.adapter as RecyclerViewAdapter
+                adapter.removeAt(viewHolder.adapterPosition, calendarSharedPreferences(requireContext()).currentChatId, calendarSharedPreferences(requireContext()).currentChatName)
             }
         }
+
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(binding.recyclerViewEvents)
     }
 
-    @SuppressLint("SimpleDateFormat")
-    fun getDate(milliSeconds: Long, dateFormat: String?): String {
-        // Create a DateFormatter object for displaying date in specified format.
-        val formatter = SimpleDateFormat(dateFormat)
-
-        // Create a calendar object that will convert the date and time value in milliseconds to date.
-        val calendar: Calendar = Calendar.getInstance()
-        calendar.timeInMillis = milliSeconds
-        return formatter.format(calendar.time)
-    }
 
     override fun onDestroy() {
         super.onDestroy()
 
         registration.remove()
     }
+
+
 }
+
