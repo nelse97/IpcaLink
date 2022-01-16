@@ -404,7 +404,7 @@ class CalendarFragment : Fragment() {
             animator.start()
         }
 
-        binding.floatingActionButton.setOnClickListener {
+        binding.fabAdd.setOnClickListener {
 
             //val dayOfWeek = selectedDate!!.dayOfWeek
             val date = selectedDate

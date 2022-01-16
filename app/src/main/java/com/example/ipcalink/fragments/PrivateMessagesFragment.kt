@@ -3,6 +3,7 @@ package com.example.ipcalink.fragments
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.os.LocaleList
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -71,7 +72,7 @@ class PrivateMessagesFragment : Fragment() {
         }
 
         //bind adapter to private chats recycler view
-        binding.rvPrivateChats.adapter = chatsAdapter
+        //binding.rvPrivateChats.adapter = chatsAdapter
 
         // return the fragment layout
         return binding.root
@@ -118,10 +119,9 @@ class PrivateMessagesFragment : Fragment() {
                 if(userChats.size == 0) {
                     noChatsShowNotice()
                 } else {
-                    noChatsHideNotice()
                     //get a list of the users current private chats
-                    verifyCurrentPrivateChats()
-                    chatsAdapter.notifyDataSetChanged()
+                    //verifyCurrentPrivateChats()
+                    //chatsAdapter.notifyDataSetChanged()
                 }
 
             }
@@ -188,7 +188,7 @@ class PrivateMessagesFragment : Fragment() {
 
     private fun getDateTime(s: Long): String? {
         try {
-            val sdf = SimpleDateFormat("hh:mm")
+            val sdf = SimpleDateFormat("hh:mm", Locale.ROOT)
             val netDate = Date(s)
             return sdf.format(netDate)
         } catch (e: Exception) {
@@ -199,11 +199,6 @@ class PrivateMessagesFragment : Fragment() {
     private fun noChatsShowNotice() {
         binding.rvPrivateChats.visibility = View.INVISIBLE
         binding.tvNoChats.visibility = View.VISIBLE
-    }
-
-    private fun noChatsHideNotice() {
-        binding.rvPrivateChats.visibility = View.VISIBLE
-        binding.tvNoChats.visibility = View.INVISIBLE
     }
 
     @SuppressLint("SimpleDateFormat")

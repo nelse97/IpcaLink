@@ -11,8 +11,8 @@
         android:id="@+id/textViewNotificacoes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="25dp"
         android:fontFamily="@font/montserrat_bold"
         android:text="Notificações"
         android:textColor="#FFFFFF"
@@ -30,10 +30,18 @@
         android:background="@drawable/custom_card_view"
         android:clipToPadding="false"
         android:elevation="5dp"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" >
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="TextView" />
+    </LinearLayout>
 
 </LinearLayout>

@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     private val calendarFragment = CalendarFragment()
     private val reminderFragment = ReminderFragment()
     private val profileFragment = ProfileFragment()
+    private var currentFragment = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -47,123 +48,56 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         //Bottom app bar top left and top right corner radius
-        val bottomAppBar = binding.bottomAppBar
+        /*val bottomAppBar = binding.bottomAppBar
         val bottomBarBackground = bottomAppBar.background as MaterialShapeDrawable
         bottomBarBackground.shapeAppearanceModel = bottomBarBackground.shapeAppearanceModel
             .toBuilder()
             .setTopRightCorner(CornerFamily.ROUNDED, 60f)
             .setTopLeftCorner(CornerFamily.ROUNDED, 60f)
-            .build()
+            .build() */
 
-        binding.fab.setOnClickListener {
+        /*binding.fabAdd.setOnClickListener {
+            if(currentFragment == 1) {
 
-        }
+            } else {
+
+            }
+        }*/
 
         binding.ibMessages.setOnClickListener {
-
             replaceFragment(messagesFragment)
             disableAllUnderlines()
             replaceAllBottomNavIcons()
             binding.mainBottomNavMessagesUnderline.visibility = View.VISIBLE
             binding.ibMessages.setImageResource(R.drawable.ic_selected_messages_icon)
+            //verifyCurrentFragment(1)
         }
 
         binding.ibCalendar.setOnClickListener {
-            replaceFragment(calendarFragment, )
+            replaceFragment(calendarFragment)
             disableAllUnderlines()
             replaceAllBottomNavIcons()
             binding.mainBottomNavCalendarUnderline.visibility = View.VISIBLE
             binding.ibCalendar.setImageResource(R.drawable.ic_selected_calendar_icon)
+           //verifyCurrentFragment(2)
         }
 
         binding.ibReminder.setOnClickListener {
-            replaceFragment(reminderFragment, )
+            replaceFragment(reminderFragment)
             disableAllUnderlines()
             replaceAllBottomNavIcons()
             binding.mainBottomNavReminderUnderline.visibility = View.VISIBLE
             binding.ibReminder.setImageResource(R.drawable.ic_selected_reminder_icon)
+            //verifyCurrentFragment(3)
         }
 
         binding.ibProfileImage.setOnClickListener {
-            replaceFragment(profileFragment, )
+            replaceFragment(profileFragment)
             disableAllUnderlines()
             replaceAllBottomNavIcons()
             binding.mainBottomNavProfileUnderline.visibility = View.VISIBLE
+            //verifyCurrentFragment(4)
         }
-
-
-        /*binding.bottomNavigationBar.setOnNavigationItemSelectedListener {
-            when(it.itemId) {
-                R.id.menuIconMessages -> replaceFragment(messagesFragment)
-                R.id.menuIconCalendar -> replaceFragment(calendarFragment)
-                R.id.menuIconReminders -> replaceFragment(reminderFragment)
-                R.id.menuIconProfile -> replaceFragment(profileFragment)
-            }
-            true
-        }
-
-        val badgeDrawable: BadgeDrawable =
-            binding.mainBottomNavView.getOrCreateBadge(R.id.menuIconCalendar) // menu item id
-
-        badgeDrawable.apply {
-            number = 3
-        }
-
-        val badgeDrawable2: BadgeDrawable =
-            binding.mainBottomNavView.getOrCreateBadge(R.id.menuIconProfile) // menu item id
-
-        badgeDrawable2.apply {
-            number = 4
-        }
-
-        val badgeDrawable3: BadgeDrawable =
-            binding.mainBottomNavView.getOrCreateBadge(R.id.menuIconReminders) // menu item id
-
-        badgeDrawable3.apply {
-            number = 5
-        }
-
-        binding.mainBottomNavView.setOnNavigationItemSelectedListener { item: MenuItem ->
-            when (item.itemId) {
-                R.id.menuIconMessages -> {
-                    replaceFragment(messagesFragment)
-                    binding.mainBottomNavView.getBadge(item.itemId)?.let { badgeDrawable ->
-                        if(badgeDrawable.isVisible) {
-                            binding.mainBottomNavView.removeBadge(item.itemId)
-                        }
-                    }
-                    true
-                }
-                R.id.menuIconCalendar -> {
-                    replaceFragment(calendarFragment)
-                    binding.mainBottomNavView.getBadge(item.itemId)?.let { badgeDrawable ->
-                        if(badgeDrawable.isVisible) {
-                            binding.mainBottomNavView.removeBadge(item.itemId)
-                        }
-                    }
-                    true
-                }
-                R.id.menuIconReminders -> {
-                    replaceFragment(reminderFragment)
-                    binding.mainBottomNavView.getBadge(item.itemId)?.let { badgeDrawable ->
-                        if(badgeDrawable.isVisible) {
-                            binding.mainBottomNavView.removeBadge(item.itemId)
-                        }
-                    }
-                    true
-                }
-                R.id.menuIconProfile -> {
-                    replaceFragment(profileFragment)
-                    binding.mainBottomNavView.getBadge(item.itemId)?.let { badgeDrawable ->
-                        if(badgeDrawable.isVisible) {
-                            binding.mainBottomNavView.removeBadge(item.itemId)
-                        }
-                    }
-                    true
-                }
-                else -> false
-            }
-        }*/
     }
 
     private fun replaceFragment(fragment: Fragment?) {
@@ -200,4 +134,21 @@ class MainActivity : AppCompatActivity() {
         startActivity(Intent(this, LoginActivity::class.java))
         finish()
     }
+
+    /*
+    this function will verify which current fragment is displayed
+    and hide the fbaAdd when on notification fragment and profile fragment
+
+    fun verifyCurrentFragment(fragmentId: Int) {
+        if(fragmentId == 3 || fragmentId == 4) {
+            binding.fabAdd.visibility = View.GONE
+        } else {
+            binding.fabAdd.visibility = View.VISIBLE
+            if(fragmentId == 1) {
+                currentFragment = 1
+            } else {
+                currentFragment = 2
+            }
+        }
+    }*/
 }
