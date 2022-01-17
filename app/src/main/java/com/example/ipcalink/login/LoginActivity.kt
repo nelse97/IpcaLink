@@ -10,19 +10,15 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.ipcalink.FcmToken
-import com.example.ipcalink.FcmToken.fcmToken
 import com.example.ipcalink.MainActivity
 import com.example.ipcalink.R
 import com.example.ipcalink.databinding.ActivityLoginBinding
 import com.example.ipcalink.models.IpcaUser
-import com.example.ipcalink.models.User
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
-import com.google.firebase.firestore.ktx.toObjects
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 
@@ -36,6 +32,11 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val sp = getSharedPreferences("firstlogin", Activity.MODE_PRIVATE)
+        val editor = sp.edit()
+        editor.putBoolean("firstlogin", true)
+        editor.apply()
 
         //remove top bar
         supportActionBar?.hide()
@@ -58,9 +59,9 @@ class LoginActivity : AppCompatActivity() {
         binding.editTextTextPassword.inputType = 129
 
         //password visibility button
-        var password_togle = true
+        var passwordToggle = true
         binding.passwordToggle.setOnClickListener {
-            password_togle = if (password_togle){
+            passwordToggle = if (passwordToggle){
 
                 binding.editTextTextPassword.inputType = 145
                 binding.passwordToggle.setImageResource(R.drawable.ic_visibility_off_black_24dp)
@@ -168,11 +169,11 @@ class LoginActivity : AppCompatActivity() {
 
         }).addOnSuccessListener {
             val userUID = Firebase.auth.uid
-            verfifyfcmtoken(FcmToken.fcmToken!!, userUID!!)
+            verifyFcmToken(FcmToken.fcmToken!!, userUID!!)
         }
 
     }
-    fun saveFcmToken(fcmToken : String, userUID : String) {
+    private fun saveFcmToken(fcmToken : String, userUID : String) {
 
         val hashMap = HashMap<String, Any>()
         hashMap["fcmToken"] = fcmToken
@@ -180,7 +181,7 @@ class LoginActivity : AppCompatActivity() {
         db.collection("users").document(userUID).collection("fcmTokens").document().set(hashMap)
     }
 
-    fun verfifyfcmtoken(fcmToken : String, userUID : String){
+    private fun verifyFcmToken(fcmToken : String, userUID : String){
 
         db.collection("users").document(userUID).collection("fcmTokens").whereEqualTo("fcmToken", fcmToken).get().addOnCompleteListener {
             if (it.result!!.isEmpty) {
