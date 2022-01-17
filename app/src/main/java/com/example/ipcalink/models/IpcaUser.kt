@@ -24,23 +24,22 @@ class IpcaUser {
     }
 
     fun toHash() : HashMap<String, Any>{
-        var hashMap = HashMap<String, Any>()
-        hashMap.put("nome"      , name)
-        hashMap.put("email"     , email)
-        hashMap.put("genero"    , gender)
-        hashMap.put("tipo"      , type)
+        val hashMap = HashMap<String, Any>()
+        hashMap["name"] = name
+        hashMap["email"] = email
+        hashMap["gender"] = gender
+        hashMap["type"] = type
         return hashMap
     }
 
     companion object {
         fun fromHash(hashMap: QueryDocumentSnapshot): IpcaUser {
-            val user = IpcaUser(
-                hashMap["nome"]     as String,
-                hashMap["email"]     as String,
-                hashMap["genero"]     as String,
-                hashMap["tipo"]     as String
+            return IpcaUser(
+                hashMap["name"] as String,
+                hashMap["email"] as String,
+                hashMap["gender"] as String,
+                hashMap["type"] as String
             )
-            return user
         }
     }
 }

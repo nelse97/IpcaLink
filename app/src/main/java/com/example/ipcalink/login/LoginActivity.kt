@@ -1,17 +1,22 @@
 package com.example.ipcalink.login
 
 import android.app.Activity
+import android.content.ContentValues
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.text.InputType.*
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.example.ipcalink.FcmToken
+import com.example.ipcalink.FcmToken.fcmToken
 import com.example.ipcalink.MainActivity
 import com.example.ipcalink.R
 import com.example.ipcalink.databinding.ActivityLoginBinding
 import com.example.ipcalink.models.IpcaUser
 import com.example.ipcalink.models.User
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
@@ -19,11 +24,13 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.firestore.ktx.toObjects
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var binding: ActivityLoginBinding
+    private var db = Firebase.firestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,7 +94,6 @@ class LoginActivity : AppCompatActivity() {
                     auth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(this) { task ->
                             if (task.isSuccessful) {
-                                println(0)
 
                                 //create/update firestoredatabase values
                                 createdata()
@@ -141,20 +147,49 @@ class LoginActivity : AppCompatActivity() {
 
     private fun createdata(){
 
-        val db = Firebase.firestore
-        println(1)
-
         db.collection("ipca")
             .whereEqualTo("email", auth.currentUser!!.email.toString())
             .get()
             .addOnSuccessListener { documents ->
                 for (document in documents){
-                    println(2)
                     val user = document.toObject<IpcaUser>()
-                    println(user.email)
+                    println(user.name)
                 }
             }
 
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w(ContentValues.TAG, "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            FcmToken.fcmToken = task.result
+
+        }).addOnSuccessListener {
+            val userUID = Firebase.auth.uid
+            verfifyfcmtoken(FcmToken.fcmToken!!, userUID!!)
+        }
 
     }
+    fun saveFcmToken(fcmToken : String, userUID : String) {
+
+        val hashMap = HashMap<String, Any>()
+        hashMap["fcmToken"] = fcmToken
+
+        db.collection("users").document(userUID).collection("fcmTokens").document().set(hashMap)
+    }
+
+    fun verfifyfcmtoken(fcmToken : String, userUID : String){
+
+        db.collection("users").document(userUID).collection("fcmTokens").whereEqualTo("fcmToken", fcmToken).get().addOnCompleteListener {
+            if (it.result!!.isEmpty) {
+                saveFcmToken(fcmToken,userUID)
+            }
+
+
+        }
+    }
+
+
 }

@@ -46,7 +46,6 @@ import com.google.firebase.firestore.QuerySnapshot
 import com.kizitonwose.calendarview.model.OutDateStyle
 import com.kizitonwose.calendarview.utils.Size
 
-
 class CalendarFragment : Fragment() {
 
     /*private val eventsAdapter = EventsAdapter {

@@ -2,45 +2,27 @@ package com.example.ipcalink.calendar
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
-import android.app.TimePickerDialog
-import android.content.Context
-import android.content.res.ColorStateList
 import android.os.Build
 import android.os.Bundle
-import android.util.Base64
 import android.util.Log
 import android.view.Gravity
 import android.view.View
-import android.widget.NumberPicker
-import android.widget.TimePicker
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import com.example.ipcalink.encryption_algorithm.AES
 import com.example.ipcalink.R
-import com.example.ipcalink.calendar.Extensions.myLocale
 import com.example.ipcalink.databinding.ActivityAddEventBinding
-import com.example.ipcalink.encryptedSharedPreferences.ESP
 import com.example.ipcalink.models.Events
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.button.MaterialButton
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ibotta.android.support.pickerdialogs.SupportedDatePickerDialog
-import com.ibotta.android.support.pickerdialogs.SupportedTimePickerDialog
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
-import javax.crypto.SecretKey
-import javax.crypto.spec.SecretKeySpec
-
 
 class AddEventActivity : AppCompatActivity() {
 
