@@ -10,8 +10,14 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.ipcalink.MainActivity
 import com.example.ipcalink.R
 import com.example.ipcalink.databinding.ActivityLoginBinding
+import com.example.ipcalink.models.IpcaUser
+import com.example.ipcalink.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.ktx.database
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.firestore.ktx.toObjects
 import com.google.firebase.ktx.Firebase
 
 class LoginActivity : AppCompatActivity() {
@@ -26,11 +32,6 @@ class LoginActivity : AppCompatActivity() {
 
         //remove top bar
         supportActionBar?.hide()
-
-        val sp = getSharedPreferences("firstlogin", Activity.MODE_PRIVATE)
-        val editor = sp.edit()
-        editor.putBoolean("firstlogin", true)
-        editor.apply()
 
         //set notification bar to right color
         when (this.resources?.configuration?.uiMode?.and(Configuration.UI_MODE_NIGHT_MASK)) {
@@ -86,6 +87,11 @@ class LoginActivity : AppCompatActivity() {
                     auth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(this) { task ->
                             if (task.isSuccessful) {
+                                println(0)
+
+                                //create/update firestoredatabase values
+                                createdata()
+
                                 // Sign in success, update UI with the signed-in user's information
                                 checkIfEmailisVerified()
                             } else {
@@ -113,7 +119,7 @@ class LoginActivity : AppCompatActivity() {
     //check email verification and first login
     private fun checkIfEmailisVerified(){
 
-        val user = FirebaseAuth.getInstance().currentUser
+        val user = auth.currentUser
 
         if(user!!.isEmailVerified){
 
@@ -131,5 +137,24 @@ class LoginActivity : AppCompatActivity() {
             FirebaseAuth.getInstance().signOut()
             binding.editTextEmail.error = "Email não verificado"
         }
+    }
+
+    private fun createdata(){
+
+        val db = Firebase.firestore
+        println(1)
+
+        db.collection("ipca")
+            .whereEqualTo("email", auth.currentUser!!.email.toString())
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents){
+                    println(2)
+                    val user = document.toObject<IpcaUser>()
+                    println(user.email)
+                }
+            }
+
+
     }
 }

@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -15,13 +14,10 @@ import com.example.ipcalink.MainActivity
 import com.example.ipcalink.R
 import com.example.ipcalink.databinding.ActivityBoardingBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.auth.FirebaseAuth
 
 class BoardingActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityBoardingBinding
-
-    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
