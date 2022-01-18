@@ -17,10 +17,10 @@ import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.*
-import com.example.ipcalink.calendar.Extensions.daysOfWeekFromLocale
 import com.example.ipcalink.R
 import com.example.ipcalink.calendar.CalendarHelper.DateFormater
 import com.example.ipcalink.calendar.CalendarHelper.getDate
+import com.example.ipcalink.calendar.Extensions.daysOfWeekFromLocale
 import com.example.ipcalink.calendar.Extensions.makeInVisible
 import com.example.ipcalink.calendar.Extensions.makeVisible
 import com.example.ipcalink.calendar.Extensions.setTextColorRes
@@ -29,22 +29,22 @@ import com.example.ipcalink.databinding.FragmentCalendarBinding
 import com.example.ipcalink.models.Events
 import com.example.ipcalink.models.UsersChats
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.DayOwner
 import com.kizitonwose.calendarview.model.InDateStyle
+import com.kizitonwose.calendarview.model.OutDateStyle
 import com.kizitonwose.calendarview.ui.DayBinder
 import com.kizitonwose.calendarview.ui.ViewContainer
+import com.kizitonwose.calendarview.utils.Size
 import com.kizitonwose.calendarview.utils.next
 import com.kizitonwose.calendarview.utils.yearMonth
 import java.time.*
 import java.time.format.DateTimeFormatter
 import java.util.*
-import com.google.firebase.firestore.ListenerRegistration
-import com.google.firebase.firestore.QuerySnapshot
-import com.kizitonwose.calendarview.model.OutDateStyle
-import com.kizitonwose.calendarview.utils.Size
 
 class CalendarFragment : Fragment() {
 

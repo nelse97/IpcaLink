@@ -148,13 +148,29 @@ class LoginActivity : AppCompatActivity() {
 
     private fun createdata(){
 
+        lateinit var user : IpcaUser
+
         db.collection("ipca")
-            .whereEqualTo("email", auth.currentUser!!.email.toString())
+            .whereEqualTo("email", auth.currentUser!!.email)
             .get()
             .addOnSuccessListener { documents ->
                 for (document in documents){
-                    val user = document.toObject<IpcaUser>()
+                    user = document.toObject()
                     println(user.name)
+                }
+            }
+        user.userId = auth.currentUser!!.uid
+        user.email = auth.currentUser!!.email!!
+
+
+        db.collection("users")
+            .document(auth.currentUser!!.uid)
+            .get()
+            .addOnCompleteListener {
+                if(!it.result!!.exists()){
+                    db.collection("users")
+                        .document(auth.currentUser!!.uid)
+                        .set(user)
                 }
             }
 

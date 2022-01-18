@@ -2,29 +2,17 @@ package com.example.ipcalink
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.ipcalink.calendar.CalendarFragment
 import com.example.ipcalink.databinding.ActivityMainBinding
 import com.example.ipcalink.fragments.MessagesFragment
 import com.example.ipcalink.fragments.ProfileFragment
 import com.example.ipcalink.fragments.ReminderFragment
 import com.example.ipcalink.login.LoginActivity
-import com.google.android.material.badge.BadgeDrawable
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.google.android.material.shape.CornerFamily
-import com.google.android.material.shape.MaterialShapeDrawable
-import android.R.id
-import android.graphics.drawable.Drawable
-import com.bumptech.glide.Glide
-import com.example.ipcalink.calendar.CalendarFragment
-import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
 

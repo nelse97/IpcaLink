@@ -1,7 +1,10 @@
 package com.example.ipcalink.encryption_algorithm
 
 import android.util.Base64
-import java.security.*
+import java.security.InvalidAlgorithmParameterException
+import java.security.InvalidKeyException
+import java.security.NoSuchAlgorithmException
+import java.security.SecureRandom
 import java.security.spec.InvalidKeySpecException
 import javax.crypto.*
 import javax.crypto.spec.GCMParameterSpec

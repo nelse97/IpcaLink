@@ -2,13 +2,10 @@ package com.example.ipcalink.calendar
 
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ipcalink.R
 import com.example.ipcalink.calendar.CalendarHelper.DateFormater
@@ -20,13 +17,8 @@ import com.example.ipcalink.models.Events
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.kizitonwose.calendarview.CalendarView
-import kotlinx.coroutines.NonDisposableHandle.parent
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.*
-import java.util.regex.Pattern
-import kotlin.collections.ArrayList
 
 class RecyclerViewAdapter internal constructor(rl: MutableList<Events>, map : MutableMap<LocalDate, List<Events>>, b : FragmentCalendarBinding) : RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder>() {
 

@@ -2,15 +2,12 @@ package com.example.ipcalink.fragments
 
 import android.graphics.Typeface
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.viewpager.widget.ViewPager
+import androidx.fragment.app.Fragment
 import com.example.ipcalink.R
 import com.example.ipcalink.databinding.FragmentMessagesBinding
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 
 class MessagesFragment : Fragment() {
 
