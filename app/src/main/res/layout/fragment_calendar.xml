@@ -98,7 +98,7 @@
         <com.kizitonwose.calendarview.CalendarView
             android:id="@+id/calendar"
             android:layout_width="360dp"
-            android:layout_height="wrap_content"
+            android:layout_height="230dp"
             android:layout_marginTop="9dp"
             app:cv_dayViewResource="@layout/calendar_day"
             app:cv_hasBoundaries="true"
@@ -116,7 +116,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="15dp"
             android:backgroundTint="#004E38"
             android:padding="2dp"
             android:textSize="18sp"
@@ -178,18 +178,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
+            android:layout_marginTop="516dp"
             android:layout_marginEnd="15dp"
-            android:layout_marginBottom="15dp"
-            android:backgroundTint="@color/colorPrimary"
+            android:layout_marginBottom="25dp"
+            android:backgroundTint="#272727"
+            app:tint="@android:color/white"
             android:contentDescription="FBA add action main activity"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_add_icon"
             app:elevation="4dp"
             app:fabCustomSize="60dp"
+            app:maxImageSize="14dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:maxImageSize="14dp"
-            app:tint="@android:color/white" />
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

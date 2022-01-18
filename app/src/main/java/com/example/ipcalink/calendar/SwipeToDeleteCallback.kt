@@ -51,6 +51,12 @@ abstract class SwipeToDeleteCallback(context: Context) : ItemTouchHelper.SimpleC
             return
         }
 
+        /*if(!isCurrentlyActive) {
+            clearCanvas(c, itemView.left.toFloat(), itemView.top.toFloat(), itemView.right.toFloat(), itemView.bottom.toFloat())
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+            return
+        }*/
+
         // Draw the red delete background
         background.color = ColorStateList.valueOf(backgroundColor)
         background.setCornerRadius(30F, 30F, 30F, 30F)
@@ -68,16 +74,12 @@ abstract class SwipeToDeleteCallback(context: Context) : ItemTouchHelper.SimpleC
         deleteIcon!!.setBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom)
         deleteIcon.draw(c)
 
-        /*RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-            .addSwipeLeftActionIcon(backgroundColor)
-            .addActionIcon(R.drawable.round_delete_white_18)
-            .create()
-            .decorate()*/
 
-        super.onChildDraw(c, recyclerView, viewHolder, dX /2, dY, actionState, isCurrentlyActive)
+
+        super.onChildDraw(c, recyclerView, viewHolder, dX/2, dY, actionState, isCurrentlyActive)
     }
 
-    private fun clearCanvas(c: Canvas?, left: Float, top: Float, right: Float, bottom: Float) {
+    fun clearCanvas(c: Canvas?, left: Float, top: Float, right: Float, bottom: Float) {
         c?.drawRect(left, top, right, bottom, clearPaint)
     }
 }

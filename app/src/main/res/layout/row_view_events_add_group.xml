@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="76dp">
+
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/image"
+        android:backgroundTint="#C4C4C4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewGroupName"
+        android:layout_width="153dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="20dp"
+        android:text="Os Amigos"
+        android:textSize="18dp"
+        android:textColor="@color/colorPrimary"
+        android:fontFamily="@font/montserrat_medium"
+        app:layout_constraintStart_toEndOf="@+id/imageView3"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="199dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="20dp"
+        android:text="a16431"
+        android:textSize="13dp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/montserrat_regular"
+        app:layout_constraintStart_toEndOf="@+id/imageView3"
+        app:layout_constraintTop_toBottomOf="@+id/textViewGroupName" />
+
+    <ToggleButton
+        android:id="@+id/toggleButton"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="325dp"
+        android:layout_marginTop="7dp"
+        android:background="@drawable/circular_toogle_drawable"
+        android:textOff=""
+        android:textOn=""
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1sp"
+        android:layout_marginTop="18dp"
+        android:alpha="0.05"
+        android:background="#272727"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,7 @@
 package com.example.ipcalink.calendar
 
 import android.annotation.SuppressLint
+import com.example.ipcalink.calendar.Extensions.myLocale
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -50,6 +51,28 @@ object CalendarHelper {
         val inputFormatter =
             DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS",  Locale.ENGLISH)
         val outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH)
+        val dateToFormat = LocalDate.parse(date, inputFormatter)
+        val formattedDate = outputFormatter.format(dateToFormat)
+
+        return formattedDate
+    }
+
+    fun CalendarDateFormatter(date: String): String {
+
+        val inputFormatter =
+            DateTimeFormatter.ofPattern("EEE, dd MMM yyyy",  myLocale)
+        val outputFormatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy", Locale.ENGLISH)
+        val dateToFormat = LocalDate.parse(date, inputFormatter)
+        val formattedDate = outputFormatter.format(dateToFormat)
+
+        return formattedDate
+    }
+
+    fun DateFormaterCalendarIngToCalendarPt(date: String): String {
+
+        val inputFormatter =
+            DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH)
+        val outputFormatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy", myLocale)
         val dateToFormat = LocalDate.parse(date, inputFormatter)
         val formattedDate = outputFormatter.format(dateToFormat)
 

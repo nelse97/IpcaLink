@@ -52,6 +52,16 @@
             android:exported="false"
             android:screenOrientation="portrait" />
 
+
+        <activity
+            android:name=".calendar.EventsAddGroupsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".calendar.EditEventActivity"
+            android:exported="false" />
+
+
         <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
      See README(https://goo.gl/l4GJaQ) for more. -->
         <meta-data

@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,7 @@ import com.example.ipcalink.calendar.Extensions.daysOfWeekFromLocale
 import com.example.ipcalink.R
 import com.example.ipcalink.calendar.CalendarHelper.DateFormater
 import com.example.ipcalink.calendar.CalendarHelper.getDate
+import com.example.ipcalink.calendar.Extensions.dpToPx
 import com.example.ipcalink.calendar.Extensions.makeInVisible
 import com.example.ipcalink.calendar.Extensions.makeVisible
 import com.example.ipcalink.calendar.Extensions.setTextColorRes
@@ -45,6 +47,7 @@ import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
 import com.kizitonwose.calendarview.model.OutDateStyle
 import com.kizitonwose.calendarview.utils.Size
+import java.time.temporal.ChronoUnit
 
 
 class CalendarFragment : Fragment() {
@@ -156,7 +159,6 @@ class CalendarFragment : Fragment() {
         //binding.recyclerViewEvents.setHasFixedSize(true)
         //sets the layout of the RecyclerView to be vertical
 
-
         calendarSharedPreferences(requireContext()).currentChatId = null
         calendarSharedPreferences(requireContext()).currentChatName = null
 
@@ -182,24 +184,24 @@ class CalendarFragment : Fragment() {
 
 
         // Setup custom day size to fit two months on the screen.
-        //val dm = DisplayMetrics()
+        val dm = DisplayMetrics()
         //val wm = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
         binding.calendar.apply {
 
-            daySize = Size(140, 95)
+            //daySize = Size(140, 95)
 
             // We want the immediately following/previous month to be
             // partially visible so we multiply the total width by 0.73
-            /*val monthWidth = (dm.widthPixels * 0.73).toInt()
+            val monthWidth = (dm.widthPixels * 0.73).toInt()
             val dayWidth = monthWidth / 7
             val dayHeight = (dayWidth * 1.73).toInt() // We don't want a square calendar.
             daySize = Size(dayWidth, dayHeight)
 
             // Add margins around our card view.
-            val horizontalMargin = dpToPx(20, requireContext())
+            val horizontalMargin = dpToPx(5, requireContext())
             val verticalMargin = dpToPx(0, requireContext())
-            setMonthMargins(start = horizontalMargin, end = horizontalMargin, top = verticalMargin, bottom = verticalMargin)*/
+            setMonthMargins(start = horizontalMargin, end = horizontalMargin, top = verticalMargin, bottom = verticalMargin)
 
             setup(startMonth, endMonth, daysOfWeek.first())
             scrollToMonth(currentMonth)
@@ -257,12 +259,20 @@ class CalendarFragment : Fragment() {
                 if (day.owner == DayOwner.THIS_MONTH) {
                     textViewDay.makeVisible()
                     when (day.date) {
-                        /*today -> {
-                            textView.setTextColorRes(R.color.white)
-                            textView.setBackgroundResource(R.drawable.calendar_day_selected)
-                            cardView.isVisible = eventsMap[day.date].orEmpty().isNotEmpty()
-                            cardView.setBackgroundResource(R.color.white)
-                        }*/
+                        today -> {
+                            if(today != selectedDate) {
+                                textViewDay.setTextColorRes(R.color.colorPrimary)
+                                textViewDay.setBackgroundResource(R.drawable.calendar_today)
+                                cardView1.isVisible = eventsMap[day.date].orEmpty().isNotEmpty()
+                                cardView2.setBackgroundResource(R.color.white)
+                            } else {
+                                textViewDay.setTextColorRes(R.color.white)
+                                textViewDay.setBackgroundResource(R.drawable.calendar_day_selected)
+                                cardView1.isVisible = eventsMap[day.date].orEmpty().isNotEmpty()
+                                cardView2.setBackgroundResource(R.color.white)
+                            }
+
+                        }
                         selectedDate -> {
                             textViewDay.setTextColorRes(R.color.white)
                             textViewDay.setBackgroundResource(R.drawable.calendar_day_selected)
@@ -477,13 +487,40 @@ class CalendarFragment : Fragment() {
             val endDate = getDate(event.endDate!!.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
 
             val localStartDate = LocalDate.parse(DateFormater(startDate))
+            val localendDate = LocalDate.parse(DateFormater(endDate))
+
+            val dayDiff = ChronoUnit.DAYS.between(localStartDate, localendDate)
+
+            var date = localStartDate
+
+            var i = 0
+
+            while (i <= dayDiff) {
+                binding.calendar.notifyDateChanged(date)
+
+                date?.let {
+                    eventsMap[it] = eventsMap[it].orEmpty().plus(Events(event.id, event.title, event.description, event.sendDate, event.senderId, event.startDate, event.endDate))
+                    updateAdapterForDate(it)
+                }
+
+                date = date.plusDays(1)
+
+                i++
+            }
+
+            /*val event = Events.fromHash(query)
+
+            val startDate = getDate(event.startDate!!.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
+            val endDate = getDate(event.endDate!!.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
+
+            val localStartDate = LocalDate.parse(DateFormater(startDate))
             binding.calendar.notifyDateChanged(localStartDate)
 
 
             localStartDate?.let {
                 eventsMap[it] = eventsMap[it].orEmpty().plus(Events(event.id, event.title, event.description, event.sendDate, event.senderId, event.startDate, event.endDate))
                 updateAdapterForDate(it)
-            }
+            }*/
         }
 
 
@@ -648,7 +685,7 @@ class CalendarFragment : Fragment() {
         binding.recyclerViewEvents.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
 
 
-        eventsAdapter = RecyclerViewAdapter(eventsList, eventsMap, binding)
+        eventsAdapter = RecyclerViewAdapter(eventsList, eventsMap, binding, requireContext())
         binding.recyclerViewEvents.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         binding.recyclerViewEvents.adapter = eventsAdapter
 
@@ -657,6 +694,8 @@ class CalendarFragment : Fragment() {
                 val adapter = binding.recyclerViewEvents.adapter as RecyclerViewAdapter
                 adapter.removeAt(viewHolder.adapterPosition, calendarSharedPreferences(requireContext()).currentChatId, calendarSharedPreferences(requireContext()).currentChatName)
             }
+
+
         }
 
         val itemTouchHelper = ItemTouchHelper(swipeHandler)

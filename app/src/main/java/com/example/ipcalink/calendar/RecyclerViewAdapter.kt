@@ -3,12 +3,14 @@ package com.example.ipcalink.calendar
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ipcalink.R
 import com.example.ipcalink.calendar.CalendarHelper.DateFormater
@@ -28,7 +30,7 @@ import java.util.*
 import java.util.regex.Pattern
 import kotlin.collections.ArrayList
 
-class RecyclerViewAdapter internal constructor(rl: MutableList<Events>, map : MutableMap<LocalDate, List<Events>>, b : FragmentCalendarBinding) : RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder>() {
+class RecyclerViewAdapter internal constructor(rl: MutableList<Events>, map : MutableMap<LocalDate, List<Events>>, b : FragmentCalendarBinding, c : Context) : RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder>() {
 
     private val userUID = Firebase.auth.uid
     private val dbFirebase = Firebase.firestore
@@ -37,6 +39,7 @@ class RecyclerViewAdapter internal constructor(rl: MutableList<Events>, map : Mu
     private val binding = b
 
     private val recyclerMap = map
+    private val context = c
 
     private var recyclerList = rl
 
@@ -72,6 +75,16 @@ class RecyclerViewAdapter internal constructor(rl: MutableList<Events>, map : Mu
                 .show()
         }*/
 
+        holder.itemView.setOnClickListener {
+
+            val intent = Intent(context, EditEventActivity::class.java)
+            //intent.putExtra("dayOfWeek", dayOfWeek.toString())
+            intent.putExtra("eventId", recyclerList[position].id)
+
+
+            startActivity(context, intent, null)
+        }
+
 
         holder.itemView.apply {
 
@@ -103,6 +116,15 @@ class RecyclerViewAdapter internal constructor(rl: MutableList<Events>, map : Mu
 
     fun removeAt(position: Int, currentChatId : String?, currentChatName : String?) {
 
+        /*AlertDialog.Builder(context)
+            .setMessage("Delete this event?")
+            .setPositiveButton("Delete") { _, _ ->
+                val event = recyclerList[position]
+                deleteEvent(event, currentChatId, currentChatName)
+            }
+            .setNegativeButton("Close", null)
+            .show()*/
+
         val event = recyclerList[position]
         deleteEvent(event, currentChatId, currentChatName)
 
@@ -114,7 +136,7 @@ class RecyclerViewAdapter internal constructor(rl: MutableList<Events>, map : Mu
 
 
         val startDate = getDate(event.startDate!!.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
-        val endDate = getDate(event.endDate!!.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
+        //val endDate = getDate(event.endDate!!.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
 
 
         val localStartDate = LocalDate.parse(DateFormater(startDate))

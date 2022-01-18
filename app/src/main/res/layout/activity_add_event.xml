@@ -9,7 +9,7 @@
 
 
     <TextView
-        android:id="@+id/textViewNotificacoes"
+        android:id="@+id/textViewEvento"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="51dp"
@@ -54,9 +54,10 @@
         <EditText
             android:id="@+id/editTextTitle"
             android:layout_width="285dp"
-            android:layout_height="40dp"
+            android:layout_height="17dp"
             android:layout_marginStart="44dp"
             android:layout_marginTop="10dp"
+            android:background="@null"
             android:fontFamily="@font/montserrat_regular"
             android:hint="Adicionar Título"
             android:textColor="#C4C4C4"
@@ -80,9 +81,10 @@
         <EditText
             android:id="@+id/editTextDecription"
             android:layout_width="285dp"
-            android:layout_height="40dp"
+            android:layout_height="17dp"
             android:layout_marginStart="44dp"
             android:layout_marginTop="10dp"
+            android:background="@null"
             android:fontFamily="@font/montserrat_regular"
             android:hint="Descrição"
             android:textColor="#C4C4C4"
@@ -130,15 +132,14 @@
             app:layout_constraintTop_toBottomOf="@+id/textViewEnd" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/addButton"
+            android:id="@+id/addGroupsButton"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_gravity="end|bottom"
-            android:layout_margin="20dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            app:fabCustomSize="40dp"
             android:layout_marginTop="10dp"
-            app:backgroundTint="@color/colorPrimary"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.045"
+            app:backgroundTint="#272727"
+            app:maxImageSize="9dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView7"
             app:srcCompat="@drawable/ic_baseline_add_24"
@@ -213,7 +214,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="29dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="30dp"
             android:fontFamily="@font/montserrat_medium"
             android:text="Grupos"
             android:textColor="#004E38"
@@ -245,6 +246,15 @@
             android:textSize="14sp"
             app:layout_constraintEnd_toStartOf="@+id/toggleButton"
             app:layout_constraintTop_toBottomOf="@+id/editTextDecription" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewGroups"
+            android:layout_width="300dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toEndOf="@+id/addGroupsButton"
+            app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/CardViewTimePicker"
@@ -407,10 +417,35 @@
 
         </androidx.cardview.widget.CardView>
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardViewSaveEvent"
+            android:layout_width="140dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="10dp"
+            android:backgroundTint="@color/colorPrimary"
+            app:cardCornerRadius="100dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+
+            <TextView
+                android:id="@+id/textViewSaveEvent"
+                android:layout_width="58dp"
+                android:layout_height="17dp"
+                android:layout_gravity="center"
+                android:text="Guardar"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+
+        </androidx.cardview.widget.CardView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/imageViewGoBack"
         android:layout_width="15.66dp"
         android:layout_height="27.37dp"
         android:layout_marginStart="16dp"
