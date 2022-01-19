@@ -111,12 +111,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/legendLayout" />
 
-        <ImageView
-            android:id="@+id/imageArrow"
+        <ToggleButton
+            android:id="@+id/toggleButtonArrow"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="bottom|center_horizontal"
             android:layout_marginTop="15dp"
+            android:textOff=""
+            android:textOn=""
+            android:background="@drawable/toggle_arrow_drawable"
             android:backgroundTint="#004E38"
             android:padding="2dp"
             android:textSize="18sp"
@@ -137,7 +140,7 @@
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageArrow" />
+            app:layout_constraintTop_toBottomOf="@+id/toggleButtonArrow" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewEvents"
@@ -147,12 +150,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-        <ImageView
-            android:id="@+id/imageHamburger"
+        <ToggleButton
+            android:id="@+id/toggleHamburger"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginTop="25dp"
             android:layout_marginEnd="30dp"
+            android:textOff=""
+            android:textOn=""
             android:background="@drawable/outline_tune_black_24dp"
             android:backgroundTint="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
@@ -166,6 +171,7 @@
             android:layout_marginTop="32dp"
             android:layout_marginEnd="100dp"
             android:fontFamily="@font/montserrat_regular"
+            android:visibility="gone"
             android:text="Não há eventos neste dia, adicione um."
             android:textColor="#272727"
             android:textSize="13sp"

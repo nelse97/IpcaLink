@@ -83,14 +83,16 @@ dependencies {
     implementation 'androidx.security:security-crypto:1.0.0-rc02'
 
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
+
+    //Custom Calendar
     implementation 'com.github.kizitonwose:CalendarView:1.0.4'
 
     //dependencia para arredondamentos de imagens
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
-    implementation 'com.github.Ibotta:Supported-Picker-Dialogs:1.0.0'
+    //implementation 'com.github.Ibotta:Supported-Picker-Dialogs:1.0.0'
 
-    implementation 'it.xabaras.android:recyclerview-swipedecorator:1.2.3'
+    //implementation 'it.xabaras.android:recyclerview-swipedecorator:1.2.3'
 
     //implementation 'com.google.android.flexbox:flexbox:3.0.0'
 }

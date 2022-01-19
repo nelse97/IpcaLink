@@ -9,10 +9,9 @@ import java.util.*
 import java.util.regex.Pattern
 
 object CalendarHelper {
-    /*
-     This function split the date and return only the Hours in text
-     @date = default date
-  */
+
+
+    //This function split the date and return only the Hours in text
     fun getHours(dateTime: String): String {
 
         // Split the date
@@ -22,10 +21,8 @@ object CalendarHelper {
         return strArray2[0].toString()
     }
 
-    /*
-        This function split the date and return only the Minutes in text
-        @date = default date
-     */
+
+    //This function split the date and return only the Minutes in text
     fun getMinutes(dateTime: String): String {
 
         // Split the date
@@ -35,6 +32,8 @@ object CalendarHelper {
         return strArray2[1].toString()
     }
 
+    //This function picks up the milliSeconds corresponding to a date
+    //and then transforms it into a string date
     @SuppressLint("SimpleDateFormat")
     fun getDate(milliSeconds: Long, dateFormat: String?): String {
         // Create a DateFormatter object for displaying date in specified format.
@@ -45,6 +44,7 @@ object CalendarHelper {
         calendar.timeInMillis = milliSeconds
         return formatter.format(calendar.time)
     }
+
 
     fun DateFormater(date: String): String {
 
