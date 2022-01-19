@@ -26,6 +26,7 @@ import com.kizitonwose.calendarview.CalendarView
 import kotlinx.coroutines.NonDisposableHandle.parent
 import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 import java.util.*
 import java.util.regex.Pattern
 import kotlin.collections.ArrayList
@@ -116,15 +117,6 @@ class RecyclerViewAdapter internal constructor(rl: MutableList<Events>, map : Mu
 
     fun removeAt(position: Int, currentChatId : String?, currentChatName : String?) {
 
-        /*AlertDialog.Builder(context)
-            .setMessage("Delete this event?")
-            .setPositiveButton("Delete") { _, _ ->
-                val event = recyclerList[position]
-                deleteEvent(event, currentChatId, currentChatName)
-            }
-            .setNegativeButton("Close", null)
-            .show()*/
-
         val event = recyclerList[position]
         deleteEvent(event, currentChatId, currentChatName)
 
@@ -134,20 +126,60 @@ class RecyclerViewAdapter internal constructor(rl: MutableList<Events>, map : Mu
 
     private fun deleteEvent(event: Events, currentChatId : String?, currentChatName : String?) {
 
+        binding.calendar.notifyCalendarChanged()
 
         val startDate = getDate(event.startDate!!.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
-        //val endDate = getDate(event.endDate!!.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
+        val endDate = getDate(event.endDate!!.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
 
 
         val localStartDate = LocalDate.parse(DateFormater(startDate))
-        binding.calendar.notifyDateChanged(localStartDate)
+        val localendDate = LocalDate.parse(DateFormater(endDate))
 
+        val dayDiff = ChronoUnit.DAYS.between(localStartDate, localendDate)
 
+        var date = localStartDate
 
-        recyclerMap[localStartDate] = recyclerMap[localStartDate].orEmpty().minus(event)
-        updateAdapterForDate(localStartDate)
+        var i = 0
 
-        deleteEvents(event, currentChatId, currentChatName)
+        while (i <= dayDiff) {
+            binding.calendar.notifyDateChanged(date)
+
+            date?.let {
+                recyclerMap[date] = recyclerMap[date].orEmpty().minus(Events(event.id, event.title, event.description, event.sendDate, event.senderId, event.startDate, event.endDate))
+                updateAdapterForDate(it)
+            }
+
+            date = date.plusDays(1)
+
+            i++
+        }
+
+        AlertDialog.Builder(context)
+            .setMessage("Delete this event?")
+            .setPositiveButton("Confirm") { _, _ ->
+                deleteEvents(event, currentChatId, currentChatName)
+            }
+            .setNegativeButton("Cancel") { _, _ ->
+                recyclerMap.clear()
+
+                date = localStartDate
+                i = 0
+
+                while (i <= dayDiff) {
+                    binding.calendar.notifyDateChanged(date)
+
+                    date?.let {
+                        recyclerMap[date] = recyclerMap[date].orEmpty().plus(Events(event.id, event.title, event.description, event.sendDate, event.senderId, event.startDate, event.endDate))
+                        updateAdapterForDate(it)
+                    }
+
+                    date = date.plusDays(1)
+
+                    i++
+                }
+            }.show()
+
+        //deleteEvents(event, currentChatId, currentChatName)
     }
 
     private fun deleteEvents(event : Events, currentChatId : String?, currentChatName : String?) {
@@ -181,7 +213,7 @@ class RecyclerViewAdapter internal constructor(rl: MutableList<Events>, map : Mu
         recyclerList.clear()
 
 
-        recyclerList.addAll(recyclerMap[date].orEmpty())
+        recyclerList.removeAll(recyclerMap[date].orEmpty())
 
         //val month = monthTitleFormatter.format(date.month)
         //binding.textViewMonth.text = month
