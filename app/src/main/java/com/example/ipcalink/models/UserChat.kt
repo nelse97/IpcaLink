@@ -1,28 +1,26 @@
 package com.example.ipcalink.models
+
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.QueryDocumentSnapshot
-import java.util.*
-import kotlin.collections.HashMap
+import com.google.type.DateTime
 
 class UserChat {
 
-    var chatId   : String = ""
+    /*var chatId   : String = ""
     var chatName : String = ""
     var chatType : String = ""
     var photoUrl : String = ""
-    lateinit var lastMessageTimestamp : Timestamp
-    var lastMessageSenderId : String = ""
+    var lastMessageTimestamp : Timestamp? = null
     var lastMessage: String = ""
 
     constructor()
 
     constructor(
-        chatId: String,
-        chatName: String,
-        chatType: String,
-        photoUrl: String,
+        chatId        : String,
+        chatName    : String,
+        chatType    : String,
+        photoUrl       : String,
         lastMessageTimestamp: Timestamp,
-        lastMessageSenderId: String,
         lastMessage: String
     ) {
         this.chatId      = chatId
@@ -30,18 +28,16 @@ class UserChat {
         this.chatType = chatType
         this.photoUrl     = photoUrl
         this.lastMessageTimestamp = lastMessageTimestamp
-        this.lastMessageSenderId = lastMessageSenderId
         this.lastMessage = lastMessage
     }
 
-    fun toHash() : HashMap<String, Any>{
-        var hashMap = HashMap<String, Any>()
+    fun toHash() : HashMap<String, Any?>{
+        var hashMap = HashMap<String, Any?>()
         hashMap.put("chatId"   , chatId)
         hashMap.put("chatName", chatName)
         hashMap.put("chatType", chatType)
         hashMap.put("photoUrl"  , photoUrl)
         hashMap.put("lastMessageTimestamp", lastMessageTimestamp)
-        hashMap.put("lastMessageSenderId", lastMessageSenderId)
         hashMap.put("lastMessage", lastMessage)
         return hashMap
     }
@@ -54,11 +50,10 @@ class UserChat {
                 hashMap["chatType"] as String,
                 hashMap["photoUrl"] as String,
                 hashMap["lastMessageTimestamp"] as Timestamp,
-                hashMap["lastMessageSenderId"] as String,
                 hashMap["lastMessage"] as String
             )
             return userChat
         }
-    }
+    }*/
 
 }

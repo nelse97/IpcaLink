@@ -1,29 +1,63 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.IpcaLink" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.IpcaLink" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#005321</item>
-        <item name="colorPrimaryVariant">#005321</item>
+        <item name="colorPrimary">#004E38</item>
+        <item name="colorPrimaryVariant">#004E38</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">#014d2f</item>
-        <item name="colorSecondaryVariant">#014d2f</item>
+        <item name="colorSecondary">#00713D</item>
+        <item name="colorSecondaryVariant">#00713D</item>
         <item name="colorOnSecondary">@color/black</item>
+        <item name="android:fontFamily">@font/montserrat_regular</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
-
     <style name="Theme.IPCALinkLogin.Fullscreen" parent="Theme.IpcaLink">
         <item name="android:actionBarStyle">@style/Widget.Theme.I.ActionBar.Fullscreen
         </item>
         <item name="android:windowActionBarOverlay">true</item>
         <item name="android:windowBackground">@null</item>
+        <item name="android:fontFamily">@font/montserrat_regular</item>
     </style>
 
     <style name="ThemeOverlay.IPCALinkLogin.FullscreenContainer" parent="">
         <item name="fullscreenBackgroundColor">?attr/colorPrimary</item>
         <item name="fullscreenTextColor">@color/white</item>
+        <item name="android:fontFamily">@font/montserrat_regular</item>
+    </style>
+
+    <style name="MyDatePickerDialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/DatePickerButtonStyle</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/DatePickerButtonStyle</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
+
+
+    <style name="DatePickerButtonStyle" parent="Base.Widget.AppCompat.Button.Borderless">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:backgroundTint">@color/white</item>
+    </style>
+
+
+    <style name="SheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+        <!--<item name="android:windowCloseOnTouchOutside">false</item>-->
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:colorBackground">     @android:color/transparent</item>aaaaaa
+        <item name="android:backgroundDimEnabled">false</item>
+        <!--<item name="android:backgroundDimAmount">1</item>-->
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="colorControlNormal">@color/transparent</item>
+    </style>
+
+    <style name="NumberPickerText">
+        <item name="android:textSize">36sp</item>
     </style>
 
 </resources>

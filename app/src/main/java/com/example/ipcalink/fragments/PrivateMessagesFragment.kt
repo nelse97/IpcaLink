@@ -1,7 +1,9 @@
 package com.example.ipcalink.fragments
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.os.LocaleList
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -18,10 +20,12 @@ import com.example.ipcalink.R
 import com.example.ipcalink.databinding.FragmentPrivateMessagesBinding
 import com.example.ipcalink.models.User
 import com.example.ipcalink.models.UserChat
-import com.google.firebase.Timestamp
+import com.example.ipcalink.models.UsersChats
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.ktx.Firebase
 import de.hdodenhof.circleimageview.CircleImageView
 import java.lang.Exception
 import java.text.SimpleDateFormat
@@ -31,7 +35,7 @@ import kotlin.collections.ArrayList
 class PrivateMessagesFragment : Fragment() {
 
     private lateinit var binding: FragmentPrivateMessagesBinding
-    var userChats = mutableListOf<UserChat>()
+    var userChats = mutableListOf<UsersChats>()
     private lateinit var db: FirebaseFirestore
     private lateinit var chatsAdapter: PrivateChatsAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
@@ -70,6 +74,13 @@ class PrivateMessagesFragment : Fragment() {
         //bind adapter to private chats recycler view
         binding.rvPrivateChats.adapter = chatsAdapter
 
+        val newChat = UsersChats("x34mjmazUy4srm97QZhx", "Eduardo", "private", "", "", "",
+            null)
+
+        userChats.add(newChat)
+
+        chatsAdapter.notifyDataSetChanged()
+
         // return the fragment layout
         return binding.root
     }
@@ -77,7 +88,7 @@ class PrivateMessagesFragment : Fragment() {
     private fun verifyCurrentPrivateChats() {
         for (userChat in userChats) {
             if (userChat.chatType == "private") {
-                db.collection("chats").document(userChat.chatId).collection("users")
+                db.collection("chats").document(userChat.chatId!!).collection("users")
                     .get()
                     .addOnSuccessListener { documentSnapshot ->
                         for (document in documentSnapshot) {
@@ -93,7 +104,7 @@ class PrivateMessagesFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        //get list of all user chats
+        /*//get list of all user chats
         db.collection("users").document(authUserUid).collection("chats")
             .addSnapshotListener { chats, e ->
                 if (e != null) {
@@ -102,45 +113,16 @@ class PrivateMessagesFragment : Fragment() {
                         "Ocorreu um erro ao tentar listar todos os seus chats. Tente novamente mais tarde.",
                         Toast.LENGTH_SHORT
                     ).show()
-                    Log.d("chatsFragment22", e.message.toString())
+                    Log.d("chatsFragment", e.message.toString())
                     return@addSnapshotListener
                 }
-                userExistingPrivateChats.clear()
+                //userExistingPrivateChats.clear()
                 userChats.clear()
                 for (chat in chats!!) {
-
-                    val newChat = UserChat()
-
-                    chat.getString("chatId")?.let {
-                        newChat.chatId = it
-                    }
-                    chat.getString("chatName")?.let {
-                        newChat.chatName = it
-                    }
-                    chat.getString("chatType")?.let {
-                        newChat.chatType = it
-                    }
-                    chat.getString("photoUrl")?.let {
-                        newChat.photoUrl = it
-                    }
-
-
-                    /*chat.getTimestamp("lastMessageTimestamp")?.let {
-                        newChat.lastMessageTimestamp = it
-                    }*/
-
-                    newChat.lastMessageTimestamp = Timestamp.now()
-
-                    chat.getString("lastMessageSenderId")?.let {
-                        newChat.lastMessageSenderId = it
-                    }
-                    chat.getString("lastMessage")?.let {
-                        newChat.lastMessage = it
-                    }
-
-                    //val newChat = chat.toObject<UserChat>()
+                    val newChat = chat.toObject<UsersChats>()
                     userChats.add(newChat)
                 }
+                Log.d("PrivateMessages", userChats.size.toString())
                 if(userChats.size == 0) {
                     noChatsShowNotice()
                 } else {
@@ -149,7 +131,7 @@ class PrivateMessagesFragment : Fragment() {
                     chatsAdapter.notifyDataSetChanged()
                 }
 
-            }
+            }*/
     }
 
     override fun onStop() {
@@ -157,7 +139,7 @@ class PrivateMessagesFragment : Fragment() {
         db.clearPersistence()
     }
 
-    inner class PrivateChatsAdapter (private val clickListener: (UserChat) -> Unit) :
+    inner class PrivateChatsAdapter (private val clickListener: (UsersChats) -> Unit) :
         RecyclerView.Adapter<PrivateChatsAdapter.MyViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -169,7 +151,7 @@ class PrivateMessagesFragment : Fragment() {
             val userChat = userChats[position]
 
             //set image chat row
-            if (userChat.photoUrl.isNotEmpty()) {
+            if (userChat.photoUrl!!.isNotEmpty()) {
                 try {
                     Glide.with(activity!!).load(userChat.photoUrl).into(holder.chatImage)
                 } catch (e: Exception) {
@@ -182,7 +164,10 @@ class PrivateMessagesFragment : Fragment() {
             holder.chatTitle.text = userChat.chatName
             holder.chatLastMessage.text = userChat.lastMessage
 
-            holder.chatRowTime.text = userChat.lastMessageTimestamp.toString()
+            //val date = getDate(userChat.lastMessageTimestamp!!.seconds * 1000, "mm:ss")
+
+            //holder.chatRowTime.text = date
+
             holder.itemView.setOnClickListener {
                 clickListener(userChats[position])
             }
@@ -211,7 +196,7 @@ class PrivateMessagesFragment : Fragment() {
 
     private fun getDateTime(s: Long): String? {
         try {
-            val sdf = SimpleDateFormat("hh:mm")
+            val sdf = SimpleDateFormat("hh:mm", Locale.ROOT)
             val netDate = Date(s)
             return sdf.format(netDate)
         } catch (e: Exception) {
@@ -222,5 +207,16 @@ class PrivateMessagesFragment : Fragment() {
     private fun noChatsShowNotice() {
         binding.rvPrivateChats.visibility = View.INVISIBLE
         binding.tvNoChats.visibility = View.VISIBLE
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    fun getDate(milliSeconds: Long, dateFormat: String?): String {
+        // Create a DateFormatter object for displaying date in specified format.
+        val formatter = SimpleDateFormat(dateFormat)
+
+        // Create a calendar object that will convert the date and time value in milliseconds to date.
+        val calendar: Calendar = Calendar.getInstance()
+        calendar.timeInMillis = milliSeconds
+        return formatter.format(calendar.time)
     }
 }

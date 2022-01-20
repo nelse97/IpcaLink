@@ -8,11 +8,11 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/textViewNotificacoes"
+        android:id="@+id/textViewNewMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="25dp"
         android:fontFamily="@font/montserrat_bold"
         android:text="Perfil"
         android:textColor="#FFFFFF"
@@ -35,13 +35,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="match_parent"
+        <Button
+            android:layout_gravity="center"
+            android:id="@+id/button_sign_out"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:text="TextView" />
+            android:onClick="signOut"
+            android:text="Sign Out"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.595" />
     </LinearLayout>
 
 </LinearLayout>

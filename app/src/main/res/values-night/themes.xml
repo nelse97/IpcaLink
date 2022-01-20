@@ -2,13 +2,14 @@
     <!-- Base application theme. -->
     <style name="Theme.IpcaLink" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#005321</item>
-        <item name="colorPrimaryVariant">#005321</item>
+        <item name="colorPrimary">#00713D</item>
+        <item name="colorPrimaryVariant">#00713D</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">#014d2f</item>
-        <item name="colorSecondaryVariant">#014d2f</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondary">#004E38</item>
+        <item name="colorSecondaryVariant">#004E38</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="android:fontFamily">@font/montserrat_regular</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
@@ -18,10 +19,12 @@
         </item>
         <item name="android:windowActionBarOverlay">true</item>
         <item name="android:windowBackground">@null</item>
+        <item name="android:fontFamily">@font/montserrat_regular</item>
     </style>
 
     <style name="ThemeOverlay.IPCALinkLogin.FullscreenContainer" parent="">
         <item name="fullscreenBackgroundColor">?attr/colorPrimary</item>
         <item name="fullscreenTextColor">@color/white</item>
+        <item name="android:fontFamily">@font/montserrat_regular</item>
     </style>
 </resources>

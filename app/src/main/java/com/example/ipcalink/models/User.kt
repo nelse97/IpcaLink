@@ -8,44 +8,44 @@ import kotlin.collections.HashMap
 
 class User {
 
-    var userId     : String = ""
-    var name       : String = ""
-    var email      : String = ""
-    var bio        : String = ""
-    var isOnline   : Boolean? = null
-    var lastSeen   : String = ""
-    var photoURl   : String = ""
+    lateinit var userId: String
+    lateinit var name: String
+    lateinit var photoUrl: String
+    lateinit var email: String
+    lateinit var bio: String
+    @field:JvmField // use this annotation if your Boolean field is prefixed with 'is'
+    var isOnline: Boolean? = null
+    lateinit var lastSeen: Timestamp
 
     constructor()
 
-
     constructor(
-        userId      : String,
-        name        : String,
-        photoURl    : String,
+        userId        : String,
+        name    : String,
+        photoUrl    : String,
         email       : String,
-        bio         : String,
-        isOnline    : Boolean,
-        lastSeen    : String
+        bio: String,
+        lastSeen: Timestamp,
+        isOnline: Boolean
     ) {
-        this.userId    = userId
-        this.name      = name
-        this.photoURl  = photoURl
+        this.userId      = userId
+        this.name  = name
+        this.photoUrl = photoUrl
         this.email     = email
-        this.bio       = bio
-        this.isOnline  = isOnline
-        this.lastSeen  = lastSeen
+        this.bio = bio
+        this.lastSeen = lastSeen
+        this.isOnline = isOnline
     }
 
     fun toHash() : HashMap<String, Any>{
         var hashMap = HashMap<String, Any>()
         hashMap.put("userId", userId)
         hashMap.put("name"   , name)
-        hashMap.put("photoUrl", photoURl)
+        hashMap.put("photoUrl", photoUrl)
         hashMap.put("email"  , email)
         hashMap.put("bio"  , bio)
-        hashMap.put("isOnline", isOnline as Any)
-        hashMap.put("lastSeen", lastSeen)
+        isOnline?.let { hashMap.put("isOnline"  , it) }
+        hashMap.put("lastSeen"  , lastSeen)
         return hashMap
     }
 
@@ -57,8 +57,8 @@ class User {
                 hashMap["photoUrl"   ] as String,
                 hashMap["email"   ] as String,
                 hashMap["bio"   ] as String,
-                hashMap["isOnline"   ] as Boolean,
-                hashMap["lastSeen"   ] as String
+                hashMap["lastSeen"   ] as Timestamp,
+                hashMap["isOnline"   ] as Boolean
             )
             return user
         }

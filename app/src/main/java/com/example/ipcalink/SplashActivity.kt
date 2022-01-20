@@ -1,8 +1,9 @@
 package com.example.ipcalink
 
+import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.example.ipcalink.databinding.ActivitySplashBinding
 import com.example.ipcalink.login.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -13,6 +14,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySplashBinding
@@ -36,15 +38,13 @@ class SplashActivity : AppCompatActivity() {
         if(currentUser != null){
             GlobalScope.launch (Dispatchers.Main){
                 delay(2000)
-                val intent = Intent(this@SplashActivity, MainActivity::class.java)
-                startActivity(intent)
+                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
                 finish()
             }
         }else {
             GlobalScope.launch (Dispatchers.Main){
                 delay(2000)
-                val intent = Intent(this@SplashActivity, LoginActivity::class.java)
-                startActivity(intent)
+                startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
                 finish()
             }
         }
