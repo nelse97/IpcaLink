@@ -58,6 +58,14 @@
             android:exported="false" />
 
         <activity
+            android:name=".messages.NewMessageActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".messages.ChatRoomActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".calendar.EditEventActivity"
             android:exported="false" />
 

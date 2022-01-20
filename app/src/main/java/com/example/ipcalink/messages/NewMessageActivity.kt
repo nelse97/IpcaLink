@@ -55,7 +55,6 @@ class NewMessageActivity : AppCompatActivity() {
             currentUserPhotoUrl = FirebaseAuth.getInstance().currentUser!!.photoUrl.toString()
         }
 
-
         //get current user uid
         authUserUid = FirebaseAuth.getInstance().currentUser!!.uid
 
@@ -158,65 +157,42 @@ class NewMessageActivity : AppCompatActivity() {
     fun createNewPrivateChat(user: User) {
         //create main chat document
         val newChatID = db.collection("chats").document().id
-        val newChat = Chats(newChatID, "", "private", "", "", "")
 
-        //add new chat to chats collection
-        db.collection("chats").document(newChatID).set(newChat).addOnCompleteListener { newChat ->
-            if (newChat.isSuccessful) {
-                createSenderChat(newChatID, user.photoUrl)
-                createReceiverChat(newChatID, user.userId)
+        //create objects
+        val newChat = Chats(newChatID, "", "private", "", "", "")
+        val senderUserChat = UsersChats(newChatID, user.name, "private", user.photoUrl, "", "",
+                null)
+        //create new chat information with sender info
+        val receiverUserChat = UsersChats(newChatID, "", "private", currentUserPhotoUrl, "",
+            "", null)
+
+        //create references
+        val mainChat = db.collection("chats").document(newChatID)
+        val senderChat =
+            db.collection("users").document(authUserUid).collection("chats").document(newChatID)
+        val receiverChat =
+            db.collection("users").document(user.userId).collection("chats").document(newChatID)
+
+        // Get a new write batch and commit all write operations
+        db.runBatch { batch ->
+            // Set the main chat branch
+            batch.set(mainChat, newChat)
+
+            // Set the sender branch
+            batch.set(senderChat, senderUserChat)
+
+            // Set the main branch
+            batch.set(receiverChat, receiverUserChat)
+        }.addOnCompleteListener { task ->
+            if(task.isSuccessful) {
+                val intent = Intent(this, ChatRoomActivity::class.java)
+                intent.putExtra("chatId", newChatID)
+                startActivity(intent)
+                finish()
             } else {
-                Log.d(
-                    "Error adding main chat!",
-                    newChat.exception.toString()
-                )
+                Log.d("Error adding main chat!", task.exception.toString())
             }
         }
-    }
-
-    fun createSenderChat(newChatID: String, receiverPhotoUrl: String) {
-        //create new chat information with receiver info
-        val newSenderUserChat =
-            UsersChats(newChatID, "", "private", receiverPhotoUrl, "", "", null)
-        //create new chat on sending user branch
-        db.collection("users").document(authUserUid).collection("chats")
-            .document(newChatID).set(newSenderUserChat)
-            .addOnCompleteListener { addNewSenderChat ->
-                if (addNewSenderChat.isSuccessful) {
-
-                }
-            }
-
-
-    }
-
-    fun createReceiverChat(newChatID: String, receiverUserId: String) {
-        //create new chat information with sender info
-        val newReceiverUserChat = UsersChats(
-            newChatID,
-            "",
-            "private",
-            currentUserPhotoUrl,
-            "",
-            "",
-            null
-        )
-        db.collection("users").document(receiverUserId).collection("chats")
-            .document(newChatID)
-            .set(newReceiverUserChat)
-            .addOnCompleteListener { addNewReceiverChat ->
-                if (addNewReceiverChat.isSuccessful) {
-                    val intent = Intent(this, ChatRoomActivity::class.java)
-                    intent.putExtra("chatId", newChatID)
-                    startActivity(intent)
-                    finish()
-                } else {
-                    Log.d(
-                        "Error adding receiver chat!",
-                        addNewReceiverChat.exception.toString()
-                    )
-                }
-            }
     }
 
 }

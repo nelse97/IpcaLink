@@ -50,7 +50,6 @@ class UsersChats {
 
     companion object {
         fun fromHash(hashMap: QueryDocumentSnapshot) : UsersChats {
-
             return UsersChats(
                 hashMap["chatId"] as String,
                 hashMap["chatName"] as String,
@@ -58,7 +57,7 @@ class UsersChats {
                 hashMap["photoUrl"] as String,
                 hashMap["lastMessage"] as String,
                 hashMap["lastMessageSenderId"] as String,
-                hashMap["lastMessageTimestamp"] as Timestamp
+                hashMap["lastMessageTimestamp"] as Timestamp?
             )
         }
     }

@@ -72,7 +72,14 @@ class PrivateMessagesFragment : Fragment() {
         }
 
         //bind adapter to private chats recycler view
-        //binding.rvPrivateChats.adapter = chatsAdapter
+        binding.rvPrivateChats.adapter = chatsAdapter
+
+        val newChat = UsersChats("x34mjmazUy4srm97QZhx", "Eduardo", "private", "", "", "",
+            null)
+
+        userChats.add(newChat)
+
+        chatsAdapter.notifyDataSetChanged()
 
         // return the fragment layout
         return binding.root
@@ -97,7 +104,7 @@ class PrivateMessagesFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        //get list of all user chats
+        /*//get list of all user chats
         db.collection("users").document(authUserUid).collection("chats")
             .addSnapshotListener { chats, e ->
                 if (e != null) {
@@ -109,7 +116,7 @@ class PrivateMessagesFragment : Fragment() {
                     Log.d("chatsFragment", e.message.toString())
                     return@addSnapshotListener
                 }
-                userExistingPrivateChats.clear()
+                //userExistingPrivateChats.clear()
                 userChats.clear()
                 for (chat in chats!!) {
                     val newChat = chat.toObject<UsersChats>()
@@ -120,11 +127,11 @@ class PrivateMessagesFragment : Fragment() {
                     noChatsShowNotice()
                 } else {
                     //get a list of the users current private chats
-                    //verifyCurrentPrivateChats()
-                    //chatsAdapter.notifyDataSetChanged()
+                    verifyCurrentPrivateChats()
+                    chatsAdapter.notifyDataSetChanged()
                 }
 
-            }
+            }*/
     }
 
     override fun onStop() {
@@ -157,9 +164,9 @@ class PrivateMessagesFragment : Fragment() {
             holder.chatTitle.text = userChat.chatName
             holder.chatLastMessage.text = userChat.lastMessage
 
-            val date = getDate(userChat.lastMessageTimestamp!!.seconds * 1000, "mm:ss")
+            //val date = getDate(userChat.lastMessageTimestamp!!.seconds * 1000, "mm:ss")
 
-            holder.chatRowTime.text = date
+            //holder.chatRowTime.text = date
 
             holder.itemView.setOnClickListener {
                 clickListener(userChats[position])
