@@ -106,7 +106,7 @@ class RecyclerViewAdapter internal constructor(rl: MutableList<Events>, map : Mu
 
             holder.title?.text = currentItem.title
             holder.duration?.text = "$startTime-$endTime"
-            holder.chatName?.text = calendarSharedPreferences(holder.itemView.context).currentChatId
+            holder.chatName?.text = calendarSharedPreferences(holder.itemView.context).currentChatName
         }
     }
 

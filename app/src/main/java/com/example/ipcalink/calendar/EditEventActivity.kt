@@ -68,18 +68,13 @@ class EditEventActivity : AppCompatActivity() {
 
     //lateinit var timePicker: SupportedDatePickerDialog
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
         _binding = ActivityAddEventBinding.inflate(layoutInflater)
         setContentView(binding.root)
-    }
-
-    @SuppressLint("SimpleDateFormat", "ResourceType")
-    @RequiresApi(Build.VERSION_CODES.O)
-    public override fun onStart() {
-        super.onStart()
 
         /*Locale.setDefault(myLocale)
 
@@ -90,6 +85,8 @@ class EditEventActivity : AppCompatActivity() {
 
         //Hides top bar
         (this as AppCompatActivity?)!!.supportActionBar!!.hide()
+
+        println("teste")
 
         binding.textViewEvento.text = "Editar Evento"
 
@@ -383,6 +380,15 @@ class EditEventActivity : AppCompatActivity() {
                 calendar2.get(Calendar.DAY_OF_MONTH)
             ).show()
         }
+
+
+    }
+
+    @SuppressLint("SimpleDateFormat", "ResourceType")
+    @RequiresApi(Build.VERSION_CODES.O)
+    public override fun onStart() {
+        super.onStart()
+
     }
 
     private fun customTimePicker(time : String) {
@@ -562,6 +568,8 @@ class EditEventActivity : AppCompatActivity() {
                     chatsPhotoList = ArrayList()
                     chatsIdsList = ArrayList()
                     chatsNameList = ArrayList()
+
+                    ChatsAdapter().notifyDataSetChanged()
                 }
             }
         }

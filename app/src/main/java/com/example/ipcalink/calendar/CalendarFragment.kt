@@ -295,14 +295,6 @@ class CalendarFragment : Fragment() {
             val oldHeight = if(binding.toggleButtonArrow.isChecked) oneMonthHeight else oneWeekHeight
             val newHeight = if(binding.toggleButtonArrow.isChecked) oneWeekHeight else oneMonthHeight
 
-            /*if(imageArrowControl %2 == 1) {
-                binding.imageArrow.setImageResource(R.drawable.round_keyboard_arrow_up_black_36)
-                binding.imageArrow.setColorFilter(Color.argb(255, 0, 78, 56))
-
-            } else {
-                binding.imageArrow.setImageResource(R.drawable.round_keyboard_arrow_down_black_36)
-                binding.imageArrow.setColorFilter(Color.argb(255, 0, 78, 56))
-            }*/
 
             // Animate calendar height changes.
             val animator = ValueAnimator.ofInt(oldHeight, newHeight)
@@ -637,6 +629,7 @@ class CalendarFragment : Fragment() {
         binding.recyclerViewEvents.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         binding.recyclerViewEvents.adapter = eventsAdapter
 
+        //When the user does a swipe to the left this code is executed
         val swipeHandler = object : SwipeToDeleteCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val adapter = binding.recyclerViewEvents.adapter as RecyclerViewAdapter
