@@ -104,39 +104,12 @@ class PrivateMessagesFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        /*//get list of all user chats
-        db.collection("users").document(authUserUid).collection("chats")
-            .addSnapshotListener { chats, e ->
-                if (e != null) {
-                    Toast.makeText(
-                        activity,
-                        "Ocorreu um erro ao tentar listar todos os seus chats. Tente novamente mais tarde.",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    Log.d("chatsFragment", e.message.toString())
-                    return@addSnapshotListener
-                }
-                //userExistingPrivateChats.clear()
-                userChats.clear()
-                for (chat in chats!!) {
-                    val newChat = chat.toObject<UsersChats>()
-                    userChats.add(newChat)
-                }
-                Log.d("PrivateMessages", userChats.size.toString())
-                if(userChats.size == 0) {
-                    noChatsShowNotice()
-                } else {
-                    //get a list of the users current private chats
-                    verifyCurrentPrivateChats()
-                    chatsAdapter.notifyDataSetChanged()
-                }
 
-            }*/
     }
 
     override fun onStop() {
         super.onStop()
-        db.clearPersistence()
+        //db.clearPersistence()
     }
 
     inner class PrivateChatsAdapter (private val clickListener: (UsersChats) -> Unit) :

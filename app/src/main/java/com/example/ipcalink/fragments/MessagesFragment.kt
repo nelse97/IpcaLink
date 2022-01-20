@@ -76,7 +76,6 @@ class MessagesFragment : Fragment() {
             val transaction = childFragmentManager.beginTransaction()
             //transaction.replace(R.id.messagesFrameContainer, fragment)
             transaction.commit()
-
         }
     }
 }

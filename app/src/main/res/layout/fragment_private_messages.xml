@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="bottom"
     android:orientation="vertical"
     tools:context=".fragments.PrivateMessagesFragment">
 
@@ -13,8 +14,11 @@
         android:id="@+id/rvPrivateChats"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -33,22 +37,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/rvPrivateChats"
         tools:fontFamily="@font/montserrat_medium" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabAddPrivateMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="35dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:contentDescription="FBA add action main activity"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_add_icon"
-        app:elevation="4dp"
-        app:fabCustomSize="60dp"
-        app:layout_constraintBottom_toBottomOf="@+id/rvPrivateChats"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:maxImageSize="14dp"
-        app:tint="@android:color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
