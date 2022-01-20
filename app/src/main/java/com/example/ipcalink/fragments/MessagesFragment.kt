@@ -1,5 +1,6 @@
 package com.example.ipcalink.fragments
 
+import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,6 +10,8 @@ import android.view.ViewGroup
 import androidx.viewpager.widget.ViewPager
 import com.example.ipcalink.R
 import com.example.ipcalink.databinding.FragmentMessagesBinding
+import com.example.ipcalink.login.RegisterActivity
+import com.example.ipcalink.messages.NewMessageActivity
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 
@@ -31,6 +34,10 @@ class MessagesFragment : Fragment() {
 
         binding.tvPrivateMessagesTopBar.setTypeface(null, Typeface.BOLD)
         binding.tvSchoolMessagesTopBar.setTypeface(null, Typeface.NORMAL)
+
+        binding.fabAddPrivateMessage.setOnClickListener {
+            startActivity(Intent(context, NewMessageActivity::class.java))
+        }
 
         binding.llPrivateMessages.setOnClickListener {
             replaceFragment(privateMessagesFragment)
@@ -68,7 +75,7 @@ class MessagesFragment : Fragment() {
     private fun replaceFragment(fragment: Fragment?) {
         if (fragment != null) {
             val transaction = childFragmentManager.beginTransaction()
-            transaction.replace(R.id.messagesFrameContainer, fragment)
+            //transaction.replace(R.id.messagesFrameContainer, fragment)
             transaction.commit()
 
         }

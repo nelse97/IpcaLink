@@ -9,7 +9,7 @@
 
 
     <TextView
-        android:id="@+id/textViewNotificacoes"
+        android:id="@+id/textViewNewMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="51dp"
