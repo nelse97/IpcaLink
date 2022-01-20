@@ -384,7 +384,6 @@ class AddEventActivity : AppCompatActivity() {
                     Log.d("", "Event added to chat: $eventChat")
                 }
             }
-
             i++
         }
 
