@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,7 @@ import com.example.ipcalink.calendar.Extensions.daysOfWeekFromLocale
 import com.example.ipcalink.R
 import com.example.ipcalink.calendar.CalendarHelper.DateFormater
 import com.example.ipcalink.calendar.CalendarHelper.getDate
+import com.example.ipcalink.calendar.Extensions.dpToPx
 import com.example.ipcalink.calendar.Extensions.makeInVisible
 import com.example.ipcalink.calendar.Extensions.makeVisible
 import com.example.ipcalink.calendar.Extensions.setTextColorRes
@@ -45,55 +47,10 @@ import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
 import com.kizitonwose.calendarview.model.OutDateStyle
 import com.kizitonwose.calendarview.utils.Size
+import java.time.temporal.ChronoUnit
 
 
 class CalendarFragment : Fragment() {
-
-    /*private val eventsAdapter = EventsAdapter {
-    AlertDialog.Builder(requireContext())
-        .setMessage("Delete this event?")
-        .setPositiveButton("Delete") { _, _ ->
-            //deleteEvent(it)
-        }
-        .setNegativeButton("Close", null)
-        .show()
-}*/
-
-    /*private val inputDialog by lazy {
-        val editText = AppCompatEditText(requireContext())
-        val layout = FrameLayout(requireContext()).apply {
-            // Setting the padding on the EditText only pads the input area
-            // not the entire EditText so we wrap it in a FrameLayout.
-            val padding = dpToPx(20, requireContext())
-            setPadding(padding, padding, padding, padding)
-            addView(editText, FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            ))
-        }
-        AlertDialog.Builder(requireContext())
-            .setTitle("Enter event title")
-            .setView(layout)
-            .setPositiveButton("Save") { _, _ ->
-                saveEvent(editText.text.toString())
-                // Prepare EditText for reuse.
-                editText.setText("")
-            }
-            .setNegativeButton("Close", null)
-            .create()
-            .apply {
-                setOnShowListener {
-                    // Show the keyboard
-                    editText.requestFocus()
-                    context.inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
-                }
-                setOnDismissListener {
-                    editText.setText("")
-                    // Hide the keyboard
-                    context.inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
-                }
-            }
-    }*/
 
     private var _binding : FragmentCalendarBinding? = null
     private val binding get() = _binding!!
@@ -117,8 +74,8 @@ class CalendarFragment : Fragment() {
     val myLocale = Locale("pt", "PT")
     private val monthTitleFormatter = DateTimeFormatter.ofPattern("MMMM", myLocale)
 
-    private var imageArrowControl = 1
-    private var imageHamburgerControl = 1
+    /*private var imageArrowControl = 1
+    private var imageHamburgerControl = 1*/
 
 
     private lateinit var registration : ListenerRegistration
@@ -141,30 +98,17 @@ class CalendarFragment : Fragment() {
         (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
 
 
-        /*layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        binding.recyclerViewEvents.layoutManager = layoutManager
-        eventsAdapter = EventsAdapter(null)
-        binding.recyclerViewEvents.itemAnimator = null
-        binding.recyclerViewEvents.adapter = eventsAdapter*/
-
-        //events recycler view
-        //sets the size of the recycler view to be fixed
-        //binding.recyclerViewEvents.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
-
-        //val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(requireContext())
-
-        //binding.recyclerViewEvents.setHasFixedSize(true)
-        //sets the layout of the RecyclerView to be vertical
-
-
+        //When the user enters the calendar fragment, the current chat id and name
+        //shared preferences has to be reseted, because the user is going to be seeing the calendar globally
         calendarSharedPreferences(requireContext()).currentChatId = null
         calendarSharedPreferences(requireContext()).currentChatName = null
 
 
+        //setting up the events recycler view
         setUpRecyclerView()
 
 
-        //chats recycler view
+        //setting up the chats recycler view
         layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
         binding.recyclerViewGroupChats.layoutManager = layoutManager
         chatsAdapter = ChatsAdapter()
@@ -174,45 +118,46 @@ class CalendarFragment : Fragment() {
 
         binding.recyclerViewGroupChats.visibility = View.GONE
 
+
+        //Get the days of the week from my current locale
         val daysOfWeek = daysOfWeekFromLocale()
 
+        //Get my current month and then define my start and end month
         val currentMonth = YearMonth.now()
         val startMonth = currentMonth.minusMonths(60)
         val endMonth = currentMonth.plusMonths(60)
 
 
-        // Setup custom day size to fit two months on the screen.
-        //val dm = DisplayMetrics()
-        //val wm = requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val dm = DisplayMetrics()
 
+        // Setup the day size for the days of my calendar.
         binding.calendar.apply {
 
-            daySize = Size(140, 95)
-
-            // We want the immediately following/previous month to be
-            // partially visible so we multiply the total width by 0.73
-            /*val monthWidth = (dm.widthPixels * 0.73).toInt()
+            // Here i calculate
+            val monthWidth = (dm.widthPixels * 0.73).toInt()
             val dayWidth = monthWidth / 7
             val dayHeight = (dayWidth * 1.73).toInt() // We don't want a square calendar.
             daySize = Size(dayWidth, dayHeight)
 
             // Add margins around our card view.
-            val horizontalMargin = dpToPx(20, requireContext())
+            val horizontalMargin = dpToPx(5, requireContext())
             val verticalMargin = dpToPx(0, requireContext())
-            setMonthMargins(start = horizontalMargin, end = horizontalMargin, top = verticalMargin, bottom = verticalMargin)*/
+            setMonthMargins(start = horizontalMargin, end = horizontalMargin, top = verticalMargin, bottom = verticalMargin)
 
+            //Setup the days of the week and the start/end month
             setup(startMonth, endMonth, daysOfWeek.first())
             scrollToMonth(currentMonth)
         }
 
+        //Search the events of a user
+        //to then fill the calendar with them
         searchingEvents()
 
-
-        binding.imageHamburger.setOnClickListener {
-            imageHamburgerControl++
-
-            if(imageHamburgerControl %2 == 0) {
-
+        //If the toogle button has the state 'on' the calendar shows the groups in witch the users belongs
+        //so that they can filter the events that appear on the calendar
+        //If the toogle button has the state 'off' the calendar shows all of the events
+        binding.toggleHamburger.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked) {
                 binding.recyclerViewGroupChats.visibility = View.VISIBLE
                 insertingChats()
             } else {
@@ -224,7 +169,7 @@ class CalendarFragment : Fragment() {
             }
         }
 
-
+        //This class deals with the clicks done by the user on the calendar days
         class DayViewContainer(view: View) : ViewContainer(view) {
             // Will be set when this container is bound. See the dayBinder.
             lateinit var day : CalendarDay
@@ -232,7 +177,7 @@ class CalendarFragment : Fragment() {
 
 
             init {
-
+                //if a user clicks on a day and that day belongs to the current month, the day is selected
                 view.setOnClickListener {
                     if (day.owner == DayOwner.THIS_MONTH) {
                         selectDate(day.date)
@@ -241,7 +186,7 @@ class CalendarFragment : Fragment() {
             }
         }
 
-
+        //This object
         binding.calendar.dayBinder = object : DayBinder<DayViewContainer> {
             override fun create(view: View) = DayViewContainer(view)
             override fun bind(container: DayViewContainer, day: CalendarDay) {
@@ -257,12 +202,20 @@ class CalendarFragment : Fragment() {
                 if (day.owner == DayOwner.THIS_MONTH) {
                     textViewDay.makeVisible()
                     when (day.date) {
-                        /*today -> {
-                            textView.setTextColorRes(R.color.white)
-                            textView.setBackgroundResource(R.drawable.calendar_day_selected)
-                            cardView.isVisible = eventsMap[day.date].orEmpty().isNotEmpty()
-                            cardView.setBackgroundResource(R.color.white)
-                        }*/
+                        today -> {
+                            if(today != selectedDate) {
+                                textViewDay.setTextColorRes(R.color.black)
+                                textViewDay.setBackgroundResource(R.drawable.calendar_today)
+                                cardView1.isVisible = eventsMap[day.date].orEmpty().isNotEmpty()
+                                cardView2.setBackgroundResource(R.color.colorPrimary)
+                            } else {
+                                textViewDay.setTextColorRes(R.color.white)
+                                textViewDay.setBackgroundResource(R.drawable.calendar_day_selected)
+                                cardView1.isVisible = eventsMap[day.date].orEmpty().isNotEmpty()
+                                cardView2.setBackgroundResource(R.color.white)
+                            }
+
+                        }
                         selectedDate -> {
                             textViewDay.setTextColorRes(R.color.white)
                             textViewDay.setBackgroundResource(R.drawable.calendar_day_selected)
@@ -290,8 +243,10 @@ class CalendarFragment : Fragment() {
             }
         }
 
+        //when the user scrolls to a new month this code is called
         binding.calendar.monthScrollListener = {
 
+            //if the calendar is in month mode, then i define the year and month value normally
             if (binding.calendar.maxRowCount == 6) {
 
                 binding.textViewYear.text = it.yearMonth.year.toString()
@@ -303,6 +258,8 @@ class CalendarFragment : Fragment() {
                 // months/years.
                 val firstDate = it.weekDays.first().first().date
                 val lastDate = it.weekDays.last().last().date
+
+
                 if (firstDate.yearMonth == lastDate.yearMonth) {
                     binding.textViewYear.text = firstDate.yearMonth.year.toString()
                     binding.textViewMonth.text = monthTitleFormatter.format(firstDate)
@@ -321,14 +278,13 @@ class CalendarFragment : Fragment() {
             }
         }
 
-        binding.imageArrow.setImageResource(R.drawable.round_keyboard_arrow_up_black_36)
-        binding.imageArrow.setColorFilter(Color.argb(255, 0, 78, 56))
+        /*binding.imageArrow.setImageResource(R.drawable.round_keyboard_arrow_up_black_36)
+        binding.imageArrow.setColorFilter(Color.argb(255, 0, 78, 56))*/
 
 
-
-        binding.imageArrow.setOnClickListener {
-
-            imageArrowControl++
+        //If the user clicks on the calendar arrow then depending on the state of the toogle button
+        //the calendar will enter week mode or month mode
+        binding.toggleButtonArrow.setOnClickListener {
 
             val firstDate = binding.calendar.findFirstVisibleDay()?.date ?: return@setOnClickListener
             val lastDate = binding.calendar.findLastVisibleDay()?.date ?: return@setOnClickListener
@@ -336,21 +292,15 @@ class CalendarFragment : Fragment() {
             val oneWeekHeight = binding.calendar.daySize.height
             val oneMonthHeight = oneWeekHeight * 6
 
-            val oldHeight = if(imageArrowControl %2 == 0) oneMonthHeight else oneWeekHeight
-            val newHeight = if(imageArrowControl %2 == 0) oneWeekHeight else oneMonthHeight
+            val oldHeight = if(binding.toggleButtonArrow.isChecked) oneMonthHeight else oneWeekHeight
+            val newHeight = if(binding.toggleButtonArrow.isChecked) oneWeekHeight else oneMonthHeight
 
-            if(imageArrowControl %2 == 1) {
-                binding.imageArrow.setImageResource(R.drawable.round_keyboard_arrow_up_black_36)
-                binding.imageArrow.setColorFilter(Color.argb(255, 0, 78, 56))
-
-            } else {
-                binding.imageArrow.setImageResource(R.drawable.round_keyboard_arrow_down_black_36)
-                binding.imageArrow.setColorFilter(Color.argb(255, 0, 78, 56))
-            }
 
             // Animate calendar height changes.
             val animator = ValueAnimator.ofInt(oldHeight, newHeight)
+            //When the values oldHeight and newHeight change, the code inside this listener is going to be executed
             animator.addUpdateListener { animator ->
+                //Updating layout parameters of the calendar with the new height
                 binding.calendar.updateLayoutParams {
                     height = animator.animatedValue as Int
                 }
@@ -363,7 +313,7 @@ class CalendarFragment : Fragment() {
             // in height is visible. You can do this whichever way you prefer.
 
             animator.doOnStart {
-                if (imageArrowControl %2 != 0) {
+                if (!binding.toggleButtonArrow.isChecked) {
                     binding.calendar.updateMonthConfiguration(
                         inDateStyle = InDateStyle.ALL_MONTHS,
                         outDateStyle = OutDateStyle.END_OF_ROW,
@@ -373,7 +323,7 @@ class CalendarFragment : Fragment() {
                 }
             }
             animator.doOnEnd {
-                if (imageArrowControl %2 == 0) {
+                if (binding.toggleButtonArrow.isChecked) {
                     binding.calendar.updateMonthConfiguration(
                         inDateStyle = InDateStyle.FIRST_MONTH,
                         outDateStyle = OutDateStyle.END_OF_ROW,
@@ -382,7 +332,7 @@ class CalendarFragment : Fragment() {
                     )
                 }
 
-                if (imageArrowControl % 2 == 0) {
+                if (binding.toggleButtonArrow.isChecked) {
                     // We want the first visible day to remain
                     // visible when we change to week mode.
 
@@ -466,12 +416,38 @@ class CalendarFragment : Fragment() {
 
     private fun saveEvent(value : QuerySnapshot) {
 
-        binding.calendar.notifyCalendarChanged()
         eventsMap.clear()
 
         for(query in value){
 
             val event = Events.fromHash(query)
+
+            val startDate = getDate(event.startDate!!.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
+            val endDate = getDate(event.endDate!!.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
+
+            val localStartDate = LocalDate.parse(DateFormater(startDate))
+            val localendDate = LocalDate.parse(DateFormater(endDate))
+
+            val dayDiff = ChronoUnit.DAYS.between(localStartDate, localendDate)
+
+            var date = localStartDate
+
+            var i = 0
+
+            while (i <= dayDiff) {
+                binding.calendar.notifyDateChanged(date)
+
+                date?.let {
+                    eventsMap[it] = eventsMap[it].orEmpty().plus(Events(event.id, event.title, event.description, event.sendDate, event.senderId, event.startDate, event.endDate))
+                    updateAdapterForDate(it)
+                }
+
+                date = date.plusDays(1)
+
+                i++
+            }
+
+            /*val event = Events.fromHash(query)
 
             val startDate = getDate(event.startDate!!.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
             val endDate = getDate(event.endDate!!.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -483,9 +459,10 @@ class CalendarFragment : Fragment() {
             localStartDate?.let {
                 eventsMap[it] = eventsMap[it].orEmpty().plus(Events(event.id, event.title, event.description, event.sendDate, event.senderId, event.startDate, event.endDate))
                 updateAdapterForDate(it)
-            }
+            }*/
         }
 
+        binding.calendar.notifyCalendarChanged()
 
         binding.calendar.post {
             // Show today's events initially.
@@ -648,15 +625,18 @@ class CalendarFragment : Fragment() {
         binding.recyclerViewEvents.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
 
 
-        eventsAdapter = RecyclerViewAdapter(eventsList, eventsMap, binding)
+        eventsAdapter = RecyclerViewAdapter(eventsList, eventsMap, binding, requireContext())
         binding.recyclerViewEvents.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         binding.recyclerViewEvents.adapter = eventsAdapter
 
+        //When the user does a swipe to the left this code is executed
         val swipeHandler = object : SwipeToDeleteCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val adapter = binding.recyclerViewEvents.adapter as RecyclerViewAdapter
                 adapter.removeAt(viewHolder.adapterPosition, calendarSharedPreferences(requireContext()).currentChatId, calendarSharedPreferences(requireContext()).currentChatName)
             }
+
+
         }
 
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
@@ -669,7 +649,5 @@ class CalendarFragment : Fragment() {
 
         registration.remove()
     }
-
-
 }
 

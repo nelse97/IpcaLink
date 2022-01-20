@@ -10,31 +10,35 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ipcalink.R
-import com.example.ipcalink.calendar.CalendarHelper.CalendarDateFormatter
-import com.example.ipcalink.calendar.CalendarHelper.DateFormaterCalendarIngToCalendarPt
+import com.example.ipcalink.calendar.CalendarHelper.DateFormater
+import com.example.ipcalink.calendar.CalendarHelper.getDate
+import com.example.ipcalink.calendar.CalendarHelper.getHours
+import com.example.ipcalink.calendar.CalendarHelper.getMinutes
 import com.example.ipcalink.databinding.ActivityAddEventBinding
 import com.example.ipcalink.models.Events
+import com.example.ipcalink.models.UsersChats
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
+import kotlin.time.Duration.Companion.hours
 
-
-
-class AddEventActivity : AppCompatActivity() {
+class EditEventActivity : AppCompatActivity() {
 
     private var _binding: ActivityAddEventBinding? = null
     private val binding get() = _binding!!
@@ -43,14 +47,18 @@ class AddEventActivity : AppCompatActivity() {
 
     private val myLocale = Locale("pt", "PT")
 
-    private var calendar = Calendar.getInstance()
+    private var calendar1 = Calendar.getInstance()
+    private var calendar2 = Calendar.getInstance()
 
     private val userUID = Firebase.auth.uid
 
     private var chatsPhotoList : ArrayList<String> = ArrayList()
-    private var chatsIdsList : ArrayList<String>   = ArrayList()
-    private var chatsNameList : ArrayList<String>   = ArrayList()
+    private var chatsIdsList : ArrayList<String> = ArrayList()
+    private var chatsNameList : ArrayList<String> = ArrayList()
 
+    private val userChatsList : ArrayList<UsersChats> = ArrayList()
+    private val chatsWithEventsList : ArrayList<UsersChats> = ArrayList()
+    private var eventToEdit : ArrayList<Events> = ArrayList()
 
     private var chatsAdapter: RecyclerView.Adapter<*>? = null
     private var layoutManager: LinearLayoutManager? = null
@@ -60,18 +68,13 @@ class AddEventActivity : AppCompatActivity() {
 
     //lateinit var timePicker: SupportedDatePickerDialog
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
         _binding = ActivityAddEventBinding.inflate(layoutInflater)
         setContentView(binding.root)
-    }
-
-    @SuppressLint("SimpleDateFormat", "ResourceType")
-    @RequiresApi(Build.VERSION_CODES.O)
-    public override fun onStart() {
-        super.onStart()
 
         /*Locale.setDefault(myLocale)
 
@@ -83,6 +86,10 @@ class AddEventActivity : AppCompatActivity() {
         //Hides top bar
         (this as AppCompatActivity?)!!.supportActionBar!!.hide()
 
+        println("teste")
+
+        binding.textViewEvento.text = "Editar Evento"
+
 
         layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
         binding.recyclerViewGroups.layoutManager = layoutManager
@@ -90,18 +97,115 @@ class AddEventActivity : AppCompatActivity() {
         binding.recyclerViewGroups.itemAnimator = DefaultItemAnimator()
         binding.recyclerViewGroups.adapter = chatsAdapter
 
-        val dateString = intent.getStringExtra("date")
+        val eventIdString = intent.getStringExtra("eventId")
         //val chatId = intent.getStringExtra("chatId")
 
-        val date = LocalDate.parse(dateString)
+        searchChat {
+            searchChatsWithEvents(eventIdString!!) {
+                if(!chatsWithEventsList.isNullOrEmpty()) {
 
-        calendar.set(date.year, date.monthValue-1, date.dayOfMonth)
+                    val startDate = getDate(eventToEdit[0].startDate!!.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
+                    val endDate = getDate(eventToEdit[0].endDate!!.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
 
-        val dateFormattedString = DateFormaterCalendarIngToCalendarPt(calendar.time.toString())
-        binding.textViewStartDate.text = dateFormattedString
-        binding.textViewEndDate.text = dateFormattedString
-        binding.textViewStartTime.text = lastSavedStartDate
-        binding.textViewEndTime.text = lastSavedEndDate
+                    val localStartDate = LocalDate.parse(DateFormater(startDate))
+                    val localendDate = LocalDate.parse(DateFormater(endDate))
+                    calendar1.set(localStartDate.year, localStartDate.monthValue-1, localStartDate.dayOfMonth)
+                    calendar2.set(localendDate.year, localendDate.monthValue-1, localendDate.dayOfMonth)
+
+                    val startDateFormattedString =
+                        CalendarHelper.DateFormaterCalendarIngToCalendarPt(calendar1.time.toString())
+
+                    val endDateFormattedString =
+                        CalendarHelper.DateFormaterCalendarIngToCalendarPt(calendar2.time.toString())
+
+                    val startHour = getHours(startDate)
+                    val startMinute = getMinutes(startDate)
+                    val startTime = "$startHour:$startMinute"
+
+                    val endHour = getHours(endDate)
+                    val endMinute = getMinutes(endDate)
+                    val endTime = "$endHour:$endMinute"
+
+                    binding.textViewStartDate.text = startDateFormattedString
+                    binding.textViewEndDate.text = endDateFormattedString
+                    binding.textViewStartTime.text = startTime
+                    binding.textViewEndTime.text = endTime
+                    binding.editTextTitle.setText(eventToEdit[0].title)
+                    binding.editTextDecription.setText(eventToEdit[0].description)
+                } else {
+                    searchUserEvent(eventIdString) {
+
+                        binding.textView7.visibility = View.GONE
+                        binding.addGroupsButton.visibility = View.GONE
+                        binding.recyclerViewGroups.visibility = View.GONE
+
+                        val startDate = getDate(eventToEdit[0].startDate!!.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
+                        val endDate = getDate(eventToEdit[0].endDate!!.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
+
+                        val localStartDate = LocalDate.parse(DateFormater(startDate))
+                        val localendDate = LocalDate.parse(DateFormater(endDate))
+                        calendar1.set(localStartDate.year, localStartDate.monthValue-1, localStartDate.dayOfMonth)
+                        calendar2.set(localendDate.year, localendDate.monthValue-1, localendDate.dayOfMonth)
+
+                        val startDateFormattedString =
+                            CalendarHelper.DateFormaterCalendarIngToCalendarPt(calendar1.time.toString())
+
+                        val endDateFormattedString =
+                            CalendarHelper.DateFormaterCalendarIngToCalendarPt(calendar2.time.toString())
+
+                        val startHour = getHours(startDate)
+                        val startMinute = getMinutes(startDate)
+                        val startTime = "$startHour:$startMinute"
+
+                        val endHour = getHours(endDate)
+                        val endMinute = getMinutes(endDate)
+                        val endTime = "$endHour:$endMinute"
+
+                        binding.textViewStartDate.text = startDateFormattedString
+                        binding.textViewEndDate.text = endDateFormattedString
+                        binding.textViewStartTime.text = startTime
+                        binding.textViewEndTime.text = endTime
+                        binding.editTextTitle.setText(eventToEdit[0].title)
+                        binding.editTextDecription.setText(eventToEdit[0].description)
+                    }
+                }
+            }
+        }
+
+        /*if(chatsWithEventsList.isNullOrEmpty()) {
+            searchUserEvent(eventIdString!!) {
+                val startDate = getDate(eventToEdit[0].startDate!!.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
+                val endDate = getDate(eventToEdit[0].endDate!!.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
+
+                val localStartDate = LocalDate.parse(DateFormater(startDate))
+                val localendDate = LocalDate.parse(DateFormater(endDate))
+                calendar1.set(localStartDate.year, localStartDate.monthValue-1, localStartDate.dayOfMonth)
+                calendar2.set(localendDate.year, localendDate.monthValue-1, localendDate.dayOfMonth)
+
+                val startDateFormattedString =
+                    CalendarHelper.DateFormaterCalendarIngToCalendarPt(calendar1.time.toString())
+
+                val endDateFormattedString =
+                    CalendarHelper.DateFormaterCalendarIngToCalendarPt(calendar1.time.toString())
+
+                val startHour = getHours(startDate)
+                val startMinute = getMinutes(startDate)
+                val startTime = "$startHour:$startMinute"
+
+                val endHour = getHours(endDate)
+                val endMinute = getMinutes(endDate)
+                val endTime = "$endHour:$endMinute"
+
+                binding.textViewStartDate.text = startDateFormattedString
+                binding.textViewEndDate.text = endDateFormattedString
+                binding.textViewStartTime.text = startTime
+                binding.textViewEndTime.text = endTime
+                binding.editTextTitle.setText(eventToEdit[0].title)
+                binding.editTextDecription.setText(eventToEdit[0].description)
+            }
+        }*/
+
+
 
         binding.toggleButton.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked) {
@@ -140,8 +244,8 @@ class AddEventActivity : AppCompatActivity() {
                 val title = binding.editTextTitle.text.toString()
                 val description = binding.editTextDecription.text.toString()
 
-                val startDateString = CalendarDateFormatter(binding.textViewStartDate.text.toString()) + " " + binding.textViewStartTime.text.toString()
-                val endDateString = CalendarDateFormatter(binding.textViewEndDate.text.toString()) + " " + binding.textViewEndTime.text.toString()
+                val startDateString = CalendarHelper.CalendarDateFormatter(binding.textViewStartDate.text.toString()) + " " + binding.textViewStartTime.text.toString()
+                val endDateString = CalendarHelper.CalendarDateFormatter(binding.textViewEndDate.text.toString()) + " " + binding.textViewEndTime.text.toString()
 
 
                 val startDateLong = Date.parse(startDateString)
@@ -166,11 +270,12 @@ class AddEventActivity : AppCompatActivity() {
 
 
                 if(startDate.time <= endDate.time) {
-                    if(!chatsIdsList.isNullOrEmpty()) {
-                        saveEventToGroup(chatsIdsList, title, description, timeStampSend, timeStampStart, timeStampEnd, userUID!!
-                        )
+                    if(!chatsWithEventsList.isNullOrEmpty()) {
+                        for(chat in chatsWithEventsList) {
+                            editEventToGroups(chat, eventIdString!!, title, description, timeStampSend, timeStampStart, timeStampEnd, userUID!!)
+                        }
                     } else {
-                        saveEventToUser(title, description, timeStampSend, timeStampStart, timeStampEnd)
+                        editEventToUser(eventIdString!!, title, description, timeStampSend, timeStampStart, timeStampEnd)
                     }
                 } else {
                     val toast = Toast.makeText(this, "Por favor insira uma data de fim de evento maior que a de inicio", Toast.LENGTH_SHORT)
@@ -226,12 +331,13 @@ class AddEventActivity : AppCompatActivity() {
         val startDateSetListener =
             DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
 
-                calendar.set(Calendar.YEAR, year)
-                calendar.set(Calendar.MONTH, monthOfYear)
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                calendar1.set(Calendar.YEAR, year)
+                calendar1.set(Calendar.MONTH, monthOfYear)
+                calendar1.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
 
-                val dateFormattedString = DateFormaterCalendarIngToCalendarPt(calendar.time.toString())
+                val dateFormattedString =
+                    CalendarHelper.DateFormaterCalendarIngToCalendarPt(calendar1.time.toString())
                 //val chosenDate = LocalDate.parse(dateFormattedString)
                 binding.textViewStartDate.text = dateFormattedString
 
@@ -240,11 +346,12 @@ class AddEventActivity : AppCompatActivity() {
         val endDateSetListener =
             DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
 
-                calendar.set(Calendar.YEAR, year)
-                calendar.set(Calendar.MONTH, monthOfYear)
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                calendar2.set(Calendar.YEAR, year)
+                calendar2.set(Calendar.MONTH, monthOfYear)
+                calendar2.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
-                val dateFormattedString = DateFormaterCalendarIngToCalendarPt(calendar.time.toString())
+                val dateFormattedString =
+                    CalendarHelper.DateFormaterCalendarIngToCalendarPt(calendar2.time.toString())
                 //val chosenDate = LocalDate.parse(dateFormattedString)
                 binding.textViewEndDate.text = dateFormattedString
             }
@@ -256,9 +363,9 @@ class AddEventActivity : AppCompatActivity() {
                 R.style.MyDatePickerDialogTheme,
                 startDateSetListener,
                 // set DatePickerDialog to point to today's date when it loads up
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH)
+                calendar1.get(Calendar.YEAR),
+                calendar1.get(Calendar.MONTH),
+                calendar1.get(Calendar.DAY_OF_MONTH)
             ).show()
         }
 
@@ -268,11 +375,20 @@ class AddEventActivity : AppCompatActivity() {
                 R.style.MyDatePickerDialogTheme,
                 endDateSetListener,
                 // set DatePickerDialog to point to today's date when it loads up
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH)
+                calendar2.get(Calendar.YEAR),
+                calendar2.get(Calendar.MONTH),
+                calendar2.get(Calendar.DAY_OF_MONTH)
             ).show()
         }
+
+
+    }
+
+    @SuppressLint("SimpleDateFormat", "ResourceType")
+    @RequiresApi(Build.VERSION_CODES.O)
+    public override fun onStart() {
+        super.onStart()
+
     }
 
     private fun customTimePicker(time : String) {
@@ -346,45 +462,26 @@ class AddEventActivity : AppCompatActivity() {
 
     @SuppressLint("SimpleDateFormat")
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun saveEventToGroup(chatsIdsList : ArrayList<String>, title: String, description: String, sendDate : Timestamp, startDate: Timestamp, endDate : Timestamp, senderID : String) {
+    private fun editEventToGroups(chat : UsersChats, eventIdString : String, title: String, description: String, sendDate : Timestamp, startDate: Timestamp, endDate : Timestamp, senderID : String) {
 
-        var i = 0
 
-        var eventId = ""
-        var eventChat : DocumentReference
+        val eventChat =
+            dbFirebase.collection("chats").
+            document(chat.chatId!!).
+            collection("events").
+            document(eventIdString)
 
-        for(chatId in chatsIdsList) {
 
-            if(i == 0) {
-                eventChat =
-                    dbFirebase.collection("chats").
-                    document(chatId).
-                    collection("events").
-                    document()
+        val event = Events(eventChat.id, title, description, sendDate, userUID, startDate, endDate).toHash()
 
-                eventId = eventChat.id
+
+        eventChat.update(event).addOnCompleteListener {
+            if (!it.isSuccessful) {
+                Log.d("", "Error adding event to chat: $eventChat")
             } else {
-                eventChat =
-                    dbFirebase.collection("chats").
-                    document(chatId).
-                    collection("events").
-                    document(eventId)
+                Log.d("", "Event added to chat: $eventChat")
             }
-
-            val event = Events(eventId, title, description, sendDate, senderID, startDate, endDate).toHash()
-
-
-            eventChat.set(event).addOnCompleteListener {
-                if (!it.isSuccessful) {
-                    Log.d("", "Error adding event to chat: $eventChat")
-                } else {
-                    Log.d("", "Event added to chat: $eventChat")
-                }
-            }
-
-            i++
         }
-
 
         /*val startDate = getDate(timeStampStart.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
         val endDate = getDate(timeStampEnd.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -402,17 +499,17 @@ class AddEventActivity : AppCompatActivity() {
 
     @SuppressLint("SimpleDateFormat")
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun saveEventToUser(title: String, description: String, sendDate : Timestamp, startDate: Timestamp, endDate : Timestamp) {
+    private fun editEventToUser(eventIdString : String, title: String, description: String, sendDate : Timestamp, startDate: Timestamp, endDate : Timestamp) {
 
         val eventUser =
             dbFirebase.collection("users").
             document(userUID!!).
             collection("events").
-            document()
+            document(eventIdString)
 
         val event = Events(eventUser.id, title, description, sendDate, userUID, startDate, endDate).toHash()
 
-        eventUser.set(event).addOnCompleteListener {
+        eventUser.update(event).addOnCompleteListener {
             if (!it.isSuccessful) {
                 Log.d("", "Error adding event to user: $eventUser")
             } else {
@@ -450,6 +547,7 @@ class AddEventActivity : AppCompatActivity() {
         binding.textViewStartTime.text = "${hourStr}:${minuteStr}"
     }*/
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -464,10 +562,14 @@ class AddEventActivity : AppCompatActivity() {
                     chatsPhotoList = photos
                     chatsIdsList = ids
                     chatsNameList = names
+
+                    ChatsAdapter().notifyDataSetChanged()
                 } else {
                     chatsPhotoList = ArrayList()
                     chatsIdsList = ArrayList()
                     chatsNameList = ArrayList()
+
+                    ChatsAdapter().notifyDataSetChanged()
                 }
             }
         }
@@ -497,7 +599,7 @@ class AddEventActivity : AppCompatActivity() {
         }
 
         override fun getItemCount(): Int {
-            return chatsPhotoList.size
+            return chatsIdsList.size
         }
     }
 
@@ -524,4 +626,71 @@ class AddEventActivity : AppCompatActivity() {
             }
         }
     }*/
+
+    fun searchChat(callback : ()-> Unit) {
+        dbFirebase.collection("users").document(userUID!!).collection("chats").get().addOnCompleteListener {
+
+            if (it.exception != null) {
+                Log.w("EditEventsActivity", "Listen failed.", it.exception)
+                return@addOnCompleteListener
+            }
+
+            for (query in it.result!!) {
+
+                val usersChats = UsersChats.fromHash(query)
+
+                userChatsList.add(usersChats)
+
+            }
+            callback()
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun searchChatsWithEvents(eventIdString : String, callback : ()-> Unit) {
+        for (userChat in userChatsList) {
+            dbFirebase.collection("chats").document(userChat.chatId!!).collection("events").get().addOnSuccessListener { documents ->
+
+
+                documents.let {
+
+                    for (document in documents) {
+                        if(document.id == eventIdString) {
+                            val event = Events.fromHash(document)
+                            chatsPhotoList.add(userChat.photoUrl!!)
+                            chatsIdsList.add(userChat.chatId!!)
+                            chatsNameList.add(userChat.chatName!!)
+
+                            chatsWithEventsList.add(userChat)
+                            println("chatsWithEventsList")
+                            println(chatsWithEventsList)
+                            eventToEdit.add(event)
+
+                            chatsAdapter?.notifyDataSetChanged()
+                        }
+                    }
+                }
+                callback()
+            }
+        }
+    }
+
+    private fun searchUserEvent(eventIdString : String, callback : ()-> Unit) {
+
+        dbFirebase.collection("users").document(userUID!!).collection("events").get().addOnSuccessListener { documents ->
+
+
+
+            documents.let {
+
+                for (document in documents) {
+                    if(document.id == eventIdString) {
+                        val event = Events.fromHash(document)
+                        eventToEdit.add(event)
+                    }
+                }
+            }
+            callback()
+        }
+    }
 }
