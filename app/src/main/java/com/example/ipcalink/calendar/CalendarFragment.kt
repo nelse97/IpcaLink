@@ -158,6 +158,7 @@ class CalendarFragment : Fragment() {
         //If the toogle button has the state 'off' the calendar shows all of the events
         binding.toggleHamburger.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked) {
+                chatsList.clear()
                 binding.recyclerViewGroupChats.visibility = View.VISIBLE
                 insertingChats()
             } else {

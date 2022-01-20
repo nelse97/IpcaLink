@@ -58,7 +58,7 @@ class UsersChats {
                 hashMap["photoUrl"] as String,
                 hashMap["lastMessage"] as String,
                 hashMap["lastMessageSenderId"] as String,
-                hashMap["lastMessageTimestamp"] as Timestamp
+                hashMap["lastMessageTimestamp"] as Timestamp?
             )
         }
     }
