@@ -21,6 +21,9 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.HashMap
 
 class LoginActivity : AppCompatActivity() {
 
@@ -149,18 +152,62 @@ class LoginActivity : AppCompatActivity() {
     private fun createdata(){
 
         lateinit var user : IpcaUser
+        var docid = ""
+        val schoolYear = schoolYear()
+        println(schoolYear)
 
         db.collection("ipca")
             .whereEqualTo("email", auth.currentUser!!.email)
             .get()
             .addOnSuccessListener { documents ->
                 for (document in documents){
+                    docid = document.id
                     user = document.toObject()
                     println(user.name)
                 }
             }
         user.userId = auth.currentUser!!.uid
         user.email = auth.currentUser!!.email!!
+
+
+
+        if(schoolYear != "null"){
+            db.collection("ipca")
+                .document(docid)
+                .collection("cursos")
+                .whereEqualTo("anoLetivo",schoolYear)
+                .get()
+                .addOnSuccessListener { documents ->
+
+                    val documentIdsList = MutableList<String>()
+
+                    for (document in documents){
+                        documentIdsList.add(document.id)
+                    }
+
+                    for (item in documentIdsList){
+                        db.collection("ipca")
+                            .document(docid)
+                            .collection("cursos")
+                            .document(documentIdsList.toString())
+                            .get()
+                            .addOnSuccessListener { subjects ->
+                                for (subject in subjects){
+
+                                    db.collection("chatsIpca")
+                                        .whereEqualTo("name")
+
+                                }
+                            }
+                    }
+
+                }
+        }
+
+        /*db.collection("ipca")
+            .document(docid)
+            .collection("cursos")
+            .whereEqualTo("anoLetivo",)*/
 
 
         db.collection("users")
@@ -173,6 +220,8 @@ class LoginActivity : AppCompatActivity() {
                         .set(user)
                 }
             }
+
+        //db.collection("chatIpca").document().set()
 
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
@@ -203,9 +252,36 @@ class LoginActivity : AppCompatActivity() {
             if (it.result!!.isEmpty) {
                 saveFcmToken(fcmToken,userUID)
             }
-
-
         }
+    }
+    private fun schoolYear(): String {
+
+        var sdf = SimpleDateFormat("MM")
+        val currentTime = sdf.format(Date())
+        var schoolYear : String? = ""
+
+        if(currentTime.toInt() >= 9){
+
+            sdf = SimpleDateFormat("yy")
+            val year1 = sdf.format(Date()).toString()
+            val year2 = sdf.format(Date()).toInt() + 1
+
+            schoolYear = year1 + "/" + year2.toString()
+
+        }else if(currentTime.toInt() <= 2){
+
+            sdf = SimpleDateFormat("yy")
+            val year1 = sdf.format(Date()).toInt() -1
+            val year2 = sdf.format(Date()).toString()
+
+            schoolYear = year1.toString() + "/" + year2
+
+        }else{
+            return null.toString()
+        }
+
+
+        return schoolYear
     }
 
 
