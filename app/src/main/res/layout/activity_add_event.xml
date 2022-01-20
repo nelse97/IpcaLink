@@ -60,7 +60,7 @@
             android:background="@null"
             android:fontFamily="@font/montserrat_regular"
             android:hint="Adicionar Título"
-            android:textColor="#C4C4C4"
+            android:inputType="textNoSuggestions"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -87,7 +87,7 @@
             android:background="@null"
             android:fontFamily="@font/montserrat_regular"
             android:hint="Descrição"
-            android:textColor="#C4C4C4"
+            android:inputType="textNoSuggestions"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView4" />
@@ -153,7 +153,6 @@
             android:layout_marginTop="27dp"
             android:fontFamily="@font/montserrat_medium"
             android:text="Ínicio"
-            android:textColor="#C4C4C4"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView5" />
@@ -166,7 +165,6 @@
             android:layout_marginTop="25dp"
             android:fontFamily="@font/montserrat_medium"
             android:text="Fim"
-            android:textColor="#C4C4C4"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/divider" />
@@ -447,6 +445,8 @@
     <ImageView
         android:id="@+id/imageViewGoBack"
         android:layout_width="15.66dp"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
         android:layout_height="27.37dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="47dp"

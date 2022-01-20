@@ -78,6 +78,9 @@ class EventsAddGroupsActivity : AppCompatActivity() {
         chatsAdapter = ChatsAdapter()
         binding.recyclerViewGroups.itemAnimator = DefaultItemAnimator()
         binding.recyclerViewGroups.adapter = chatsAdapter
+        binding.imageViewGoBack.setOnClickListener {
+            finish()
+        }
 
 
         binding.cardViewSaveEvent.setOnClickListener {

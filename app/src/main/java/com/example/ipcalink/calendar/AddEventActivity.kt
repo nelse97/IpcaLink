@@ -278,7 +278,7 @@ class AddEventActivity : AppCompatActivity() {
     private fun customTimePicker(time : String) {
 
         binding.CardViewTimePicker.visibility = View.VISIBLE
-
+        binding.addGroupsButton.visibility = View.GONE
 
         val hours = arrayOf("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14",
             "15", "16", "17", "18", "19", "20", "21", "22", "23")
@@ -317,11 +317,14 @@ class AddEventActivity : AppCompatActivity() {
         }*/
 
         binding.cardViewCancel.setOnClickListener {
+            binding.addGroupsButton.visibility = View.VISIBLE
             binding.CardViewTimePicker.visibility = View.GONE
         }
 
 
         binding.cardViewSave.setOnClickListener {
+
+            binding.addGroupsButton.visibility = View.VISIBLE
 
             val hourStr = if (binding.hourPicker.value < 10) "0${binding.hourPicker.value}" else "${binding.hourPicker.value}"
             val minuteStr = if (binding.minutePicker.value == 0) "0${binding.minutePicker.value}" else "${binding.minutePicker.value * 15}"
@@ -381,7 +384,6 @@ class AddEventActivity : AppCompatActivity() {
                     Log.d("", "Event added to chat: $eventChat")
                 }
             }
-
             i++
         }
 
