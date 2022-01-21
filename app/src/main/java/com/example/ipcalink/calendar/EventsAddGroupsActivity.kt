@@ -34,6 +34,7 @@ class EventsAddGroupsActivity : AppCompatActivity() {
     private var chatsList : ArrayList<UsersChats> = ArrayList()
     private var selectedChatsIdsList : ArrayList<String> = ArrayList()
     private var selectedChatsNameList : ArrayList<String> = ArrayList()
+
     private var selectedChatsPhotoList : ArrayList<String> = ArrayList()
     private var layoutManager: LinearLayoutManager? = null
 
@@ -57,18 +58,16 @@ class EventsAddGroupsActivity : AppCompatActivity() {
         (this as AppCompatActivity?)!!.supportActionBar!!.hide()
 
 
+        val ids = intent.getStringArrayListExtra("chatsIdsList")
+        val names = intent.getStringArrayListExtra("chatsNameList")
+        val photos = intent.getStringArrayListExtra("chatsPhotoList")
 
+        if(ids != null && names != null && photos != null) {
+            selectedChatsIdsList = ids
+            selectedChatsNameList = names
+            selectedChatsPhotoList = photos
 
-            val ids = intent.getStringArrayListExtra("chatsIdsList")
-            val names = intent.getStringArrayListExtra("chatsNameList")
-            val photos = intent.getStringArrayListExtra("chatsPhotoList")
-
-            if(ids != null && names != null && photos != null) {
-                selectedChatsIdsList = ids
-                selectedChatsNameList = names
-                selectedChatsPhotoList = photos
-
-            }
+        }
 
         insertingChats()
 
@@ -154,6 +153,7 @@ class EventsAddGroupsActivity : AppCompatActivity() {
 
 
                         if(!newChat) {
+
                             selectedChatsNameList.remove(chatsList[position].chatName)
                             selectedChatsIdsList.remove(chatsList[position].chatId)
                             selectedChatsPhotoList.remove(chatsList[position].photoUrl)

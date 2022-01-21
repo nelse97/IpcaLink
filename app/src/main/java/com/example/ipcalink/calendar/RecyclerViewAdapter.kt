@@ -81,7 +81,8 @@ class RecyclerViewAdapter internal constructor(rl: MutableList<Events>, map : Mu
             val intent = Intent(context, EditEventActivity::class.java)
             //intent.putExtra("dayOfWeek", dayOfWeek.toString())
             intent.putExtra("eventId", recyclerList[position].id)
-
+            intent.putExtra("chatId", calendarSharedPreferences(holder.itemView.context).currentChatId)
+            calendarSharedPreferences(holder.itemView.context).control = "firstTime"
 
             startActivity(context, intent, null)
         }

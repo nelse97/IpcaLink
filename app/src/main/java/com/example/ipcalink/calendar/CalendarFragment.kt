@@ -96,7 +96,6 @@ class CalendarFragment : Fragment() {
 
         binding.recyclerViewGroupChats.visibility = View.GONE
 
-
         //When the user enters the calendar fragment, the current chat id and name
         //shared preferences has to be reseted, because the user is going to be seeing the calendar globally
         calendarSharedPreferences(requireContext()).currentChatId = null
@@ -158,7 +157,6 @@ class CalendarFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         //If the toogle button has the state 'on' the calendar shows the groups in witch the users belongs
         //so that they can filter the events that appear on the calendar
         //If the toogle button has the state 'off' the calendar shows all of the events
@@ -175,6 +173,7 @@ class CalendarFragment : Fragment() {
                 searchingEvents()
             }
         }
+
 
         //This class deals with the clicks done by the user on the calendar days
         class DayViewContainer(view: View) : ViewContainer(view) {
@@ -407,16 +406,14 @@ class CalendarFragment : Fragment() {
     private fun selectDate(date: LocalDate) {
 
 
-        if (selectedDate != date) {
-            val oldDate = selectedDate
-            selectedDate = date
+        val oldDate = selectedDate
+        selectedDate = date
 
-            oldDate?.let { binding.calendar.notifyDateChanged(it) }
-            binding.calendar.notifyDateChanged(date)
+        oldDate?.let { binding.calendar.notifyDateChanged(it) }
+        binding.calendar.notifyDateChanged(date)
 
-            updateAdapterForDate(date)
+        updateAdapterForDate(date)
 
-        }
     }
 
 
@@ -473,10 +470,9 @@ class CalendarFragment : Fragment() {
 
 
         binding.calendar.post {
-            // Select today´s day on the calendar so that today´s events always appear first
+            // Show today's events initially.
             selectDate(today)
         }
-
     }
 
 
@@ -502,7 +498,6 @@ class CalendarFragment : Fragment() {
         //eventsAdapter!!.notifyItemInserted(eventsList.size - 1)
 
         eventsAdapter?.notifyDataSetChanged()
-
 
 
         if(eventsMap[date] != null) {

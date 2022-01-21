@@ -66,6 +66,8 @@ class EditEventActivity : AppCompatActivity() {
     private var lastSavedStartDate : String = "14:00"
     private var lastSavedEndDate : String = "16:00"
 
+    private lateinit var eventIdString : String
+
     //lateinit var timePicker: SupportedDatePickerDialog
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -86,8 +88,6 @@ class EditEventActivity : AppCompatActivity() {
         //Hides top bar
         (this as AppCompatActivity?)!!.supportActionBar!!.hide()
 
-        println("teste")
-
         binding.textViewEvento.text = "Editar Evento"
 
 
@@ -97,12 +97,13 @@ class EditEventActivity : AppCompatActivity() {
         binding.recyclerViewGroups.itemAnimator = DefaultItemAnimator()
         binding.recyclerViewGroups.adapter = chatsAdapter
 
-        val eventIdString = intent.getStringExtra("eventId")
-        //val chatId = intent.getStringExtra("chatId")
 
-        searchChat {
-            searchChatsWithEvents(eventIdString!!) {
-                if(!chatsWithEventsList.isNullOrEmpty()) {
+        eventIdString = intent.getStringExtra("eventId")!!
+        val chatId = intent.getStringExtra("chatId")
+
+        if(!chatId.isNullOrEmpty()) {
+            searchChat {
+                searchChatsWithEvents(eventIdString) {
 
                     val startDate = getDate(eventToEdit[0].startDate!!.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
                     val endDate = getDate(eventToEdit[0].endDate!!.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
@@ -132,43 +133,43 @@ class EditEventActivity : AppCompatActivity() {
                     binding.textViewEndTime.text = endTime
                     binding.editTextTitle.setText(eventToEdit[0].title)
                     binding.editTextDecription.setText(eventToEdit[0].description)
-                } else {
-                    searchUserEvent(eventIdString) {
-
-                        binding.textView7.visibility = View.GONE
-                        binding.addGroupsButton.visibility = View.GONE
-                        binding.recyclerViewGroups.visibility = View.GONE
-
-                        val startDate = getDate(eventToEdit[0].startDate!!.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
-                        val endDate = getDate(eventToEdit[0].endDate!!.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
-
-                        val localStartDate = LocalDate.parse(DateFormater(startDate))
-                        val localendDate = LocalDate.parse(DateFormater(endDate))
-                        calendar1.set(localStartDate.year, localStartDate.monthValue-1, localStartDate.dayOfMonth)
-                        calendar2.set(localendDate.year, localendDate.monthValue-1, localendDate.dayOfMonth)
-
-                        val startDateFormattedString =
-                            CalendarHelper.DateFormaterCalendarIngToCalendarPt(calendar1.time.toString())
-
-                        val endDateFormattedString =
-                            CalendarHelper.DateFormaterCalendarIngToCalendarPt(calendar2.time.toString())
-
-                        val startHour = getHours(startDate)
-                        val startMinute = getMinutes(startDate)
-                        val startTime = "$startHour:$startMinute"
-
-                        val endHour = getHours(endDate)
-                        val endMinute = getMinutes(endDate)
-                        val endTime = "$endHour:$endMinute"
-
-                        binding.textViewStartDate.text = startDateFormattedString
-                        binding.textViewEndDate.text = endDateFormattedString
-                        binding.textViewStartTime.text = startTime
-                        binding.textViewEndTime.text = endTime
-                        binding.editTextTitle.setText(eventToEdit[0].title)
-                        binding.editTextDecription.setText(eventToEdit[0].description)
-                    }
                 }
+            }
+        } else {
+            binding.textView7.visibility = View.GONE
+            binding.addGroupsButton.visibility = View.GONE
+            binding.recyclerViewGroups.visibility = View.GONE
+
+            searchUserEvent(eventIdString) {
+
+                val startDate = getDate(eventToEdit[0].startDate!!.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
+                val endDate = getDate(eventToEdit[0].endDate!!.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
+
+                val localStartDate = LocalDate.parse(DateFormater(startDate))
+                val localendDate = LocalDate.parse(DateFormater(endDate))
+                calendar1.set(localStartDate.year, localStartDate.monthValue-1, localStartDate.dayOfMonth)
+                calendar2.set(localendDate.year, localendDate.monthValue-1, localendDate.dayOfMonth)
+
+                val startDateFormattedString =
+                    CalendarHelper.DateFormaterCalendarIngToCalendarPt(calendar1.time.toString())
+
+                val endDateFormattedString =
+                    CalendarHelper.DateFormaterCalendarIngToCalendarPt(calendar2.time.toString())
+
+                val startHour = getHours(startDate)
+                val startMinute = getMinutes(startDate)
+                val startTime = "$startHour:$startMinute"
+
+                val endHour = getHours(endDate)
+                val endMinute = getMinutes(endDate)
+                val endTime = "$endHour:$endMinute"
+
+                binding.textViewStartDate.text = startDateFormattedString
+                binding.textViewEndDate.text = endDateFormattedString
+                binding.textViewStartTime.text = startTime
+                binding.textViewEndTime.text = endTime
+                binding.editTextTitle.setText(eventToEdit[0].title)
+                binding.editTextDecription.setText(eventToEdit[0].description)
             }
         }
 
@@ -205,7 +206,12 @@ class EditEventActivity : AppCompatActivity() {
             }
         }*/
 
+    }
 
+    @SuppressLint("SimpleDateFormat", "ResourceType")
+    @RequiresApi(Build.VERSION_CODES.O)
+    public override fun onStart() {
+        super.onStart()
 
         binding.toggleButton.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked) {
@@ -272,10 +278,10 @@ class EditEventActivity : AppCompatActivity() {
                 if(startDate.time <= endDate.time) {
                     if(!chatsWithEventsList.isNullOrEmpty()) {
                         for(chat in chatsWithEventsList) {
-                            editEventToGroups(chat, eventIdString!!, title, description, timeStampSend, timeStampStart, timeStampEnd, userUID!!)
+                            editEventToGroups(chat, eventIdString, title, description, timeStampSend, timeStampStart, timeStampEnd, userUID!!)
                         }
                     } else {
-                        editEventToUser(eventIdString!!, title, description, timeStampSend, timeStampStart, timeStampEnd)
+                        editEventToUser(eventIdString, title, description, timeStampSend, timeStampStart, timeStampEnd)
                     }
                 } else {
                     val toast = Toast.makeText(this, "Por favor insira uma data de fim de evento maior que a de inicio", Toast.LENGTH_SHORT)
@@ -381,20 +387,19 @@ class EditEventActivity : AppCompatActivity() {
             ).show()
         }
 
-
-    }
-
-    @SuppressLint("SimpleDateFormat", "ResourceType")
-    @RequiresApi(Build.VERSION_CODES.O)
-    public override fun onStart() {
-        super.onStart()
-
     }
 
     private fun customTimePicker(time : String) {
 
         binding.CardViewTimePicker.visibility = View.VISIBLE
 
+        binding.editTextTitle.visibility = View.GONE
+        binding.editTextDecription.visibility = View.GONE
+        binding.textViewStartDate.visibility = View.GONE
+        binding.textViewStartTime.visibility = View.GONE
+        binding.textViewEndDate.visibility = View.GONE
+        binding.textViewEndTime.visibility = View.GONE
+        binding.addGroupsButton.visibility = View.GONE
 
         val hours = arrayOf("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14",
             "15", "16", "17", "18", "19", "20", "21", "22", "23")
@@ -551,6 +556,8 @@ class EditEventActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+        println("teste1")
+
         if(requestCode == 1001) {
             if(resultCode == RESULT_OK) {
 
@@ -563,13 +570,13 @@ class EditEventActivity : AppCompatActivity() {
                     chatsIdsList = ids
                     chatsNameList = names
 
-                    ChatsAdapter().notifyDataSetChanged()
+                    chatsAdapter?.notifyDataSetChanged()
                 } else {
                     chatsPhotoList = ArrayList()
                     chatsIdsList = ArrayList()
                     chatsNameList = ArrayList()
 
-                    ChatsAdapter().notifyDataSetChanged()
+                    chatsAdapter?.notifyDataSetChanged()
                 }
             }
         }
@@ -657,16 +664,17 @@ class EditEventActivity : AppCompatActivity() {
                     for (document in documents) {
                         if(document.id == eventIdString) {
                             val event = Events.fromHash(document)
-                            chatsPhotoList.add(userChat.photoUrl!!)
-                            chatsIdsList.add(userChat.chatId!!)
-                            chatsNameList.add(userChat.chatName!!)
 
                             chatsWithEventsList.add(userChat)
-                            println("chatsWithEventsList")
-                            println(chatsWithEventsList)
+
                             eventToEdit.add(event)
 
-                            chatsAdapter?.notifyDataSetChanged()
+                            if(calendarSharedPreferences(this).control == "firstTime") {
+                                chatsPhotoList.add(userChat.photoUrl!!)
+                                chatsIdsList.add(userChat.chatId!!)
+                                chatsNameList.add(userChat.chatName!!)
+                                chatsAdapter?.notifyDataSetChanged()
+                            }
                         }
                     }
                 }

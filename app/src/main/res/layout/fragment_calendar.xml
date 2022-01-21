@@ -191,9 +191,9 @@
                     android:id="@+id/fabAdd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="516dp"
+                    android:layout_marginTop="463dp"
                     android:layout_marginEnd="15dp"
-                    android:layout_marginBottom="105dp"
+                    android:layout_marginBottom="90dp"
                     android:backgroundTint="#272727"
                     android:contentDescription="FBA add action main activity"
                     android:scaleType="fitCenter"
@@ -202,14 +202,16 @@
                     app:fabCustomSize="60dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/toggleHamburger"
                     app:maxImageSize="14dp"
                     app:tint="@android:color/white" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+
         </LinearLayout>
 
     </ScrollView>
+
 </LinearLayout>
