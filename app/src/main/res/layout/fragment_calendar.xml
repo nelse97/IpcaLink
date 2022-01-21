@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
     <ScrollView
-        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/root_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fillViewport="true">
         <LinearLayout
-            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            xmlns:tools="http://schemas.android.com/tools"
             android:background="#004E38"
             android:orientation="vertical">
 
@@ -107,7 +106,7 @@
                 <com.kizitonwose.calendarview.CalendarView
                     android:id="@+id/calendar"
                     android:layout_width="360dp"
-                    android:layout_height="230dp"
+                    android:layout_height="245dp"
                     android:layout_marginTop="9dp"
                     app:cv_dayViewResource="@layout/calendar_day"
                     app:cv_hasBoundaries="true"
@@ -192,15 +191,16 @@
                     android:id="@+id/fabAdd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|end"
                     android:layout_marginTop="516dp"
                     android:layout_marginEnd="15dp"
+                    android:layout_marginBottom="105dp"
                     android:backgroundTint="#272727"
                     android:contentDescription="FBA add action main activity"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_add_icon"
                     app:elevation="4dp"
                     app:fabCustomSize="60dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:maxImageSize="14dp"
