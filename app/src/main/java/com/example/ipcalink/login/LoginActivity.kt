@@ -156,6 +156,7 @@ class LoginActivity : AppCompatActivity() {
         var user = IpcaUser("", auth.currentUser!!.email!!, "", "" ,auth.currentUser!!.uid)
         var docid = ""
         val schoolYear = detectSchoolYear()
+        val semester = detectSemester()
 
         db.collection("ipca")
             .whereEqualTo("email", auth.currentUser!!.email)
@@ -168,7 +169,7 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
 
-        if(schoolYear != "null"){
+        /*if(schoolYear != "null"){
             db.collection("ipca")
                 .document(docid)
                 .collection("cursos")
@@ -197,30 +198,8 @@ class LoginActivity : AppCompatActivity() {
 
                             }
                     }
-
-                    /*for (item in documentIds){
-                        db.collection("ipca")
-                            .document(docid)
-                            .collection("cursos")
-                            .document(documentIds.toString())
-                            .get()
-                            .addOnSuccessListener { subjects ->
-                                for (subject in subjects){
-
-                                    db.collection("chatsIpca")
-                                        .whereEqualTo("name")
-
-                                }
-                            }
-                    }*/
-
                 }
-        }
-
-        /*db.collection("ipca")
-            .document(docid)
-            .collection("cursos")
-            .whereEqualTo("anoLetivo",)*/
+        }*/
 
         db.collection("users")
             .document(auth.currentUser!!.uid)
@@ -235,8 +214,6 @@ class LoginActivity : AppCompatActivity() {
             }.addOnFailureListener {
                 println("fail")
             }
-
-        //db.collection("chatIpca").document().set()
 
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
