@@ -77,6 +77,8 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
+        binding.editTextEmail.setOnEditorActionListener{_, _, _ ->binding.editTextTextPassword.requestFocus()}
+
         //enter performs login button click
         binding.editTextTextPassword.setOnEditorActionListener { _, _, _ -> binding.buttonLogin.performClick() }
 
@@ -151,10 +153,9 @@ class LoginActivity : AppCompatActivity() {
 
     private fun createdata(){
 
-        lateinit var user : IpcaUser
+        var user = IpcaUser("", auth.currentUser!!.email!!, "", "" ,auth.currentUser!!.uid)
         var docid = ""
-        val schoolYear = schoolYear()
-        println(schoolYear)
+        val schoolYear = detectSchoolYear()
 
         db.collection("ipca")
             .whereEqualTo("email", auth.currentUser!!.email)
@@ -165,17 +166,9 @@ class LoginActivity : AppCompatActivity() {
                     user = document.toObject()
                     println(user.name)
                 }
-            }.addOnFailureListener {
-                user.userId = auth.currentUser!!.uid
-                user.email = auth.currentUser!!.email!!
-                user.gender = ""
-                user.type = ""
-                user.name = ""
             }
 
-
-
-        /*if(schoolYear != "null"){
+        if(schoolYear != "null"){
             db.collection("ipca")
                 .document(docid)
                 .collection("cursos")
@@ -183,17 +176,33 @@ class LoginActivity : AppCompatActivity() {
                 .get()
                 .addOnSuccessListener { documents ->
 
-                    val documentIdsList = MutableList<String>()
+                    val documentIds = listOf<String>()
 
                     for (document in documents){
-                        documentIdsList.add(document.id)
+                        documentIds.plus(document.id)
                     }
 
-                    for (item in documentIdsList){
+                    for(documentId in documentIds) {
                         db.collection("ipca")
                             .document(docid)
                             .collection("cursos")
-                            .document(documentIdsList.toString())
+                            .document(documentId)
+                            .collection("disciplinas")
+                            .get()
+                            .addOnSuccessListener { subdocs ->
+                                for(subdoc in subdocs){
+                                    println(subdoc.data)
+                                }
+
+
+                            }
+                    }
+
+                    /*for (item in documentIds){
+                        db.collection("ipca")
+                            .document(docid)
+                            .collection("cursos")
+                            .document(documentIds.toString())
                             .get()
                             .addOnSuccessListener { subjects ->
                                 for (subject in subjects){
@@ -203,7 +212,7 @@ class LoginActivity : AppCompatActivity() {
 
                                 }
                             }
-                    }
+                    }*/
 
                 }
         }
@@ -212,7 +221,6 @@ class LoginActivity : AppCompatActivity() {
             .document(docid)
             .collection("cursos")
             .whereEqualTo("anoLetivo",)*/
-
 
         db.collection("users")
             .document(auth.currentUser!!.uid)
@@ -223,7 +231,10 @@ class LoginActivity : AppCompatActivity() {
                         .document(auth.currentUser!!.uid)
                         .set(user)
                 }
-            }*/
+                println(user.userId)
+            }.addOnFailureListener {
+                println("fail")
+            }
 
         //db.collection("chatIpca").document().set()
 
@@ -258,35 +269,48 @@ class LoginActivity : AppCompatActivity() {
             }
         }
     }
-    private fun schoolYear(): String {
+    private fun detectSchoolYear(): String {
 
         var sdf = SimpleDateFormat("MM")
         val currentTime = sdf.format(Date())
-        var schoolYear : String? = ""
+        var schoolYear = ""
 
-        if(currentTime.toInt() >= 9){
+        when {
+            currentTime.toInt() >= 9 -> {
 
-            sdf = SimpleDateFormat("yy")
-            val year1 = sdf.format(Date()).toString()
-            val year2 = sdf.format(Date()).toInt() + 1
+                sdf = SimpleDateFormat("yy")
+                val year1 = sdf.format(Date()).toString()
+                val year2 = sdf.format(Date()).toInt() + 1
 
-            schoolYear = year1 + "/" + year2.toString()
+                schoolYear = "$year1/$year2"
 
-        }else if(currentTime.toInt() <= 2){
+            }
+            currentTime.toInt() <= 2 -> {
 
-            sdf = SimpleDateFormat("yy")
-            val year1 = sdf.format(Date()).toInt() -1
-            val year2 = sdf.format(Date()).toString()
+                sdf = SimpleDateFormat("yy")
+                val year1 = sdf.format(Date()).toInt() -1
+                val year2 = sdf.format(Date()).toString()
 
-            schoolYear = year1.toString() + "/" + year2
+                schoolYear = "$year1/$year2"
 
-        }else{
-            return null.toString()
+            }
+            else -> {
+                return null.toString()
+            }
         }
 
 
         return schoolYear
     }
+    private fun detectSemester(): String {
 
+        val sdf = SimpleDateFormat("MM")
+        val currentTime = sdf.format(Date())
 
+        return if (currentTime.toInt() in 3..8){
+            "2º"
+        }else{
+            "1º"
+        }
+    }
 }
