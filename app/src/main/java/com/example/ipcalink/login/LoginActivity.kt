@@ -27,6 +27,11 @@ import kotlin.collections.HashMap
 
 class LoginActivity : AppCompatActivity() {
 
+    private lateinit var user : IpcaUser
+    var docid = ""
+    val schoolYear = detectSchoolYear()
+    val semester = detectSemester()
+
     private lateinit var auth: FirebaseAuth
     private lateinit var binding: ActivityLoginBinding
     private var db = Firebase.firestore
@@ -153,67 +158,36 @@ class LoginActivity : AppCompatActivity() {
 
     private fun createdata(){
 
-        var user = IpcaUser("", auth.currentUser!!.email!!, "", "" ,auth.currentUser!!.uid)
-        var docid = ""
-        val schoolYear = detectSchoolYear()
-        val semester = detectSemester()
+        user = IpcaUser("", auth.currentUser!!.email!!, "", "" ,auth.currentUser!!.uid)
+
 
         db.collection("ipca")
             .whereEqualTo("email", auth.currentUser!!.email)
             .get()
             .addOnSuccessListener { documents ->
+                println(1)
                 for (document in documents){
                     docid = document.id
                     user = document.toObject()
                     println(user.name)
                 }
+                callback()
+
+                db.collection("users")
+                    .document(auth.currentUser!!.uid)
+                    .get()
+                    .addOnCompleteListener {
+                        if(!it.result!!.exists()){
+                            db.collection("users")
+                                .document(auth.currentUser!!.uid)
+                                .set(user)
+                        }
+                        println(user.userId)
+                    }.addOnFailureListener {
+                        println("fail")
+                    }
             }
 
-        /*if(schoolYear != "null"){
-            db.collection("ipca")
-                .document(docid)
-                .collection("cursos")
-                .whereEqualTo("anoLetivo",schoolYear)
-                .get()
-                .addOnSuccessListener { documents ->
-
-                    val documentIds = listOf<String>()
-
-                    for (document in documents){
-                        documentIds.plus(document.id)
-                    }
-
-                    for(documentId in documentIds) {
-                        db.collection("ipca")
-                            .document(docid)
-                            .collection("cursos")
-                            .document(documentId)
-                            .collection("disciplinas")
-                            .get()
-                            .addOnSuccessListener { subdocs ->
-                                for(subdoc in subdocs){
-                                    println(subdoc.data)
-                                }
-
-
-                            }
-                    }
-                }
-        }*/
-
-        db.collection("users")
-            .document(auth.currentUser!!.uid)
-            .get()
-            .addOnCompleteListener {
-                if(!it.result!!.exists()){
-                    db.collection("users")
-                        .document(auth.currentUser!!.uid)
-                        .set(user)
-                }
-                println(user.userId)
-            }.addOnFailureListener {
-                println("fail")
-            }
 
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
@@ -290,4 +264,32 @@ class LoginActivity : AppCompatActivity() {
             "1º"
         }
     }
+    private fun callback(){
+        println(schoolYear)
+        if(schoolYear != "null"){
+            db.collection("ipca")
+                .document(docid)
+                .collection("cursos")
+                .whereEqualTo("schoolYear",schoolYear)
+                .get()
+                .addOnSuccessListener { documents ->
+
+                    for (document in documents){
+                        println(document.id)
+                        db.collection("ipca")
+                            .document(docid)
+                            .collection("cursos")
+                            .document(document.id)
+                            .collection("disciplinas")
+                            .get()
+                            .addOnSuccessListener { subdocs ->
+                                for(subdoc in subdocs){
+                                    println(subdoc.id)
+                                }
+                            }
+                        }
+                    }
+                }
+        }
+
 }
