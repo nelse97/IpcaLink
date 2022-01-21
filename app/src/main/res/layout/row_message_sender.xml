@@ -1,0 +1,46 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentRight="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvRowChatMessageTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="6dp"
+            android:paddingBottom="2dp"
+            android:text="TextView"
+            android:textAlignment="textEnd"
+            android:textColor="@color/colorPrimary"
+            android:textSize="12sp" />
+
+        <LinearLayout
+            android:id="@+id/llMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginBottom="6dp"
+            android:background="@drawable/bg_chat_ballon_sender"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvRowChatMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>

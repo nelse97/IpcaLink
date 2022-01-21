@@ -26,7 +26,7 @@
         </activity>
 
         <activity
-            android:name=".PrivateChatActivity"
+            android:name=".messages.PrivateChatActivity"
             android:exported="false" />
         <activity
             android:name=".login.BoardingActivity"

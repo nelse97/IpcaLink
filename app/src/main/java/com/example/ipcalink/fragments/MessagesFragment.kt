@@ -74,7 +74,7 @@ class MessagesFragment : Fragment() {
     private fun replaceFragment(fragment: Fragment?) {
         if (fragment != null) {
             val transaction = childFragmentManager.beginTransaction()
-            //transaction.replace(R.id.messagesFrameContainer, fragment)
+            transaction.replace(R.id.messagesFrameContainer, fragment)
             transaction.commit()
         }
     }

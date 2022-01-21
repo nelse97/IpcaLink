@@ -36,6 +36,7 @@ class NewMessageActivity : AppCompatActivity() {
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var authUserUid: String
     private var currentUserPhotoUrl = ""
+    private var currentUsername = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityNewMessageBinding.inflate(layoutInflater)
@@ -47,7 +48,7 @@ class NewMessageActivity : AppCompatActivity() {
 
         linearLayoutManager = LinearLayoutManager(this)
 
-        //instantiate firestore object
+        //instatiate firestore object
         db = FirebaseFirestore.getInstance()
 
         //get current logged in user photo url
@@ -57,6 +58,15 @@ class NewMessageActivity : AppCompatActivity() {
 
         //get current user uid
         authUserUid = FirebaseAuth.getInstance().currentUser!!.uid
+
+        //get current user username
+        db.collection("users").document(authUserUid).get()
+            .addOnCompleteListener {
+                if(it.isSuccessful) {
+                    val username = it.result!!.toObject<User>()
+                    currentUsername = username!!.name
+                }
+            }
 
         binding.rvNewChat.layoutManager = linearLayoutManager
 
@@ -163,7 +173,7 @@ class NewMessageActivity : AppCompatActivity() {
         val senderUserChat = UsersChats(newChatID, user.name, "private", user.photoUrl, "", "",
                 null)
         //create new chat information with sender info
-        val receiverUserChat = UsersChats(newChatID, "", "private", currentUserPhotoUrl, "",
+        val receiverUserChat = UsersChats(newChatID, FirebaseAuth.getInstance().currentUser!!.displayName, "private", currentUserPhotoUrl, "",
             "", null)
 
         //create references
@@ -185,8 +195,11 @@ class NewMessageActivity : AppCompatActivity() {
             batch.set(receiverChat, receiverUserChat)
         }.addOnCompleteListener { task ->
             if(task.isSuccessful) {
-                val intent = Intent(this, ChatRoomActivity::class.java)
+                val intent = Intent(this, PrivateChatActivity::class.java)
                 intent.putExtra("chatId", newChatID)
+                intent.putExtra("chatName", user.name)
+                intent.putExtra("chatType", senderUserChat.chatType)
+                intent.putExtra("chatPhotoUrl", user.photoUrl)
                 startActivity(intent)
                 finish()
             } else {

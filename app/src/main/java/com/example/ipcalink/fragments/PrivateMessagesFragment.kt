@@ -3,7 +3,6 @@ package com.example.ipcalink.fragments
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.os.LocaleList
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,17 +14,14 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.ipcalink.PrivateChatActivity
+import com.example.ipcalink.messages.PrivateChatActivity
 import com.example.ipcalink.R
 import com.example.ipcalink.databinding.FragmentPrivateMessagesBinding
 import com.example.ipcalink.models.User
-import com.example.ipcalink.models.UserChat
 import com.example.ipcalink.models.UsersChats
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
-import com.google.firebase.ktx.Firebase
 import de.hdodenhof.circleimageview.CircleImageView
 import java.lang.Exception
 import java.text.SimpleDateFormat
@@ -74,12 +70,14 @@ class PrivateMessagesFragment : Fragment() {
         //bind adapter to private chats recycler view
         binding.rvPrivateChats.adapter = chatsAdapter
 
-        val newChat = UsersChats("x34mjmazUy4srm97QZhx", "Eduardo", "private", "", "", "",
+        /*val newChat = UsersChats("x34mjmazUy4srm97QZhx", "Eduardo", "private", "", "", "",
             null)
 
         userChats.add(newChat)
 
-        chatsAdapter.notifyDataSetChanged()
+        chatsAdapter.notifyDataSetChanged()*/
+
+
 
         // return the fragment layout
         return binding.root
@@ -104,12 +102,40 @@ class PrivateMessagesFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
+        userChats.clear()
+        //get list of all user chats
+        db.collection("users").document(authUserUid).collection("chats")
+            .addSnapshotListener { chats, e ->
+                if (e != null) {
+                    Toast.makeText(
+                        activity,
+                        "Ocorreu um erro ao tentar listar todos os seus chats. Tente novamente mais tarde.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    Log.d("chatsFragment", e.message.toString())
+                    return@addSnapshotListener
+                }
+                //userExistingPrivateChats.clear()
+                userChats.clear()
+                for (chat in chats!!) {
+                    val newChat = chat.toObject<UsersChats>()
+                    userChats.add(newChat)
+                }
+                Log.d("PrivateMessages", userChats.size.toString())
+                if(userChats.size == 0) {
+                    noChatsShowNotice()
+                } else {
+                    //get a list of the users current private chats
+                    //verifyCurrentPrivateChats()
+                    chatsAdapter.notifyDataSetChanged()
+                }
 
+            }
     }
 
     override fun onStop() {
         super.onStop()
-        //db.clearPersistence()
+        db.clearPersistence()
     }
 
     inner class PrivateChatsAdapter (private val clickListener: (UsersChats) -> Unit) :
@@ -135,11 +161,16 @@ class PrivateMessagesFragment : Fragment() {
             }
 
             holder.chatTitle.text = userChat.chatName
-            holder.chatLastMessage.text = userChat.lastMessage
+            if(userChat.lastMessage.isNullOrEmpty()) {
+                holder.chatLastMessage.text = "Diz olá!"
+            } else {
+                holder.chatLastMessage.text = userChat.lastMessage
+            }
 
-            //val date = getDate(userChat.lastMessageTimestamp!!.seconds * 1000, "mm:ss")
-
-            //holder.chatRowTime.text = date
+            if(userChat.lastMessageTimestamp != null) {
+                val date = getDate(userChat.lastMessageTimestamp!!.seconds * 1000, "mm:ss")
+                holder.chatRowTime.text = date
+            }
 
             holder.itemView.setOnClickListener {
                 clickListener(userChats[position])
