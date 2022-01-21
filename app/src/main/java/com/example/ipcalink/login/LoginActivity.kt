@@ -165,13 +165,17 @@ class LoginActivity : AppCompatActivity() {
                     user = document.toObject()
                     println(user.name)
                 }
+            }.addOnFailureListener {
+                user.userId = auth.currentUser!!.uid
+                user.email = auth.currentUser!!.email!!
+                user.gender = ""
+                user.type = ""
+                user.name = ""
             }
-        user.userId = auth.currentUser!!.uid
-        user.email = auth.currentUser!!.email!!
 
 
 
-        if(schoolYear != "null"){
+        /*if(schoolYear != "null"){
             db.collection("ipca")
                 .document(docid)
                 .collection("cursos")
@@ -219,7 +223,7 @@ class LoginActivity : AppCompatActivity() {
                         .document(auth.currentUser!!.uid)
                         .set(user)
                 }
-            }
+            }*/
 
         //db.collection("chatIpca").document().set()
 
