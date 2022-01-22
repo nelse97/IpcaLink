@@ -101,7 +101,7 @@ class AddEventActivity : AppCompatActivity() {
         setContentView(binding.root)
     }
 
-    @SuppressLint("SimpleDateFormat", "ResourceType")
+    @SuppressLint("SimpleDateFormat", "ResourceType", "SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
     public override fun onStart() {
         super.onStart()
@@ -283,6 +283,7 @@ class AddEventActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun customTimePicker(time : String) {
 
         binding.CardViewTimePicker.visibility = View.VISIBLE

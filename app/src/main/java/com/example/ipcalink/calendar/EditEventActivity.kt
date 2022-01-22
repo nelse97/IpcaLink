@@ -29,14 +29,12 @@ import com.example.ipcalink.models.UsersChats
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
-import kotlin.time.Duration.Companion.hours
 
 class EditEventActivity : AppCompatActivity() {
 
@@ -55,6 +53,8 @@ class EditEventActivity : AppCompatActivity() {
     private var chatsPhotoList : ArrayList<String> = ArrayList()
     private var chatsIdsList : ArrayList<String> = ArrayList()
     private var chatsNameList : ArrayList<String> = ArrayList()
+    private var oldChatIdList : ArrayList<String> = ArrayList()
+    private var chatIdToRemoveList : ArrayList<String> = ArrayList()
 
     private val userChatsList : ArrayList<UsersChats> = ArrayList()
     private val chatsWithEventsList : ArrayList<UsersChats> = ArrayList()
@@ -70,6 +70,7 @@ class EditEventActivity : AppCompatActivity() {
 
     //lateinit var timePicker: SupportedDatePickerDialog
 
+    @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -208,7 +209,7 @@ class EditEventActivity : AppCompatActivity() {
 
     }
 
-    @SuppressLint("SimpleDateFormat", "ResourceType")
+    @SuppressLint("SimpleDateFormat", "ResourceType", "SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
     public override fun onStart() {
         super.onStart()
@@ -276,21 +277,46 @@ class EditEventActivity : AppCompatActivity() {
 
 
                 if(startDate.time <= endDate.time) {
-                    if(!chatsWithEventsList.isNullOrEmpty()) {
-                        for(chat in chatsWithEventsList) {
-                            editEventToGroups(chat, eventIdString, title, description, timeStampSend, timeStampStart, timeStampEnd, userUID!!)
+                    if(!chatsIdsList.isNullOrEmpty()) {
+                        println(oldChatIdList)
+                        println(oldChatIdList.size)
+                        println(chatsIdsList)
+                        println(chatsIdsList.size)
+                        if(oldChatIdList == chatsIdsList) {
+                            for(chatId in chatsIdsList) {
+                                editEventToGroups(chatId, eventIdString, title, description, timeStampSend, timeStampStart, timeStampEnd, userUID!!)
+                            }
+                            finish()
+                        } else {
+                            val newChatIdList = chatsIdsList
+                            for(id in oldChatIdList) {
+                                if(!newChatIdList.contains(id)) {
+                                    chatIdToRemoveList.add(id)
+                                }
+                            }
+                            for(chatId in chatsIdsList) {
+                                setEventToGroups(chatId, eventIdString, title, description, timeStampSend, timeStampStart, timeStampEnd, userUID!!)
+                            }
+
+                            if(!chatIdToRemoveList.isNullOrEmpty()) {
+                                for(chatId in chatIdToRemoveList) {
+                                    deleteEventFromGroup(chatId, eventIdString)
+                                }
+                            }
                         }
                     } else {
                         editEventToUser(eventIdString, title, description, timeStampSend, timeStampStart, timeStampEnd)
+                        if(!oldChatIdList.isNullOrEmpty()) {
+                            for(chatId in oldChatIdList) {
+                                deleteEventFromGroup(chatId, eventIdString)
+                            }
+                        }
                     }
                 } else {
                     val toast = Toast.makeText(this, "Por favor insira uma data de fim de evento maior que a de inicio", Toast.LENGTH_SHORT)
                     toast.setGravity(Gravity.CENTER, 0, 0)
                     toast.show()
                 }
-
-                finish()
-
 
             } else if (binding.editTextTitle.text.isNullOrEmpty()) {
                 val toast = Toast.makeText(this, "Por favor insira um título", Toast.LENGTH_SHORT)
@@ -335,7 +361,7 @@ class EditEventActivity : AppCompatActivity() {
 
         // create an OnDateSetListener
         val startDateSetListener =
-            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
 
                 calendar1.set(Calendar.YEAR, year)
                 calendar1.set(Calendar.MONTH, monthOfYear)
@@ -350,7 +376,7 @@ class EditEventActivity : AppCompatActivity() {
             }
 
         val endDateSetListener =
-            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
 
                 calendar2.set(Calendar.YEAR, year)
                 calendar2.set(Calendar.MONTH, monthOfYear)
@@ -389,6 +415,7 @@ class EditEventActivity : AppCompatActivity() {
 
     }
 
+    @SuppressLint("SetTextI18n")
     private fun customTimePicker(time : String) {
 
         binding.CardViewTimePicker.visibility = View.VISIBLE
@@ -467,12 +494,12 @@ class EditEventActivity : AppCompatActivity() {
 
     @SuppressLint("SimpleDateFormat")
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun editEventToGroups(chat : UsersChats, eventIdString : String, title: String, description: String, sendDate : Timestamp, startDate: Timestamp, endDate : Timestamp, senderID : String) {
+    private fun editEventToGroups(chatId : String, eventIdString : String, title: String, description: String, sendDate : Timestamp, startDate: Timestamp, endDate : Timestamp, senderID : String) {
 
 
         val eventChat =
             dbFirebase.collection("chats").
-            document(chat.chatId!!).
+            document(chatId).
             collection("events").
             document(eventIdString)
 
@@ -497,9 +524,61 @@ class EditEventActivity : AppCompatActivity() {
         returnIntent.putExtra("event", startDate)
         returnIntent.putExtra("end_date", endDate)
         setResult(Activity.RESULT_OK, returnIntent)*/
+    }
 
-        finish()
 
+    @SuppressLint("SimpleDateFormat")
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun setEventToGroups(chatId : String, eventIdString : String, title: String, description: String, sendDate : Timestamp, startDate: Timestamp, endDate : Timestamp, senderID : String) {
+
+
+        val eventChat =
+            dbFirebase.collection("chats").
+            document(chatId).
+            collection("events").
+            document(eventIdString)
+
+
+        val event = Events(eventChat.id, title, description, sendDate, userUID, startDate, endDate).toHash()
+
+
+        eventChat.set(event).addOnCompleteListener {
+            if (!it.isSuccessful) {
+                Log.d("", "Error setting event to chat: $eventChat")
+            } else {
+                Log.d("", "Event setting to chat: $eventChat")
+            }
+        }
+
+        /*val startDate = getDate(timeStampStart.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
+        val endDate = getDate(timeStampEnd.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
+
+        val even = Event(eventChat.id, title, body, sendDate, senderId, startDate, endDate, subject).toHash()
+
+        //Return to Profile view activity the edited user
+        returnIntent.putExtra("event", startDate)
+        returnIntent.putExtra("end_date", endDate)
+        setResult(Activity.RESULT_OK, returnIntent)*/
+    }
+
+    private fun deleteEventFromGroup(chatId : String, eventIdString : String) {
+
+        val eventChat =
+            dbFirebase.collection("chats").
+            document(chatId).
+            collection("events").
+            document(eventIdString)
+
+
+        eventChat.delete().addOnCompleteListener {
+            if (!it.isSuccessful) {
+                Log.d("", "Error deleting event from chat: $eventChat")
+            } else {
+                Log.d("", "Event deleted from chat: $eventChat")
+            }
+
+            finish()
+        }
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -514,11 +593,11 @@ class EditEventActivity : AppCompatActivity() {
 
         val event = Events(eventUser.id, title, description, sendDate, userUID, startDate, endDate).toHash()
 
-        eventUser.update(event).addOnCompleteListener {
+        eventUser.set(event).addOnCompleteListener {
             if (!it.isSuccessful) {
-                Log.d("", "Error adding event to user: $eventUser")
+                Log.d("", "Error editing user event: $eventUser")
             } else {
-                Log.d("", "Event added to user: $eventUser")
+                Log.d("", "User event edited: $eventUser")
             }
         }
 
@@ -531,9 +610,6 @@ class EditEventActivity : AppCompatActivity() {
         returnIntent.putExtra("event", startDate)
         returnIntent.putExtra("end_date", endDate)
         setResult(Activity.RESULT_OK, returnIntent)*/
-
-        finish()
-
     }
 
     /*fun getDate(milliSeconds: Long, dateFormat: String?): String {
@@ -556,7 +632,6 @@ class EditEventActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        println("teste1")
 
         if(requestCode == 1001) {
             if(resultCode == RESULT_OK) {
@@ -564,20 +639,14 @@ class EditEventActivity : AppCompatActivity() {
                 val photos = data?.getStringArrayListExtra("selectedChatsPhotoList")
                 val ids = data?.getStringArrayListExtra("selectedChatsIdsList")
                 val names = data?.getStringArrayListExtra("selectedChatsNameList")
+                val oldIds = data?.getStringArrayListExtra("oldSelectedChatsIdsList")
 
-                if(!photos.isNullOrEmpty() && !ids.isNullOrEmpty() && !names.isNullOrEmpty()) {
-                    chatsPhotoList = photos
-                    chatsIdsList = ids
-                    chatsNameList = names
+                chatsPhotoList = photos!!
+                chatsIdsList = ids!!
+                chatsNameList = names!!
+                oldChatIdList = oldIds!!
+                chatsAdapter?.notifyDataSetChanged()
 
-                    chatsAdapter?.notifyDataSetChanged()
-                } else {
-                    chatsPhotoList = ArrayList()
-                    chatsIdsList = ArrayList()
-                    chatsNameList = ArrayList()
-
-                    chatsAdapter?.notifyDataSetChanged()
-                }
             }
         }
     }
