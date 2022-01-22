@@ -172,20 +172,20 @@ class LoginActivity : AppCompatActivity() {
                     println(user.name)
                 }
                 callback()
+            }
 
-                db.collection("users")
-                    .document(auth.currentUser!!.uid)
-                    .get()
-                    .addOnCompleteListener {
-                        if(!it.result!!.exists()){
-                            db.collection("users")
-                                .document(auth.currentUser!!.uid)
-                                .set(user)
-                        }
-                        println(user.userId)
-                    }.addOnFailureListener {
-                        println("fail")
-                    }
+        db.collection("users")
+            .document(auth.currentUser!!.uid)
+            .get()
+            .addOnCompleteListener {
+                if(!it.result!!.exists()){
+                    db.collection("users")
+                        .document(auth.currentUser!!.uid)
+                        .set(user)
+                }
+                println(user.userId)
+            }.addOnFailureListener {
+                println("fail")
             }
 
 
