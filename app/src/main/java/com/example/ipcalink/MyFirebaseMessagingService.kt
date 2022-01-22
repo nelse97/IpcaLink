@@ -13,7 +13,6 @@ import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import java.lang.Exception
 
 const val channelId = ""
 const val channelName = "com.example.ipcalink"

@@ -1,9 +1,5 @@
 package com.example.ipcalink.models
 
-import com.google.firebase.Timestamp
-import com.google.firebase.firestore.QueryDocumentSnapshot
-import com.google.type.DateTime
-
 class UserChat {
 
     /*var chatId   : String = ""

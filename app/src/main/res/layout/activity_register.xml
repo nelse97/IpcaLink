@@ -95,6 +95,7 @@
         android:layout_marginBottom="140sp"
         android:background="@drawable/button_background"
         android:text="Registar"
+        android:textStyle="bold"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
