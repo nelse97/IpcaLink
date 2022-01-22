@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/relativeLayoutMessages"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#004E38"
@@ -10,7 +9,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/textViewNewMessage"
+        android:id="@+id/textViewNotificacoes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -24,16 +23,40 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout" />
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:isScrollContainer="false"
+        android:keepScreenOn="false"
+        android:orientation="horizontal">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabAdd3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:contentDescription="FBA add action main activity"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_add_icon"
+            app:elevation="4dp"
+            app:fabCustomSize="60dp"
+            app:maxImageSize="14dp"
+            app:tint="@android:color/white" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewNewMessage"
+        android:layout_below="@+id/textViewNotificacoes"
         android:layout_alignParentBottom="true"
         android:background="@drawable/custom_card_view"
         android:clipToPadding="false"
-        android:gravity="end"
+        android:elevation="5dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -106,20 +129,15 @@
 
         </LinearLayout>
 
+        <FrameLayout
+            android:id="@+id/messagesFrameContainer"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+
+        </FrameLayout>
+
     </LinearLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabAddPrivateMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:backgroundTint="@color/colorPrimary"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_add_icon"
-        app:fabCustomSize="60dp"
-        app:maxImageSize="14dp"
-        app:tint="@android:color/white" />
-
 
 </RelativeLayout>

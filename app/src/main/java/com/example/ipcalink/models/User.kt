@@ -1,6 +1,10 @@
 package com.example.ipcalink.models
 
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.QueryDocumentSnapshot
+import com.google.type.DateTime
+import java.util.*
+import kotlin.collections.HashMap
 
 class User {
 

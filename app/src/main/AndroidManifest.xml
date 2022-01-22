@@ -30,17 +30,14 @@
             android:exported="false" />
         <activity
             android:name=".login.BoardingActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:exported="false" />
 
         <activity
             android:name=".login.RegisterActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:exported="false" />
         <activity
             android:name=".login.LoginActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:exported="false" />
 
         <activity
             android:name=".MainActivity"
@@ -58,14 +55,6 @@
 
         <activity
             android:name=".calendar.EventsAddGroupsActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".messages.NewMessageActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".messages.ChatRoomActivity"
             android:exported="false" />
 
         <activity
