@@ -74,9 +74,6 @@ class CalendarFragment : Fragment() {
     val myLocale = Locale("pt", "PT")
     private val monthTitleFormatter = DateTimeFormatter.ofPattern("MMMM", myLocale)
 
-
-    private lateinit var startMonth: YearMonth
-    private lateinit var endMonth: YearMonth
     /*private var imageArrowControl = 1
     private var imageHamburgerControl = 1*/
 
@@ -90,11 +87,16 @@ class CalendarFragment : Fragment() {
     ): View? {
         _binding = FragmentCalendarBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        return root
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         //Hides top bar
         (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
 
-        binding.recyclerViewGroupChats.visibility = View.GONE
 
         //When the user enters the calendar fragment, the current chat id and name
         //shared preferences has to be reseted, because the user is going to be seeing the calendar globally
@@ -114,14 +116,16 @@ class CalendarFragment : Fragment() {
         binding.recyclerViewGroupChats.adapter = chatsAdapter
 
 
+        binding.recyclerViewGroupChats.visibility = View.GONE
+
 
         //Get the days of the week from my current locale
         val daysOfWeek = daysOfWeekFromLocale()
 
         //Get my current month and then define my start and end month
         val currentMonth = YearMonth.now()
-        startMonth = currentMonth.minusMonths(60)
-        endMonth = currentMonth.plusMonths(60)
+        val startMonth = currentMonth.minusMonths(60)
+        val endMonth = currentMonth.plusMonths(60)
 
 
         val dm = DisplayMetrics()
@@ -136,9 +140,9 @@ class CalendarFragment : Fragment() {
             daySize = Size(dayWidth, dayHeight)
 
             // Add margins around our card view.
-            /*val horizontalMargin = dpToPx(5, requireContext())
+            val horizontalMargin = dpToPx(5, requireContext())
             val verticalMargin = dpToPx(0, requireContext())
-            setMonthMargins(start = horizontalMargin, end = horizontalMargin, top = verticalMargin, bottom = verticalMargin)*/
+            setMonthMargins(start = horizontalMargin, end = horizontalMargin, top = verticalMargin, bottom = verticalMargin)
 
             //Setup the days of the week and the start/end month
             setup(startMonth, endMonth, daysOfWeek.first())
@@ -147,22 +151,13 @@ class CalendarFragment : Fragment() {
 
         //Search the events of a user
         //to then fill the calendar with them
-
         searchingEvents()
-
-        return root
-    }
-
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
         //If the toogle button has the state 'on' the calendar shows the groups in witch the users belongs
         //so that they can filter the events that appear on the calendar
         //If the toogle button has the state 'off' the calendar shows all of the events
         binding.toggleHamburger.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked) {
-                chatsList.clear()
                 binding.recyclerViewGroupChats.visibility = View.VISIBLE
                 insertingChats()
             } else {
@@ -173,7 +168,6 @@ class CalendarFragment : Fragment() {
                 searchingEvents()
             }
         }
-
 
         //This class deals with the clicks done by the user on the calendar days
         class DayViewContainer(view: View) : ViewContainer(view) {
@@ -219,7 +213,6 @@ class CalendarFragment : Fragment() {
                                 textViewDay.setBackgroundResource(R.drawable.calendar_day_selected)
                                 cardView1.isVisible = eventsMap[day.date].orEmpty().isNotEmpty()
                                 cardView2.setBackgroundResource(R.color.white)
-
                             }
 
                         }
@@ -229,6 +222,11 @@ class CalendarFragment : Fragment() {
                             cardView1.isVisible = eventsMap[day.date].orEmpty().isNotEmpty()
                             cardView2.setBackgroundResource(R.color.white)
 
+                            if(eventsMap[day.date] != null) {
+                                textView6.visibility = View.GONE
+                            } else {
+                                textView6.visibility = View.VISIBLE
+                            }
                         }
                         else -> {
                             textViewDay.setTextColorRes(R.color.black)
@@ -399,21 +397,20 @@ class CalendarFragment : Fragment() {
             }
             chatsAdapter?.notifyDataSetChanged()
 
+
             //searchingEvents()
         }
     }
 
     private fun selectDate(date: LocalDate) {
 
-
-        val oldDate = selectedDate
-        selectedDate = date
-
-        oldDate?.let { binding.calendar.notifyDateChanged(it) }
-        binding.calendar.notifyDateChanged(date)
-
-        updateAdapterForDate(date)
-
+        if (selectedDate != date) {
+            val oldDate = selectedDate
+            selectedDate = date
+            oldDate?.let { binding.calendar.notifyDateChanged(it) }
+            binding.calendar.notifyDateChanged(date)
+            updateAdapterForDate(date)
+        }
     }
 
 
@@ -437,13 +434,12 @@ class CalendarFragment : Fragment() {
 
             var i = 0
 
-
             while (i <= dayDiff) {
+                binding.calendar.notifyDateChanged(date)
 
                 date?.let {
                     eventsMap[it] = eventsMap[it].orEmpty().plus(Events(event.id, event.title, event.description, event.sendDate, event.senderId, event.startDate, event.endDate))
                     updateAdapterForDate(it)
-                    binding.calendar.notifyDateChanged(it)
                 }
 
                 date = date.plusDays(1)
@@ -468,11 +464,11 @@ class CalendarFragment : Fragment() {
 
         binding.calendar.notifyCalendarChanged()
 
-
         binding.calendar.post {
             // Show today's events initially.
             selectDate(today)
         }
+
     }
 
 
@@ -486,25 +482,23 @@ class CalendarFragment : Fragment() {
     @SuppressLint("NotifyDataSetChanged")
     private fun updateAdapterForDate(date: LocalDate) {
 
-
+        //adapter!!.notifyItemRemoved(events.size - 1)
+        //adapter!!.notifyItemRangeChanged(events.size - 1, events.size - 1)
         eventsList.clear()
 
-        /*eventsAdapter!!.notifyItemRemoved(0)
-        eventsAdapter!!.notifyItemRangeChanged(0, 0)*/
-        //eventsAdapter?.notifyDataSetChanged()
 
         eventsList.addAll(this@CalendarFragment.eventsMap[date].orEmpty())
+        //adapter!!.notifyItemInserted(events.size - 1)
 
-        //eventsAdapter!!.notifyItemInserted(eventsList.size - 1)
+        //eventsAdapter.apply {
+        //}
+
+        /*val month = monthTitleFormatter.format(date.month)
+        binding.textViewMonth.text = month
+        binding.textViewYear.text = date.year.toString()*/
+
 
         eventsAdapter?.notifyDataSetChanged()
-
-
-        if(eventsMap[date] != null) {
-            binding.textView6.visibility = View.GONE
-        } else {
-            binding.textView6.visibility = View.VISIBLE
-        }
     }
 
 

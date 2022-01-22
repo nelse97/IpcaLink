@@ -65,8 +65,13 @@ class AddEventActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         _binding = ActivityAddEventBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+    }
 
-
+    @SuppressLint("SimpleDateFormat", "ResourceType")
+    @RequiresApi(Build.VERSION_CODES.O)
+    public override fun onStart() {
+        super.onStart()
 
         /*Locale.setDefault(myLocale)
 
@@ -97,19 +102,6 @@ class AddEventActivity : AppCompatActivity() {
         binding.textViewEndDate.text = dateFormattedString
         binding.textViewStartTime.text = lastSavedStartDate
         binding.textViewEndTime.text = lastSavedEndDate
-
-        setContentView(binding.root)
-    }
-
-    @SuppressLint("SimpleDateFormat", "ResourceType", "SetTextI18n")
-    @RequiresApi(Build.VERSION_CODES.O)
-    public override fun onStart() {
-        super.onStart()
-
-
-        /*binding.constraintLayout.setOnClickListener {
-            binding.CardViewTimePicker.visibility = View.GONE
-        }*/
 
         binding.toggleButton.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked) {
@@ -283,18 +275,10 @@ class AddEventActivity : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("SetTextI18n")
     private fun customTimePicker(time : String) {
 
         binding.CardViewTimePicker.visibility = View.VISIBLE
 
-        binding.editTextTitle.visibility = View.GONE
-        binding.editTextDecription.visibility = View.GONE
-        binding.textViewStartDate.visibility = View.GONE
-        binding.textViewStartTime.visibility = View.GONE
-        binding.textViewEndDate.visibility = View.GONE
-        binding.textViewEndTime.visibility = View.GONE
-        binding.addGroupsButton.visibility = View.GONE
 
         val hours = arrayOf("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14",
             "15", "16", "17", "18", "19", "20", "21", "22", "23")
@@ -333,27 +317,11 @@ class AddEventActivity : AppCompatActivity() {
         }*/
 
         binding.cardViewCancel.setOnClickListener {
-            binding.editTextTitle.visibility = View.VISIBLE
-            binding.editTextDecription.visibility = View.VISIBLE
-            binding.textViewStartDate.visibility = View.VISIBLE
-            binding.textViewStartTime.visibility = View.VISIBLE
-            binding.textViewEndDate.visibility = View.VISIBLE
-            binding.textViewEndTime.visibility = View.VISIBLE
-            binding.addGroupsButton.visibility = View.VISIBLE
-
             binding.CardViewTimePicker.visibility = View.GONE
         }
 
 
         binding.cardViewSave.setOnClickListener {
-
-            binding.editTextTitle.visibility = View.VISIBLE
-            binding.editTextDecription.visibility = View.VISIBLE
-            binding.textViewStartDate.visibility = View.VISIBLE
-            binding.textViewStartTime.visibility = View.VISIBLE
-            binding.textViewEndDate.visibility = View.VISIBLE
-            binding.textViewEndTime.visibility = View.VISIBLE
-            binding.addGroupsButton.visibility = View.VISIBLE
 
             val hourStr = if (binding.hourPicker.value < 10) "0${binding.hourPicker.value}" else "${binding.hourPicker.value}"
             val minuteStr = if (binding.minutePicker.value == 0) "0${binding.minutePicker.value}" else "${binding.minutePicker.value * 15}"
@@ -413,6 +381,7 @@ class AddEventActivity : AppCompatActivity() {
                     Log.d("", "Event added to chat: $eventChat")
                 }
             }
+
             i++
         }
 
@@ -481,7 +450,6 @@ class AddEventActivity : AppCompatActivity() {
         binding.textViewStartTime.text = "${hourStr}:${minuteStr}"
     }*/
 
-    @SuppressLint("NotifyDataSetChanged")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -496,12 +464,10 @@ class AddEventActivity : AppCompatActivity() {
                     chatsPhotoList = photos
                     chatsIdsList = ids
                     chatsNameList = names
-                    chatsAdapter?.notifyDataSetChanged()
                 } else {
                     chatsPhotoList = ArrayList()
                     chatsIdsList = ArrayList()
                     chatsNameList = ArrayList()
-                    chatsAdapter?.notifyDataSetChanged()
                 }
             }
         }

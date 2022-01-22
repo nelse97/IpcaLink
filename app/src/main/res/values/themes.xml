@@ -45,10 +45,10 @@
 
 
     <style name="SheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
-        <item name="android:windowCloseOnTouchOutside">true</item>
+        <!--<item name="android:windowCloseOnTouchOutside">false</item>-->
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowContentOverlay">@null</item>
-        <item name="android:colorBackground">     @android:color/transparent</item>
+        <item name="android:colorBackground">     @android:color/transparent</item>aaaaaa
         <item name="android:backgroundDimEnabled">false</item>
         <!--<item name="android:backgroundDimAmount">1</item>-->
         <item name="android:windowFrame">@null</item>

@@ -8,7 +8,7 @@
     android:background="#004E38">
 
     <TextView
-        android:id="@+id/textViewNewMessage"
+        android:id="@+id/textViewNotificacoes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"

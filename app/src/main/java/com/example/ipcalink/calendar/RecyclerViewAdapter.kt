@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ipcalink.R
@@ -21,10 +22,14 @@ import com.example.ipcalink.models.Events
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.kizitonwose.calendarview.CalendarView
+import kotlinx.coroutines.NonDisposableHandle.parent
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import java.util.*
-
+import java.util.regex.Pattern
+import kotlin.collections.ArrayList
 
 class RecyclerViewAdapter internal constructor(rl: MutableList<Events>, map : MutableMap<LocalDate, List<Events>>, b : FragmentCalendarBinding, c : Context) : RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder>() {
 
@@ -55,7 +60,6 @@ class RecyclerViewAdapter internal constructor(rl: MutableList<Events>, map : Mu
         return RecyclerViewHolder(v)
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: RecyclerViewAdapter.RecyclerViewHolder, position: Int) {
 
         val currentItem: Events = recyclerList[position]
@@ -77,8 +81,7 @@ class RecyclerViewAdapter internal constructor(rl: MutableList<Events>, map : Mu
             val intent = Intent(context, EditEventActivity::class.java)
             //intent.putExtra("dayOfWeek", dayOfWeek.toString())
             intent.putExtra("eventId", recyclerList[position].id)
-            intent.putExtra("chatId", calendarSharedPreferences(holder.itemView.context).currentChatId)
-            calendarSharedPreferences(holder.itemView.context).control = "firstTime"
+
 
             startActivity(context, intent, null)
         }

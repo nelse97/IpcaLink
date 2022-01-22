@@ -15,7 +15,9 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ipcalink.R
+import com.example.ipcalink.databinding.ActivityAddEventBinding
 import com.example.ipcalink.databinding.ActivityEventsAddGroupsBinding
+import com.example.ipcalink.databinding.FragmentCalendarBinding
 import com.example.ipcalink.models.UsersChats
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
@@ -30,12 +32,8 @@ class EventsAddGroupsActivity : AppCompatActivity() {
 
     private var chatsAdapter: RecyclerView.Adapter<*>? = null
     private var chatsList : ArrayList<UsersChats> = ArrayList()
-
     private var selectedChatsIdsList : ArrayList<String> = ArrayList()
     private var selectedChatsNameList : ArrayList<String> = ArrayList()
-
-    private var oldSelectedChatsIdsList : ArrayList<String> = ArrayList()
-
     private var selectedChatsPhotoList : ArrayList<String> = ArrayList()
     private var layoutManager: LinearLayoutManager? = null
 
@@ -59,19 +57,18 @@ class EventsAddGroupsActivity : AppCompatActivity() {
         (this as AppCompatActivity?)!!.supportActionBar!!.hide()
 
 
-        val ids = intent.getStringArrayListExtra("chatsIdsList")
-        val names = intent.getStringArrayListExtra("chatsNameList")
-        val photos = intent.getStringArrayListExtra("chatsPhotoList")
 
-        if(ids != null && names != null && photos != null) {
-            selectedChatsIdsList = ids
-            selectedChatsNameList = names
-            selectedChatsPhotoList = photos
-            oldSelectedChatsIdsList.addAll(ids)
-        }
 
-        calendarSharedPreferences(this).control = "notFirstTime"
+            val ids = intent.getStringArrayListExtra("chatsIdsList")
+            val names = intent.getStringArrayListExtra("chatsNameList")
+            val photos = intent.getStringArrayListExtra("chatsPhotoList")
 
+            if(ids != null && names != null && photos != null) {
+                selectedChatsIdsList = ids
+                selectedChatsNameList = names
+                selectedChatsPhotoList = photos
+
+            }
 
         insertingChats()
 
@@ -81,9 +78,6 @@ class EventsAddGroupsActivity : AppCompatActivity() {
         chatsAdapter = ChatsAdapter()
         binding.recyclerViewGroups.itemAnimator = DefaultItemAnimator()
         binding.recyclerViewGroups.adapter = chatsAdapter
-        binding.imageViewGoBack.setOnClickListener {
-            finish()
-        }
 
 
         binding.cardViewSaveEvent.setOnClickListener {
@@ -92,12 +86,6 @@ class EventsAddGroupsActivity : AppCompatActivity() {
             returnIntent.putExtra("selectedChatsPhotoList", selectedChatsPhotoList)
             returnIntent.putExtra("selectedChatsIdsList",   selectedChatsIdsList)
             returnIntent.putExtra("selectedChatsNameList",   selectedChatsNameList)
-            returnIntent.putExtra("oldSelectedChatsIdsList", oldSelectedChatsIdsList)
-
-            println("selectedChatsIdsList")
-            println(selectedChatsIdsList)
-            println("oldSelectedChatsIdsList")
-            println(oldSelectedChatsIdsList)
             setResult(Activity.RESULT_OK, returnIntent)
             finish()
         }

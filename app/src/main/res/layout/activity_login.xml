@@ -21,14 +21,12 @@
         app:layout_constraintVertical_bias="0.021" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="280sp"
         android:layout_height="56sp"
         android:text="Iniciar Sessão"
         android:textSize="40sp"
         android:textAlignment="center"
-        android:layout_marginRight="40dp"
-        android:layout_marginLeft="40dp"
-        android:fontFamily="@font/montserrat_bold"
+        android:textStyle="bold"
         android:textColor="?attr/colorPrimary"
         app:layout_constraintBottom_toTopOf="@+id/editTextEmail"
         app:layout_constraintEnd_toEndOf="parent"
