@@ -26,6 +26,11 @@ class FilesActivity : AppCompatActivity() {
         //initialize first fragment
         replaceFragment(MultimediaFilesFragment())
 
+        binding.tvDocuments.setTypeface(null, Typeface.DEFAULT.style)
+        binding.tvDocuments.setTextColor(resources.getColor(R.color.black))
+        binding.tvMultimedia.setTypeface(null, Typeface.BOLD)
+        binding.tvMultimedia.setTextColor(resources.getColor(R.color.colorPrimary))
+
         binding.tvMultimedia.setOnClickListener {
             //remove highlighted attributes documents textView
             binding.tvDocuments.setTypeface(null, Typeface.DEFAULT.style)
