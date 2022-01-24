@@ -30,16 +30,65 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
-            android:layout_marginBottom="25dp"
             android:fontFamily="@font/montserrat_bold"
-            android:text="Nova Mensagem"
+            android:text="Novo Grupo"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
             android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/circleImageView6"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/padrao"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewNewMessage" />
+
+        <TextView
+            android:id="@+id/textView16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="20dp"
+            android:text="TextView"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/circleImageView6"
+            app:layout_constraintStart_toStartOf="@+id/circleImageView6"
+            app:layout_constraintTop_toBottomOf="@+id/circleImageView6" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            app:cardBackgroundColor="@color/colorPrimary"
+            app:cardCornerRadius="250dp"
+            app:layout_constraintBottom_toBottomOf="@+id/circleImageView6"
+            app:layout_constraintEnd_toEndOf="@+id/circleImageView6">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                app:cardBackgroundColor="#272727"
+                app:cardCornerRadius="250dp"
+                app:layout_constraintBottom_toBottomOf="@+id/circleImageView6"
+                app:layout_constraintEnd_toEndOf="@+id/circleImageView6">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_pencil_white" />
+
+            </androidx.cardview.widget.CardView>
+
+        </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -49,17 +98,6 @@
         android:background="@drawable/custom_card_view"
         android:orientation="vertical"
         android:paddingTop="25dp">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonAddGroup"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_margin="15dp"
-            android:fontFamily="@font/montserrat_regular"
-            android:text="Criar grupo"
-            app:cornerRadius="30dp"
-            app:icon="@drawable/ic_group_add"
-            app:iconGravity="textStart" />
 
         <LinearLayout
             android:layout_width="match_parent"

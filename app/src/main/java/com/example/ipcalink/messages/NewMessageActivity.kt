@@ -178,6 +178,7 @@ class NewMessageActivity : AppCompatActivity() {
         val receiverUserChat = PrivateUserChat(newChatID, currentUsername, "private", currentUserPhotoUrl, "",
             authUserUid, null)
 
+
         //create references
         val mainChat = db.collection("chats").document(newChatID)
         val senderChat =
