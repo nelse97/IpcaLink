@@ -19,4 +19,6 @@
   <color name="gray_155">#9B9B9B</color>
   <color name="background_color">#121212</color>
   <color name="transparent">#00FFFFFF</color>
+  <color name="senderColor">#004E38</color>
+  <color name="receiverColor">#e3e3e3</color>
 </resources>

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="bottom"
     android:orientation="vertical"
-    tools:context=".fragments.PrivateMessagesFragment">
+    tools:context=".messages.PrivateMessagesFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -13,8 +14,11 @@
         android:id="@+id/rvPrivateChats"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -34,17 +38,13 @@
         app:layout_constraintTop_toTopOf="@+id/rvPrivateChats"
         tools:fontFamily="@font/montserrat_medium" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabAdd3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorPrimary"
-        android:contentDescription="FBA add action main activity"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_add_icon"
-        app:elevation="4dp"
-        app:fabCustomSize="60dp"
-        app:maxImageSize="14dp"
-        app:tint="@android:color/white" />
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="@+id/rvPrivateChats"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/rvPrivateChats"
+        app:layout_constraintTop_toTopOf="@+id/rvPrivateChats" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
