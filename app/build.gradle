@@ -68,6 +68,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-database-ktx'
     implementation 'com.google.firebase:firebase-firestore-ktx'
     implementation 'com.google.firebase:firebase-storage-ktx'
+
+    implementation 'com.firebaseui:firebase-ui-database:5.0.0' //add firebase ui recyclerview dependency
+
+
     implementation 'com.google.firebase:firebase-messaging-ktx'
 
     //Retrofit

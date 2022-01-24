@@ -10,8 +10,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,7 +18,7 @@ import com.example.ipcalink.R
 import com.example.ipcalink.databinding.ActivityNewMessageBinding
 import com.example.ipcalink.models.Chats
 import com.example.ipcalink.models.User
-import com.example.ipcalink.models.UsersChats
+import com.example.ipcalink.models.PrivateUserChat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
@@ -37,6 +35,7 @@ class NewMessageActivity : AppCompatActivity() {
     private lateinit var authUserUid: String
     private var currentUserPhotoUrl = ""
     private var currentUsername = ""
+    private var currentUserEmail = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityNewMessageBinding.inflate(layoutInflater)
@@ -61,12 +60,14 @@ class NewMessageActivity : AppCompatActivity() {
 
         //get current user username
         db.collection("users").document(authUserUid).get()
-            .addOnCompleteListener {
-                if(it.isSuccessful) {
-                    val username = it.result!!.toObject<User>()
-                    currentUsername = username!!.name
+                .addOnCompleteListener {
+                    if(it.isSuccessful) {
+                        val currentUserInfo = it.result!!.toObject<User>()
+                        currentUsername = currentUserInfo!!.name
+                        currentUserEmail = currentUserInfo.email
+
+                    }
                 }
-            }
 
         binding.rvNewChat.layoutManager = linearLayoutManager
 
@@ -97,11 +98,11 @@ class NewMessageActivity : AppCompatActivity() {
     }
 
     inner class NewChatAdapter(private val clickListener: (User) -> Unit) :
-        RecyclerView.Adapter<NewChatAdapter.MyViewHolder>() {
+            RecyclerView.Adapter<NewChatAdapter.MyViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
             val row = LayoutInflater.from(baseContext)
-                .inflate(R.layout.new_private_chat_row, parent, false)
+                    .inflate(R.layout.new_private_chat_row, parent, false)
             return MyViewHolder(row)
         }
 
@@ -149,19 +150,20 @@ class NewMessageActivity : AppCompatActivity() {
 
     fun searchUsers(searchQuery: String) {
         db.collection("users")
-            .whereGreaterThanOrEqualTo("email", searchQuery)
-            .get()
-            .addOnSuccessListener { documents ->
-                searchedUsersList.clear()
-                for (document in documents) {
-                    val searchedUser: User? = null
-                    searchedUsersList.add(document.toObject<User>())
+                .whereGreaterThanOrEqualTo("email", searchQuery)
+                .whereNotEqualTo("email", currentUserEmail)
+                .get()
+                .addOnSuccessListener { documents ->
+                    searchedUsersList.clear()
+                    for (document in documents) {
+                        val searchedUser: User? = null
+                        searchedUsersList.add(document.toObject<User>())
+                    }
+                    newChatsAdapter.notifyDataSetChanged()
                 }
-                newChatsAdapter.notifyDataSetChanged()
-            }
-            .addOnFailureListener { exception ->
-                Log.w(TAG, "Error getting searched users: ", exception)
-            }
+                .addOnFailureListener { exception ->
+                    Log.w(TAG, "Error getting searched users: ", exception)
+                }
     }
 
     fun createNewPrivateChat(user: User) {
@@ -170,18 +172,18 @@ class NewMessageActivity : AppCompatActivity() {
 
         //create objects
         val newChat = Chats(newChatID, "", "private", "", "", "")
-        val senderUserChat = UsersChats(newChatID, user.name, "private", user.photoUrl, "", "",
+        val senderUserChat = PrivateUserChat(newChatID, user.name, "private", user.photoUrl, "", user.userId,
                 null)
         //create new chat information with sender info
-        val receiverUserChat = UsersChats(newChatID, FirebaseAuth.getInstance().currentUser!!.displayName, "private", currentUserPhotoUrl, "",
-            "", null)
+        val receiverUserChat = PrivateUserChat(newChatID, currentUsername, "private", currentUserPhotoUrl, "",
+                authUserUid, null)
 
         //create references
         val mainChat = db.collection("chats").document(newChatID)
         val senderChat =
-            db.collection("users").document(authUserUid).collection("chats").document(newChatID)
+                db.collection("users").document(authUserUid).collection("chats").document(newChatID)
         val receiverChat =
-            db.collection("users").document(user.userId).collection("chats").document(newChatID)
+                db.collection("users").document(user.userId).collection("chats").document(newChatID)
 
         // Get a new write batch and commit all write operations
         db.runBatch { batch ->

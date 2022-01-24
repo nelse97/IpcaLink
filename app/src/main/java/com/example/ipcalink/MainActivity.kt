@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.ipcalink.calendar.CalendarFragment
 import com.example.ipcalink.databinding.ActivityMainBinding
-import com.example.ipcalink.fragments.MessagesFragment
+import com.example.ipcalink.messages.MessagesFragment
 import com.example.ipcalink.fragments.ProfileFragment
 import com.example.ipcalink.fragments.ReminderFragment
 import com.example.ipcalink.login.LoginActivity

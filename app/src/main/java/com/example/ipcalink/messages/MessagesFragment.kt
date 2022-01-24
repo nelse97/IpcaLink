@@ -1,4 +1,4 @@
-package com.example.ipcalink.fragments
+package com.example.ipcalink.messages
 
 import android.content.Intent
 import android.graphics.Typeface
@@ -7,13 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.viewpager.widget.ViewPager
 import com.example.ipcalink.R
 import com.example.ipcalink.databinding.FragmentMessagesBinding
-import com.example.ipcalink.login.RegisterActivity
-import com.example.ipcalink.messages.NewMessageActivity
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
+import com.example.ipcalink.fragments.SchoolMessagesFragment
 
 class MessagesFragment : Fragment() {
 

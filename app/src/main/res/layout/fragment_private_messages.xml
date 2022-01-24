@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="bottom"
     android:orientation="vertical"
-    tools:context=".fragments.PrivateMessagesFragment">
+    tools:context=".messages.PrivateMessagesFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

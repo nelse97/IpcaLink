@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llMainPrivateChat"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#004E38"
@@ -9,9 +10,13 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
             android:id="@+id/buttonBackTopBar"
@@ -56,7 +61,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-            android:id="@+id/imageButton2"
+            android:id="@+id/ibProfileQuickView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@null"
@@ -64,64 +69,150 @@
             app:srcCompat="@drawable/ic_more_vert_white" />
     </LinearLayout>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="0dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/custom_card_view"
         android:clipToPadding="false"
-        android:elevation="5dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvPrivateChat"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="1">
+            android:layout_margin="5dp"
+            android:padding="15dp"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:reverseLayout="false"
+            app:stackFromEnd="false">
 
         </androidx.recyclerview.widget.RecyclerView>
 
+
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/linearLayout4"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_margin="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
             <EditText
                 android:id="@+id/etMessagePrivateChat"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:layout_weight="1"
+                android:layout_height="50dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_weight="20"
                 android:background="@drawable/bg_textbox_chat"
                 android:hint="Escreva aqui a sua mensagem"
                 android:inputType="none|textMultiLine|text"
-                android:textSize="14sp" />
+                android:textSize="16sp" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fabPrivateChat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
                 android:backgroundTint="@color/black"
                 android:elevation="10dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_add_icon"
+                android:visibility="visible"
                 app:fabCustomSize="60dp"
                 app:maxImageSize="18dp"
                 app:tint="@android:color/white" />
+
+            <LinearLayout
+                android:id="@+id/llFabOptions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/fabMic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:onClick="sendVoiceMessage"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_mic"
+                        app:backgroundTint="@color/black"
+                        app:elevation="5dp"
+                        app:fabCustomSize="60dp"
+                        app:tint="@android:color/white" />
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/fabGallery"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_gallery"
+                        app:backgroundTint="@color/black"
+                        app:elevation="5dp"
+                        app:fabCustomSize="60dp"
+                        app:maxImageSize="20dp"
+                        app:tint="@android:color/white" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/fabCamera"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_camera"
+                        app:backgroundTint="@color/black"
+                        app:elevation="5dp"
+                        app:fabCustomSize="60dp"
+                        app:maxImageSize="22dp"
+                        app:tint="@android:color/white" />
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/fabDocument"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_document"
+                        app:backgroundTint="@color/black"
+                        app:elevation="5dp"
+                        app:fabCustomSize="60dp"
+                        app:maxImageSize="22dp"
+                        app:tint="@android:color/white" />
+                </LinearLayout>
+
+            </LinearLayout>
         </LinearLayout>
 
-    </LinearLayout>
 
-</LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

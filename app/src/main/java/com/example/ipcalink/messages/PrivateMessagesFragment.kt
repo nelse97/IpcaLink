@@ -1,4 +1,4 @@
-package com.example.ipcalink.fragments
+package com.example.ipcalink.messages
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -14,11 +14,10 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.ipcalink.messages.PrivateChatActivity
 import com.example.ipcalink.R
 import com.example.ipcalink.databinding.FragmentPrivateMessagesBinding
+import com.example.ipcalink.models.PrivateUserChat
 import com.example.ipcalink.models.User
-import com.example.ipcalink.models.UsersChats
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
@@ -30,7 +29,7 @@ import kotlin.collections.ArrayList
 class PrivateMessagesFragment : Fragment() {
 
     private lateinit var binding: FragmentPrivateMessagesBinding
-    var userChats = mutableListOf<UsersChats>()
+    var userChats = mutableListOf<PrivateUserChat>()
     private lateinit var db: FirebaseFirestore
     private lateinit var chatsAdapter: PrivateChatsAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
@@ -39,8 +38,8 @@ class PrivateMessagesFragment : Fragment() {
     var c: Calendar = Calendar.getInstance()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View {
 
         // Inflate the layout for this fragment
@@ -48,8 +47,6 @@ class PrivateMessagesFragment : Fragment() {
 
         //instantiate firestore object
         db = FirebaseFirestore.getInstance()
-
-        //db.firestoreSettings.isPersistenceEnabled() = true
 
         //get current user uid
         authUserUid = FirebaseAuth.getInstance().currentUser!!.uid
@@ -63,6 +60,7 @@ class PrivateMessagesFragment : Fragment() {
             intent.putExtra("chatName", it.chatName)
             intent.putExtra("chatType", it.chatType)
             intent.putExtra("chatPhotoUrl", it.photoUrl)
+            intent.putExtra("receiverUserId", it.chatUserId)
             startActivity(intent)
         }
 
@@ -77,7 +75,6 @@ class PrivateMessagesFragment : Fragment() {
         chatsAdapter.notifyDataSetChanged()*/
 
 
-
         // return the fragment layout
         return binding.root
     }
@@ -86,15 +83,15 @@ class PrivateMessagesFragment : Fragment() {
         for (userChat in userChats) {
             if (userChat.chatType == "private") {
                 db.collection("chats").document(userChat.chatId!!).collection("users")
-                    .get()
-                    .addOnSuccessListener { documentSnapshot ->
-                        for (document in documentSnapshot) {
-                            val chatUser = document.toObject<User>()
-                            if(chatUser.userId != authUserUid) {
-                                userExistingPrivateChats.add(chatUser.userId)
+                        .get()
+                        .addOnSuccessListener { documentSnapshot ->
+                            for (document in documentSnapshot) {
+                                val chatUser = document.toObject<User>()
+                                if (chatUser.userId != authUserUid) {
+                                    userExistingPrivateChats.add(chatUser.userId)
+                                }
                             }
                         }
-                    }
             }
         }
     }
@@ -104,32 +101,32 @@ class PrivateMessagesFragment : Fragment() {
         userChats.clear()
         //get list of all user chats
         db.collection("users").document(authUserUid).collection("chats")
-            .addSnapshotListener { chats, e ->
-                if (e != null) {
-                    Toast.makeText(
-                        activity,
-                        "Ocorreu um erro ao tentar listar todos os seus chats. Tente novamente mais tarde.",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    Log.d("chatsFragment", e.message.toString())
-                    return@addSnapshotListener
-                }
-                //userExistingPrivateChats.clear()
-                userChats.clear()
-                for (chat in chats!!) {
-                    val newChat = chat.toObject<UsersChats>()
-                    userChats.add(newChat)
-                }
-                Log.d("PrivateMessages", userChats.size.toString())
-                if(userChats.size == 0) {
-                    noChatsShowNotice()
-                } else {
-                    //get a list of the users current private chats
-                    //verifyCurrentPrivateChats()
-                    chatsAdapter.notifyDataSetChanged()
-                }
+                .addSnapshotListener { chats, e ->
+                    if (e != null) {
+                        Toast.makeText(
+                                activity,
+                                "Ocorreu um erro ao tentar listar todos os seus chats. Tente novamente mais tarde.",
+                                Toast.LENGTH_SHORT
+                        ).show()
+                        Log.d("chatsFragment", e.message.toString())
+                        return@addSnapshotListener
+                    }
+                    //userExistingPrivateChats.clear()
+                    userChats.clear()
+                    for (chat in chats!!) {
+                        val newChat = chat.toObject<PrivateUserChat>()
+                        userChats.add(newChat)
+                    }
+                    Log.d("PrivateMessages", userChats.size.toString())
+                    if (userChats.size == 0) {
+                        noChatsShowNotice()
+                    } else {
+                        //get a list of the users current private chats
+                        //verifyCurrentPrivateChats()
+                        chatsAdapter.notifyDataSetChanged()
+                    }
 
-            }
+                }
     }
 
     override fun onStop() {
@@ -137,8 +134,8 @@ class PrivateMessagesFragment : Fragment() {
         db.clearPersistence()
     }
 
-    inner class PrivateChatsAdapter (private val clickListener: (UsersChats) -> Unit) :
-        RecyclerView.Adapter<PrivateChatsAdapter.MyViewHolder>() {
+    inner class PrivateChatsAdapter(private val clickListener: (PrivateUserChat) -> Unit) :
+            RecyclerView.Adapter<PrivateChatsAdapter.MyViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
             val row = LayoutInflater.from(activity).inflate(R.layout.chat_row, parent, false)
@@ -160,15 +157,14 @@ class PrivateMessagesFragment : Fragment() {
             }
 
             holder.chatTitle.text = userChat.chatName
-            if(userChat.lastMessage.isNullOrEmpty()) {
-                holder.chatLastMessage.text = "Diz olá!"
-            } else {
-                holder.chatLastMessage.text = userChat.lastMessage
-            }
+            holder.chatLastMessage.text = userChat.lastMessage
 
-            if(userChat.lastMessageTimestamp != null) {
+            if (userChat.lastMessageTimestamp != null) {
+                holder.chatRowTime.visibility = View.VISIBLE
                 val date = getDate(userChat.lastMessageTimestamp!!.seconds * 1000, "mm:ss")
                 holder.chatRowTime.text = date
+            } else {
+                holder.chatRowTime.visibility = View.GONE
             }
 
             holder.itemView.setOnClickListener {
@@ -181,7 +177,7 @@ class PrivateMessagesFragment : Fragment() {
             return userChats.size
         }
 
-        inner class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+        inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             var chatImage: CircleImageView = itemView.findViewById(R.id.rowChatIv)
             var chatUnreadMessagesBackground: ImageView = itemView.findViewById(R.id.rowChatUnreadMessagesBackground)
             var chatUnreadMessagesCount: TextView = itemView.findViewById(R.id.chatRowUnreadMessagesCount)
@@ -193,7 +189,7 @@ class PrivateMessagesFragment : Fragment() {
 
     }
 
-    private fun checkIfChatIsOnline(userChatId: String, ) {
+    private fun checkIfChatIsOnline(userChatId: String) {
         TODO("Not yet implemented")
     }
 

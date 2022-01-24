@@ -1,5 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="app/src/main/res/drawable/bg_chat_ballon_sender.xml" value="0.1734375" />
+        <entry key="app/src/main/res/drawable/multimedia_card_view.xml" value="0.29635416666666664" />
+        <entry key="app/src/main/res/layout/activity_files.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.17708333333333334" />
+        <entry key="app/src/main/res/layout/activity_new_message.xml" value="0.13802083333333334" />
+        <entry key="app/src/main/res/layout/activity_private_chat.xml" value="0.178125" />
+        <entry key="app/src/main/res/layout/activity_private_chat_profile_quick_view.xml" value="0.2642857142857143" />
+        <entry key="app/src/main/res/layout/card_view_multimedia.xml" value="0.28974358974358977" />
+        <entry key="app/src/main/res/layout/fragment_document_files.xml" value="0.17708333333333334" />
+        <entry key="app/src/main/res/layout/fragment_messages.xml" value="0.17708333333333334" />
+        <entry key="app/src/main/res/layout/fragment_multimedia_files.xml" value="0.17708333333333334" />
+        <entry key="app/src/main/res/layout/fragment_private_messages.xml" value="0.17708333333333334" />
+        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.178125" />
+        <entry key="app/src/main/res/layout/row_message_recipient.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/row_message_sender.xml" value="0.375" />
+      </map>
+    </option>
+  </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
 </project>
