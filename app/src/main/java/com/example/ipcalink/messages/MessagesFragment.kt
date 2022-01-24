@@ -1,19 +1,17 @@
-package com.example.ipcalink.fragments
+package com.example.ipcalink.messages
 
+import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.viewpager.widget.ViewPager
 import com.example.ipcalink.R
 import com.example.ipcalink.databinding.FragmentMessagesBinding
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
+import com.example.ipcalink.fragments.SchoolMessagesFragment
 
 class MessagesFragment : Fragment() {
-
 
     private val privateMessagesFragment = PrivateMessagesFragment()
     private val schoolMessagesFragment = SchoolMessagesFragment()
@@ -31,6 +29,10 @@ class MessagesFragment : Fragment() {
 
         binding.tvPrivateMessagesTopBar.setTypeface(null, Typeface.BOLD)
         binding.tvSchoolMessagesTopBar.setTypeface(null, Typeface.NORMAL)
+
+        binding.fabAddPrivateMessage.setOnClickListener {
+            startActivity(Intent(context, NewMessageActivity::class.java))
+        }
 
         binding.llPrivateMessages.setOnClickListener {
             replaceFragment(privateMessagesFragment)
@@ -60,7 +62,6 @@ class MessagesFragment : Fragment() {
             binding.underlineSchoolMessagesHighlight.visibility = View.VISIBLE
         }
 
-
         // return the fragment layout
         return binding.root
     }
@@ -70,7 +71,6 @@ class MessagesFragment : Fragment() {
             val transaction = childFragmentManager.beginTransaction()
             transaction.replace(R.id.messagesFrameContainer, fragment)
             transaction.commit()
-
         }
     }
 }

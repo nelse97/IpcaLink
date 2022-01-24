@@ -3,43 +3,29 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/drawable/background.xml" value="0.3828125" />
-        <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/drawable/bottom_main_nav_item_colors.xml" value="0.3828125" />
-        <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/drawable/button_background.xml" value="0.22135416666666666" />
-        <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/drawable/custom_bottom_app_bar.xml" value="0.3828125" />
-        <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/drawable/edit_text_background.xml" value="0.3828125" />
-        <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/drawable/ic_radio_off.xml" value="0.3828125" />
-        <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/drawable/ic_radio_on.xml" value="0.3828125" />
-        <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/drawable/no_background.xml" value="0.3828125" />
-        <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/drawable/outline_dark_mode_20.xml" value="0.3828125" />
-        <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/drawable/outline_dark_mode_24.xml" value="0.3828125" />
-        <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/drawable/rounded_button.xml" value="0.3828125" />
-        <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/drawable/rounded_corner_square.xml" value="0.3828125" />
-        <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/drawable/selector.xml" value="0.3828125" />
-        <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/drawable/toggle_drawable.xml" value="0.3828125" />
-        <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/layout/activity_add_event.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/layout/activity_boarding.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/layout/activity_login.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/layout/activity_private_chat.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/layout/activity_register.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/layout/activity_reset_password.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/layout/calendar_day.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/layout/calendar_day_legend.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/layout/chat_row.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/layout/fragment_boarding1.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/layout/fragment_calendar.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/layout/fragment_messages.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/layout/fragment_private_messages.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/layout/fragment_profile.xml" value="0.2957427536231884" />
-        <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/layout/list_item.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/gmart/StudioProjects/IpcaLinkMeu/app/src/main/res/layout/fragment_profile.xml" value="0.36666666666666664" />
+        <entry key="app/src/main/res/drawable/bg_chat_ballon_sender.xml" value="0.1734375" />
+        <entry key="app/src/main/res/drawable/custom_round_box_green_stroke.xml" value="0.19895833333333332" />
+        <entry key="app/src/main/res/drawable/ic_back_arrow_white.xml" value="0.19895833333333332" />
+        <entry key="app/src/main/res/drawable/ic_group_add.xml" value="0.19895833333333332" />
+        <entry key="app/src/main/res/drawable/ic_search_grey.xml" value="0.19895833333333332" />
+        <entry key="app/src/main/res/drawable/multimedia_card_view.xml" value="0.29635416666666664" />
+        <entry key="app/src/main/res/layout/activity_files.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.17708333333333334" />
+        <entry key="app/src/main/res/layout/activity_new_message.xml" value="0.13802083333333334" />
+        <entry key="app/src/main/res/layout/activity_private_chat.xml" value="0.178125" />
+        <entry key="app/src/main/res/layout/activity_private_chat_profile_quick_view.xml" value="0.2642857142857143" />
+        <entry key="app/src/main/res/layout/card_view_multimedia.xml" value="0.28974358974358977" />
+        <entry key="app/src/main/res/layout/fragment_document_files.xml" value="0.17708333333333334" />
+        <entry key="app/src/main/res/layout/fragment_messages.xml" value="0.17708333333333334" />
+        <entry key="app/src/main/res/layout/fragment_multimedia_files.xml" value="0.17708333333333334" />
+        <entry key="app/src/main/res/layout/fragment_private_messages.xml" value="0.17708333333333334" />
+        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.178125" />
+        <entry key="app/src/main/res/layout/new_private_chat_row.xml" value="0.1828125" />
+        <entry key="app/src/main/res/layout/row_message_recipient.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/row_message_sender.xml" value="0.375" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
-    <output url="file://$PROJECT_DIR$/build/classes" />
-  </component>
-  <component name="ProjectType">
-    <option name="id" value="Android" />
-  </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
 </project>
