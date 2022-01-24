@@ -14,7 +14,7 @@ class ReminderFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_reminder, container, false)
+        return inflater.inflate(R.layout.fragment_push_notification, container, false)
     }
 
 

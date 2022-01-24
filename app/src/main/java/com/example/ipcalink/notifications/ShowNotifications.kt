@@ -78,17 +78,7 @@ class ShowNotifications : Fragment() {
 
                     val date = notification.sendDate!!.removeRange(5, 19)
 
-                    list.add(
-                        Notification(
-                            notification.id,
-                            notification.title,
-                            notification.body,
-                            notification.secretKey,
-                            notification.iv,
-                            date,
-                            notification.senderId
-                        )
-                    )
+                    list.add(Notification(notification.id, notification.title, notification.body, notification.iv, date, notification.senderId))
                 }
 
                 binding.recyclerView.adapter!!.notifyItemInserted(list.size - 1)

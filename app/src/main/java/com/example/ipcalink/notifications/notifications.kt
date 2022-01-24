@@ -11,11 +11,12 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.ipcalink.encryption_algorithm.AES.GeneratingRandomIv
 import com.example.ipcalink.databinding.FragmentPushNotificationBinding
 import com.example.ipcalink.encryptedSharedPreferences.ESP
 import com.example.ipcalink.encryption_algorithm.AES.AesEncrypt
-import com.example.ipcalink.encryption_algorithm.AES.GeneratingRandomIv
 import com.example.ipcalink.models.Notification
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
@@ -32,8 +33,7 @@ import javax.crypto.SecretKey
 import javax.crypto.spec.SecretKeySpec
 import javax.net.ssl.HttpsURLConnection
 
-const val KEY =
-    "AAAAfFA9oPI:APA91bHkqDvaPJ0RLIFd_Txz6yLoumLl_qsBmd61DeuwQuzs0bswl1yQpCQgapoPulTtGaa3FtBhLNSpig43aPebEb4ACodEbHP7ATUNePkvjT2q-Q74SqU2K2HNVZqpLuE2MSKvm_wR"
+const val KEY = "AAAAfFA9oPI:APA91bHkqDvaPJ0RLIFd_Txz6yLoumLl_qsBmd61DeuwQuzs0bswl1yQpCQgapoPulTtGaa3FtBhLNSpig43aPebEb4ACodEbHP7ATUNePkvjT2q-Q74SqU2K2HNVZqpLuE2MSKvm_wR"
 const val senderId = "533922160882"
 
 class PushNotificationFragment : Fragment() {
@@ -42,23 +42,22 @@ class PushNotificationFragment : Fragment() {
     private val binding get() = _binding!!
 
     //Devices to be added to a group
-    private var device2Token: String =
-        "cXtIQXZITeOTHdZH7lknhh:APA91bHabEw7IwNHIk4Ga0pdUbBjfegNjZI2qhHAaEDL4OnGvIHO_rLCSNc2A9Ix83q3V-d1tnh1Gpwg9NoC_QE9neGm3nWD13eC7ua_te9TP4-FdcJIqpoCxCWf7Np-evpKnONj4ZJ7"
-    private var device3Token: String =
-        "cCPpFmDjS_2JTzyB9HDoVb:APA91bGD-OcyZ9cET00MrF1TzpLWzw_1UHV8a4TQF69p7BJTjq6IFB_KGYNN55UQ0h14ZKHM8RskV06rSudb3pG5w5XfQw4v5CH8x8u--NoFVJylXarKa5wdi5exUeEv0yt6bVb7T6qk"
+    private var device1Token : String = "dqyykwh4R9u_hMk7AALfsQ:APA91bGhtfqiZjoE-xzyZPB8DIUpQ4xuHndpuG-ACDgRgOeWxd6Rwd8h-Zq_va881z8MibUfT-rJxu8V0Vw5aBbfSnSf6FZuGBYCMlaNDNkoAYnw3wfoOrP5C6TO7WaKJwCG8Drc0ST9"
+    private var device2Token : String = "cCPpFmDjS_2JTzyB9HDoVb:APA91bGD-OcyZ9cET00MrF1TzpLWzw_1UHV8a4TQF69p7BJTjq6IFB_KGYNN55UQ0h14ZKHM8RskV06rSudb3pG5w5XfQw4v5CH8x8u--NoFVJylXarKa5wdi5exUeEv0yt6bVb7T6qk"
 
     //Notification Group Info
-    private var notificationKey: String =
-        "APA91bGNFa83cbX4lV9blvXVStnwJzL2Dvs0eY3QDlrjwuep6IQhy68VCPVN5gnW0_WQ4xobwUqB0BIylmg4-VkmkbB3yrRSktdOVfx3FITwrkmIQhWEvrw"
-    lateinit var notificationKeyName: String
+    private var notificationKey : String = "APA91bGNFa83cbX4lV9blvXVStnwJzL2Dvs0eY3QDlrjwuep6IQhy68VCPVN5gnW0_WQ4xobwUqB0BIylmg4-VkmkbB3yrRSktdOVfx3FITwrkmIQhWEvrw"
+    lateinit var notificationKeyName : String
 
-    private var fcmToken: String =
-        "cbTnqtSCQ66yt7ZMj6qaMU:APA91bGuUEHDHr3YcqxPqq_VsyV8C_guLdARu0hhziThefQLYovzKGb7MjiBN5108YhiCr_e6gft66d2G2XUyeQxEqlrvvSVV8EjJ8DYTbH1oBAtyier1a_BkAX881AIiZmnbEPlTMuZ"
+    //private var fcmToken : String = "cbTnqtSCQ66yt7ZMj6qaMU:APA91bGuUEHDHr3YcqxPqq_VsyV8C_guLdARu0hhziThefQLYovzKGb7MjiBN5108YhiCr_e6gft66d2G2XUyeQxEqlrvvSVV8EjJ8DYTbH1oBAtyier1a_BkAX881AIiZmnbEPlTMuZ"
 
     private val dbFirebase = Firebase.firestore
 
-    val encryptedTitle: ByteArray? = null
-    val encryptedMessage: ByteArray? = null
+    /*val encryptedTitle : ByteArray? = null
+    val encryptedMessage : ByteArray? = null*/
+
+    private val userUID = Firebase.auth.uid
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -77,9 +76,18 @@ class PushNotificationFragment : Fragment() {
         //Hides top bar
         (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
 
-        val list: List<String> = listOf(device2Token, device3Token)
+        val list : List<String> = listOf(device1Token, device2Token)
 
         val registrationIds = JSONArray(list)
+
+        //This needs to be execute when a user creates a group
+
+        //Here i generate an encrypted key and save it in encrypted shared preferences
+        /*val secretKey = AES.generateAESKey()
+        val secretKeyString = Base64.encodeToString(secretKey, Base64.DEFAULT)
+        val keySet = ESP(this).keysPref
+        keySet.add("ka4vgKgo8QzsVkdn5brt - $secretKeyString")
+        ESP(this).keysPref = keySet*/
 
 
         binding.buttonPushNotif.setOnClickListener {
@@ -118,8 +126,8 @@ class PushNotificationFragment : Fragment() {
 
 
                 //I search for the key that corresponds to the group
-                for (k in keys) {
-                    if (k.contains(correspondingGroupId)) {
+                for (k in keys){
+                    if (k.contains(correspondingGroupId)){
                         val key = k.removePrefix("$correspondingGroupId - ")
                         secretKeyString = key
                     }
@@ -128,21 +136,22 @@ class PushNotificationFragment : Fragment() {
                 //I get the key as bytes array and then rebuild the Secret key from the bytes array
                 val secretKeyBytes = Base64.decode(secretKeyString, Base64.DEFAULT)
 
-                val secretKey: SecretKey =
+                val secretKey : SecretKey =
                     SecretKeySpec(secretKeyBytes, 0, secretKeyBytes.size, "AES")
 
 
                 //I encrypt the data that the user is sending
-                val encryptedTitle = AesEncrypt(title, iv, secretKey)
+                //val encryptedTitle = AesEncrypt(title, iv, secretKey)
                 val encryptedMessage = AesEncrypt(message, iv, secretKey)
 
                 //I need the iv so the user can decrypt the message in the future
                 val ivTitleString = Base64.encodeToString(iv, Base64.DEFAULT)
 
-
+                val chatGroupIcon = ""
+                val chatId = ""
                 //Here I should encrypt the message and then upon the user receiving the notification, i should decrypt it
                 //I send a notification to a group of users
-                //sendNotificationToGroup(title, message, notificationKey)
+                sendNotificationToGroup(title, message, chatGroupIcon, chatId,  notificationKey)
 
 
                 //I send a notification to a user
@@ -150,13 +159,7 @@ class PushNotificationFragment : Fragment() {
 
 
                 //I save a message that has been send from a group to the firebase
-                sendChatMessageToFirebase(
-                    encryptedTitle,
-                    encryptedMessage,
-                    secretKeyString,
-                    ivTitleString,
-                    "axcf6d67"
-                )
+                sendNotificationToFirebase(title, encryptedMessage, ivTitleString, userUID!!)
             }
         }
     }
@@ -167,7 +170,7 @@ class PushNotificationFragment : Fragment() {
         _binding = null
     }
 
-    private suspend fun sendNotificationToUser(title: String, message: String, fcmToken: String) {
+    private suspend fun sendNotificationToUser(title: String, message: String, fcmToken : String) {
         delay(1000)
 
         try {
@@ -255,11 +258,7 @@ class PushNotificationFragment : Fragment() {
     }
 
     //This function sends push notifications to devices that are subscribed to a specific topic
-    private suspend fun sendNotificationToGroup(
-        title: String,
-        message: String,
-        notificationKey: String
-    ) {
+    private suspend fun sendNotificationToGroup(title: String, message: String, chatGroupIcon : String, chatId : String, notificationKey : String) {
 
         delay(1500)
 
@@ -293,12 +292,11 @@ class PushNotificationFragment : Fragment() {
 
             data.put("title", title)
             data.put("content", message)
-            //Here i define the Activity in witch i want the user to navigate when they click the notification
+            //Here i define the Activity in which i want the user to navigate when they click the notification
             data.put("click_action", ".LoginActivity")
-            //data.put("chat_id", "S77po7vNGjtKja2Rinyb")
+            data.put("icon", chatGroupIcon)
+            data.put("chat_id", chatId)
 
-            //val condition = "'$TOPIC1' in topics && '$TOPIC2' in topics && '$TOPIC3' in topics"
-            //body.put("condition", condition)
 
             //here i define the body of the post request
             body.put("data", data)
@@ -348,22 +346,20 @@ class PushNotificationFragment : Fragment() {
     }
 
     private fun getNotificationKeyName() {
-        dbFirebase.collection("chats").document("S77po7vNGjtKja2Rinyb").get()
-            .addOnCompleteListener {
-                if (it.isSuccessful) {
-                    val result = it.result
-                    notificationKeyName = result!!["notificationName"].toString()
-                    println("Notification Key Name")
-                    println(notificationKeyName)
-                }
+        dbFirebase.collection("chats").
+        document("S77po7vNGjtKja2Rinyb").
+        get().addOnCompleteListener {
+            if(it.isSuccessful) {
+                val result = it.result
+                notificationKeyName = result!!["notificationName"].toString()
+                println("Notification Key Name")
+                println(notificationKeyName)
             }
+        }
     }
 
 
-    private suspend fun createNotificationGroup(
-        notificationKeyName: String,
-        registrationIds: JSONArray
-    ) {
+    private suspend fun createNotificationGroup(notificationKeyName : String, registrationIds : JSONArray)  {
 
         delay(1000)
 
@@ -440,7 +436,7 @@ class PushNotificationFragment : Fragment() {
                     // Convert raw JSON to pretty JSON using GSON library
 
                     //Here i get the notification_key that has been defined to the group that got created
-                    val jsonObject = JSONObject(response)
+                    val jsonObject  = JSONObject(response)
                     val notifKey = jsonObject.getString("notification_key")
                     println("NotifKey:")
                     println(notifKey)
@@ -458,11 +454,7 @@ class PushNotificationFragment : Fragment() {
         }
     }
 
-    private suspend fun removeElementsFromGroup(
-        notificationKeyName: String,
-        notificationKey: String,
-        registrationIds: JSONArray
-    ) {
+    private suspend fun removeElementsFromGroup(notificationKeyName : String, notificationKey : String, registrationIds : JSONArray) {
         delay(1500)
 
         try {
@@ -538,7 +530,7 @@ class PushNotificationFragment : Fragment() {
                     // Convert raw JSON to pretty JSON using GSON library
 
                     //Here i get the notification_key that has been defined to the group that got created
-                    val jsonObject = JSONObject(response)
+                    val jsonObject  = JSONObject(response)
                     val notifKey_ = jsonObject.getString("notification_key")
 
                     println("NotifKey:")
@@ -557,11 +549,7 @@ class PushNotificationFragment : Fragment() {
         }
     }
 
-    private suspend fun addElementsToGroup(
-        notificationKeyName: String,
-        notificationKey: String,
-        registrationIds: JSONArray
-    ) {
+    private suspend fun addElementsToGroup(notificationKeyName : String, notificationKey : String, registrationIds : JSONArray) {
         delay(1000)
 
         try {
@@ -636,7 +624,7 @@ class PushNotificationFragment : Fragment() {
                     // Convert raw JSON to pretty JSON using GSON library
 
                     //Here i get the notification_key that has been defined to the group that got created
-                    val jsonObject = JSONObject(response)
+                    val jsonObject  = JSONObject(response)
                     val notifKey_ = jsonObject.getString("notification_key")
 
                     println("NotifKey:")
@@ -657,35 +645,23 @@ class PushNotificationFragment : Fragment() {
 
     @SuppressLint("SimpleDateFormat")
     @RequiresApi(Build.VERSION_CODES.O)
-    private suspend fun sendChatMessageToFirebase(
-        title: String,
-        body: String,
-        secretKey: String,
-        iv: String,
-        senderId: String
-    ) {
+    private suspend fun sendNotificationToFirebase(title: String, body: String, iv : String, senderId : String) {
 
         delay(1500)
 
 
         val notificationChat =
-            dbFirebase.collection("chats").document("S77po7vNGjtKja2Rinyb")
-                .collection("notifications").document()
+            dbFirebase.collection("chats").
+            document("S77po7vNGjtKja2Rinyb").
+            collection("notifications").
+            document()
 
         //Send Date needs to be formatted in this way 14/11/2021 16:38
         val calendar = Calendar.getInstance()
         val format = SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
 
 
-        val notification = Notification(
-            notificationChat.id,
-            title,
-            body,
-            secretKey,
-            iv,
-            format.format(calendar.time),
-            senderId
-        ).toHash()
+        val notification = Notification(notificationChat.id, title, body, iv, format.format(calendar.time), senderId).toHash()
 
 
         notificationChat.set(notification).addOnCompleteListener {
@@ -697,8 +673,10 @@ class PushNotificationFragment : Fragment() {
         }
 
         val notificationUser =
-            dbFirebase.collection("users").document("EJ1NUwpOoziRyiWWzNej")
-                .collection("notifications").document()
+            dbFirebase.collection("users").
+            document("EJ1NUwpOoziRyiWWzNej").
+            collection("notifications").
+            document()
 
         notificationUser.set(notification).addOnCompleteListener {
             if (!it.isSuccessful) {
