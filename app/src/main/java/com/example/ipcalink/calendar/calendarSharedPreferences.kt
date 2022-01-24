@@ -31,4 +31,12 @@ class calendarSharedPreferences {
             editor.apply()
         }
 
+    var control : String?
+        get() = sharedPreferences.getString("CONTROL", "")
+        set(value) {
+            val editor: SharedPreferences.Editor = sharedPreferences.edit()
+            editor.putString("CONTROL", value)
+            editor.apply()
+        }
+
 }

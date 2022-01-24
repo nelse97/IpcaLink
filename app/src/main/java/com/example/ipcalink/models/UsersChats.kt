@@ -34,16 +34,16 @@ class UsersChats {
     constructor()
 
 
-    fun toHash() : HashMap<String, Any>{
-        val hashMap = HashMap<String, Any>()
+    fun toHash() : HashMap<String, Any?>{
+        val hashMap = HashMap<String, Any?>()
 
         hashMap["chatId"] = chatId!!
         hashMap["chatName"] = chatName!!
         hashMap["chatType"] = chatType!!
         hashMap["photoUrl"] = photoUrl!!
         hashMap["lastMessage"] = lastMessage!!
-        hashMap["lastMessageSenderId"] = lastMessageSenderId!!
-        hashMap["lastMessageTimestamp"] = lastMessageTimestamp!!
+        hashMap["lastMessageSenderId"] = lastMessageSenderId
+        hashMap["lastMessageTimestamp"] = lastMessageTimestamp
 
         return hashMap
     }
@@ -57,8 +57,8 @@ class UsersChats {
                 hashMap["chatType"] as String,
                 hashMap["photoUrl"] as String,
                 hashMap["lastMessage"] as String,
-                hashMap["lastMessageSenderId"] as String,
-                hashMap["lastMessageTimestamp"] as Timestamp
+                hashMap["lastMessageSenderId"] as String?,
+                hashMap["lastMessageTimestamp"] as Timestamp?
             )
         }
     }

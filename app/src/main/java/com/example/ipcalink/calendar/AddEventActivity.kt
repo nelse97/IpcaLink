@@ -68,17 +68,17 @@ class AddEventActivity : AppCompatActivity() {
         setContentView(binding.root)
     }
 
-    @SuppressLint("SimpleDateFormat", "ResourceType")
+    @SuppressLint("SimpleDateFormat", "ResourceType", "SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
     public override fun onStart() {
         super.onStart()
 
-        /*Locale.setDefault(myLocale)
+        Locale.setDefault(myLocale)
 
         Locale.setDefault(myLocale)
         val config = baseContext.resources.configuration
         config.setLocale(myLocale)
-        createConfigurationContext(config)*/
+        createConfigurationContext(config)
 
         //Hides top bar
         (this as AppCompatActivity?)!!.supportActionBar!!.hide()
@@ -275,10 +275,26 @@ class AddEventActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun customTimePicker(time : String) {
 
-        binding.CardViewTimePicker.visibility = View.VISIBLE
 
+        if(time == "startTime") {
+            binding.titleTimePicker.text = "Inicio"
+        } else {
+            binding.titleTimePicker.text = "Fim"
+        }
+
+        binding.editTextTitle.visibility = View.GONE
+        binding.editTextDecription.visibility = View.GONE
+        binding.textViewStartTime.visibility = View.GONE
+        binding.textViewEndTime.visibility = View.GONE
+        binding.textViewStartDate.visibility = View.GONE
+        binding.textViewEndDate.visibility = View.GONE
+        binding.toggleButton.visibility = View.GONE
+        binding.addGroupsButton.visibility = View.GONE
+        binding.textView8.visibility = View.INVISIBLE
+        binding.CardViewTimePicker.visibility = View.VISIBLE
 
         val hours = arrayOf("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14",
             "15", "16", "17", "18", "19", "20", "21", "22", "23")
@@ -318,10 +334,30 @@ class AddEventActivity : AppCompatActivity() {
 
         binding.cardViewCancel.setOnClickListener {
             binding.CardViewTimePicker.visibility = View.GONE
+            binding.editTextTitle.visibility = View.VISIBLE
+            binding.editTextDecription.visibility = View.VISIBLE
+            binding.textViewStartTime.visibility = View.VISIBLE
+            binding.textViewEndTime.visibility = View.VISIBLE
+            binding.textViewStartDate.visibility = View.VISIBLE
+            binding.textViewEndDate.visibility = View.VISIBLE
+            binding.toggleButton.visibility = View.VISIBLE
+            binding.addGroupsButton.visibility = View.VISIBLE
+            binding.textView8.visibility = View.VISIBLE
         }
 
 
         binding.cardViewSave.setOnClickListener {
+
+            binding.CardViewTimePicker.visibility = View.GONE
+            binding.editTextTitle.visibility = View.VISIBLE
+            binding.editTextDecription.visibility = View.VISIBLE
+            binding.textViewStartTime.visibility = View.VISIBLE
+            binding.textViewEndTime.visibility = View.VISIBLE
+            binding.textViewStartDate.visibility = View.VISIBLE
+            binding.textViewEndDate.visibility = View.VISIBLE
+            binding.toggleButton.visibility = View.VISIBLE
+            binding.addGroupsButton.visibility = View.VISIBLE
+            binding.textView8.visibility = View.VISIBLE
 
             val hourStr = if (binding.hourPicker.value < 10) "0${binding.hourPicker.value}" else "${binding.hourPicker.value}"
             val minuteStr = if (binding.minutePicker.value == 0) "0${binding.minutePicker.value}" else "${binding.minutePicker.value * 15}"
@@ -329,11 +365,11 @@ class AddEventActivity : AppCompatActivity() {
             println(minuteStr)
 
             if(time == "startTime") {
-                binding.CardViewTimePicker.visibility = View.GONE
+                //binding.CardViewTimePicker.visibility = View.GONE
                 lastSavedStartDate = "$hourStr:$minuteStr"
                 binding.textViewStartTime.text = "$hourStr:$minuteStr"
             } else {
-                binding.CardViewTimePicker.visibility = View.GONE
+                //binding.CardViewTimePicker.visibility = View.GONE
                 lastSavedEndDate = "$hourStr:$minuteStr"
                 binding.textViewEndTime.text = "$hourStr:$minuteStr"
             }
