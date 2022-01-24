@@ -13,7 +13,9 @@ import com.example.ipcalink.FcmToken
 import com.example.ipcalink.MainActivity
 import com.example.ipcalink.R
 import com.example.ipcalink.databinding.ActivityLoginBinding
+import com.example.ipcalink.models.Chats
 import com.example.ipcalink.models.IpcaUser
+import com.example.ipcalink.models.Subjects
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -166,12 +168,15 @@ class LoginActivity : AppCompatActivity() {
             .get()
             .addOnSuccessListener { documents ->
                 println(1)
+
                 for (document in documents){
                     docid = document.id
                     user = document.toObject()
                     println(user.name)
                 }
-                callback()
+                if(!documents.isEmpty){
+                    callback()
+                }
             }.addOnCompleteListener {
                 db.collection("users")
                     .document(auth.currentUser!!.uid)
@@ -282,7 +287,10 @@ class LoginActivity : AppCompatActivity() {
                             .get()
                             .addOnSuccessListener { subdocs ->
                                 for(subdoc in subdocs){
-                                    println(subdoc.id)
+                                    val subject : Subjects = document.toObject()
+                                    var ipcaChat = Chats("", subject.name,"","","","")
+
+
                                 }
                             }
                     }

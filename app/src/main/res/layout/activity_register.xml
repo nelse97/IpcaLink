@@ -7,18 +7,22 @@
     tools:context=".login.LoginActivity">
 
 
-    <ImageView
+    <TextView
         android:id="@+id/imageView"
-        android:layout_width="128sp"
+        android:layout_width="wrap_content"
         android:layout_height="128sp"
         android:layout_marginTop="89sp"
-        android:background="@drawable/temp_icon"
+        android:text="IPCALink"
+        android:gravity="center"
+        android:textSize="56dp"
+        android:textStyle="bold"
+        android:textColor="?attr/colorOnSecondary"
         app:layout_constraintBottom_toTopOf="@+id/editTextEmail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.021" />
 
     <TextView
         android:layout_width="280sp"
