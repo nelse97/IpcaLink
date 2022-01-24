@@ -2,7 +2,6 @@ package com.example.ipcalink.messages
 
 import android.content.ContentValues.TAG
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,19 +10,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.ipcalink.R
 import com.example.ipcalink.databinding.ActivityNewMessageBinding
 import com.example.ipcalink.models.Chats
-import com.example.ipcalink.models.User
 import com.example.ipcalink.models.PrivateUserChat
+import com.example.ipcalink.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import de.hdodenhof.circleimageview.CircleImageView
-import java.lang.Exception
 
 class NewMessageActivity : AppCompatActivity() {
 
@@ -61,7 +60,7 @@ class NewMessageActivity : AppCompatActivity() {
         //get current user username
         db.collection("users").document(authUserUid).get()
             .addOnCompleteListener {
-                if(it.isSuccessful) {
+                if (it.isSuccessful) {
                     val currentUserInfo = it.result!!.toObject<User>()
                     currentUsername = currentUserInfo!!.name
                     currentUserEmail = currentUserInfo.email
@@ -172,11 +171,15 @@ class NewMessageActivity : AppCompatActivity() {
 
         //create objects
         val newChat = Chats(newChatID, "", "private", "", "", "")
-        val senderUserChat = PrivateUserChat(newChatID, user.name, "private", user.photoUrl, "", user.userId,
-            null)
+        val senderUserChat = PrivateUserChat(
+            newChatID, user.name, "private", user.photoUrl, "", user.userId,
+            null
+        )
         //create new chat information with sender info
-        val receiverUserChat = PrivateUserChat(newChatID, currentUsername, "private", currentUserPhotoUrl, "",
-            authUserUid, null)
+        val receiverUserChat = PrivateUserChat(
+            newChatID, currentUsername, "private", currentUserPhotoUrl, "",
+            authUserUid, null
+        )
 
 
         //create references
@@ -197,7 +200,7 @@ class NewMessageActivity : AppCompatActivity() {
             // Set the main branch
             batch.set(receiverChat, receiverUserChat)
         }.addOnCompleteListener { task ->
-            if(task.isSuccessful) {
+            if (task.isSuccessful) {
                 val intent = Intent(this, PrivateChatActivity::class.java)
                 intent.putExtra("chatId", newChatID)
                 intent.putExtra("chatName", user.name)

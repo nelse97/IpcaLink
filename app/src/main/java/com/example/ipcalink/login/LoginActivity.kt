@@ -13,7 +13,9 @@ import com.example.ipcalink.FcmToken
 import com.example.ipcalink.MainActivity
 import com.example.ipcalink.R
 import com.example.ipcalink.databinding.ActivityLoginBinding
+import com.example.ipcalink.models.Chats
 import com.example.ipcalink.models.IpcaUser
+import com.example.ipcalink.models.Subjects
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -27,7 +29,7 @@ import kotlin.collections.HashMap
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var user : IpcaUser
+    private lateinit var user: IpcaUser
     var docid = ""
     val schoolYear = detectSchoolYear()
     val semester = detectSemester()
@@ -56,10 +58,12 @@ class LoginActivity : AppCompatActivity() {
             }
             Configuration.UI_MODE_NIGHT_NO -> {
                 window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                this.window.statusBarColor = getColor(R.color.white)}
+                this.window.statusBarColor = getColor(R.color.white)
+            }
             Configuration.UI_MODE_NIGHT_UNDEFINED -> {
                 window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                this.window.statusBarColor = getColor(R.color.white)}
+                this.window.statusBarColor = getColor(R.color.white)
+            }
         }
 
         auth = Firebase.auth
@@ -69,20 +73,20 @@ class LoginActivity : AppCompatActivity() {
         //password visibility button
         var passwordToggle = true
         binding.passwordToggle.setOnClickListener {
-            passwordToggle = if (passwordToggle){
+            passwordToggle = if (passwordToggle) {
 
                 binding.editTextTextPassword.inputType = 145
                 binding.passwordToggle.setImageResource(R.drawable.ic_visibility_off_black_24dp)
                 false
 
-            }else{
+            } else {
                 binding.editTextTextPassword.inputType = 129
                 binding.passwordToggle.setImageResource(R.drawable.ic_visibility_black_24dp)
                 true
             }
         }
 
-        binding.editTextEmail.setOnEditorActionListener{_, _, _ ->binding.editTextTextPassword.requestFocus()}
+        binding.editTextEmail.setOnEditorActionListener { _, _, _ -> binding.editTextTextPassword.requestFocus() }
 
         //enter performs login button click
         binding.editTextTextPassword.setOnEditorActionListener { _, _, _ -> binding.buttonLogin.performClick() }
@@ -113,7 +117,8 @@ class LoginActivity : AppCompatActivity() {
                                 checkIfEmailisVerified()
                             } else {
                                 //error notice
-                                binding.editTextEmail.error = "Password errada ou utilizador não existe"
+                                binding.editTextEmail.error =
+                                    "Password errada ou utilizador não existe"
                             }
                         }
 
@@ -134,31 +139,31 @@ class LoginActivity : AppCompatActivity() {
     }
 
     //check email verification and first login
-    private fun checkIfEmailisVerified(){
+    private fun checkIfEmailisVerified() {
 
         val user = auth.currentUser
 
-        if(user!!.isEmailVerified){
+        if (user!!.isEmailVerified) {
 
             val sp = getSharedPreferences("firstlogin", Activity.MODE_PRIVATE)
-            val firstlogin = sp.getBoolean("firstlogin",true)
+            val firstlogin = sp.getBoolean("firstlogin", true)
 
-            if(firstlogin){
+            if (firstlogin) {
                 startActivity(Intent(this@LoginActivity, BoardingActivity::class.java))
                 finish()
-            }else{
+            } else {
                 startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                 finish()
             }
-        } else{
+        } else {
             FirebaseAuth.getInstance().signOut()
             binding.editTextEmail.error = "Email não verificado"
         }
     }
 
-    private fun createdata(){
+    private fun createdata() {
 
-        user = IpcaUser("", auth.currentUser!!.email!!, "", "" ,auth.currentUser!!.uid)
+        user = IpcaUser("", auth.currentUser!!.email!!, "", "", auth.currentUser!!.uid)
 
 
         db.collection("ipca")
@@ -166,18 +171,21 @@ class LoginActivity : AppCompatActivity() {
             .get()
             .addOnSuccessListener { documents ->
                 println(1)
-                for (document in documents){
+
+                for (document in documents) {
                     docid = document.id
                     user = document.toObject()
                     println(user.name)
                 }
-                callback()
+                if (!documents.isEmpty) {
+                    callback()
+                }
             }.addOnCompleteListener {
                 db.collection("users")
                     .document(auth.currentUser!!.uid)
                     .get()
                     .addOnCompleteListener {
-                        if(!it.result!!.exists()){
+                        if (!it.result!!.exists()) {
                             db.collection("users")
                                 .document(auth.currentUser!!.uid)
                                 .set(user)
@@ -202,7 +210,8 @@ class LoginActivity : AppCompatActivity() {
         }
 
     }
-    private fun saveFcmToken(fcmToken : String, userUID : String) {
+
+    private fun saveFcmToken(fcmToken: String, userUID: String) {
 
         val hashMap = HashMap<String, Any>()
         hashMap["fcmToken"] = fcmToken
@@ -210,14 +219,16 @@ class LoginActivity : AppCompatActivity() {
         db.collection("users").document(userUID).collection("fcmTokens").document().set(hashMap)
     }
 
-    private fun verifyFcmToken(fcmToken : String, userUID : String){
+    private fun verifyFcmToken(fcmToken: String, userUID: String) {
 
-        db.collection("users").document(userUID).collection("fcmTokens").whereEqualTo("fcmToken", fcmToken).get().addOnCompleteListener {
-            if (it.result!!.isEmpty) {
-                saveFcmToken(fcmToken,userUID)
+        db.collection("users").document(userUID).collection("fcmTokens")
+            .whereEqualTo("fcmToken", fcmToken).get().addOnCompleteListener {
+                if (it.result!!.isEmpty) {
+                    saveFcmToken(fcmToken, userUID)
+                }
             }
-        }
     }
+
     private fun detectSchoolYear(): String {
 
         var sdf = SimpleDateFormat("MM")
@@ -237,7 +248,7 @@ class LoginActivity : AppCompatActivity() {
             currentTime.toInt() <= 2 -> {
 
                 sdf = SimpleDateFormat("yy")
-                val year1 = sdf.format(Date()).toInt() -1
+                val year1 = sdf.format(Date()).toInt() - 1
                 val year2 = sdf.format(Date()).toString()
 
                 schoolYear = "$year1/$year2"
@@ -251,28 +262,29 @@ class LoginActivity : AppCompatActivity() {
 
         return schoolYear
     }
+
     private fun detectSemester(): String {
 
         val sdf = SimpleDateFormat("MM")
         val currentTime = sdf.format(Date())
 
-        return if (currentTime.toInt() in 3..8){
+        return if (currentTime.toInt() in 3..8) {
             "2º"
-        }else{
+        } else {
             "1º"
         }
     }
-    private fun callback(){
+
+    private fun callback() {
         println(schoolYear)
-        if(schoolYear != "null"){
+        if (schoolYear != "null") {
             db.collection("ipca")
                 .document(docid)
                 .collection("cursos")
-                .whereEqualTo("schoolYear",schoolYear)
+                .whereEqualTo("schoolYear", schoolYear)
                 .get()
                 .addOnSuccessListener { documents ->
-
-                    for (document in documents){
+                    for (document in documents) {
                         println(document.id)
                         db.collection("ipca")
                             .document(docid)
@@ -281,8 +293,34 @@ class LoginActivity : AppCompatActivity() {
                             .collection("disciplinas")
                             .get()
                             .addOnSuccessListener { subdocs ->
-                                for(subdoc in subdocs){
-                                    println(subdoc.id)
+                                for (subdoc in subdocs) {
+                                    val subject: Subjects = subdoc.toObject()
+
+                                    val ipcaChat = Chats("", subject.name, "subject", "", "", "")
+                                    val docRef = db.collection("chatsIpca")
+                                    docRef.whereEqualTo("chatName", ipcaChat.chatName).get()
+                                        .addOnCompleteListener {
+                                            if (it.result!!.isEmpty) {
+                                                docRef.document()
+                                                    .set(ipcaChat)
+                                                    .addOnSuccessListener {
+                                                        docRef.whereEqualTo(
+                                                            "chatName",
+                                                            ipcaChat.chatName
+                                                        )
+                                                            .get()
+                                                            .addOnSuccessListener { subsubdocs ->
+                                                                for (subsubdoc in subsubdocs) {
+                                                                    docRef.document(subsubdoc.id)
+                                                                        .update(
+                                                                            "chatId",
+                                                                            document.id
+                                                                        )
+                                                                }
+                                                            }
+                                                    }
+                                            }
+                                        }
                                 }
                             }
                     }

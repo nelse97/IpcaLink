@@ -2,26 +2,19 @@ package com.example.ipcalink.messages
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.chatappfirebase.Models.Message
 import com.example.ipcalink.R
 import com.example.ipcalink.databinding.FragmentMultimediaFilesBinding
-import com.example.ipcalink.models.FirebaseImage
-import com.example.ipcalink.models.PrivateUserChat
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
-import de.hdodenhof.circleimageview.CircleImageView
-import androidx.recyclerview.widget.GridLayoutManager
-
-
 
 
 class MultimediaFilesFragment : Fragment() {
@@ -56,7 +49,7 @@ class MultimediaFilesFragment : Fragment() {
                     messagesList.clear()
                     for (message in messages!!) {
                         val newMessage = message.toObject<Message>()
-                        if(newMessage.photoUrl != "") {
+                        if (newMessage.photoUrl != "") {
                             messagesList.add(newMessage)
                         }
                     }
@@ -74,7 +67,8 @@ class MultimediaFilesFragment : Fragment() {
         RecyclerView.Adapter<MultimediaFilesFragment.MediaFilesAdapter.MyViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-            val row = LayoutInflater.from(activity).inflate(R.layout.card_view_multimedia, parent, false)
+            val row =
+                LayoutInflater.from(activity).inflate(R.layout.card_view_multimedia, parent, false)
             return MyViewHolder(row)
         }
 

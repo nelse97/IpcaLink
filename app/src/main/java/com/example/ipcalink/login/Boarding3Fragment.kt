@@ -12,7 +12,7 @@ import com.example.ipcalink.databinding.FragmentBoarding3Binding
 
 class Boarding3Fragment : Fragment() {
 
-    private lateinit var binding : FragmentBoarding3Binding
+    private lateinit var binding: FragmentBoarding3Binding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -141,14 +141,14 @@
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="100dp"
-        android:clickable="true"
         android:backgroundTint="@color/colorPrimary"
-        android:scaleType="fitCenter"
+        android:clickable="true"
         android:focusable="true"
-        app:srcCompat="@drawable/ic_add_icon"
+        android:scaleType="fitCenter"
         app:fabCustomSize="60dp"
         app:maxImageSize="14dp"
-        app:tint="@android:color/white"/>
+        app:srcCompat="@drawable/ic_add_icon"
+        app:tint="@android:color/white" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

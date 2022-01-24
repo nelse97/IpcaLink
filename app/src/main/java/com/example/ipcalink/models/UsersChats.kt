@@ -4,13 +4,13 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.QueryDocumentSnapshot
 
 class UsersChats {
-    var chatId : String? = null
-    var chatName : String? = null
-    var chatType : String? = null
-    var photoUrl : String? = null
-    var lastMessage : String? = null
-    var lastMessageSenderId : String? = null
-    var lastMessageTimestamp : Timestamp? = null
+    var chatId: String? = null
+    var chatName: String? = null
+    var chatType: String? = null
+    var photoUrl: String? = null
+    var lastMessage: String? = null
+    var lastMessageSenderId: String? = null
+    var lastMessageTimestamp: Timestamp? = null
 
     constructor(
         chatId: String?,
@@ -34,7 +34,7 @@ class UsersChats {
     constructor()
 
 
-    fun toHash() : HashMap<String, Any?>{
+    fun toHash(): HashMap<String, Any?> {
         val hashMap = HashMap<String, Any?>()
 
         hashMap["chatId"] = chatId!!
@@ -49,7 +49,7 @@ class UsersChats {
     }
 
     companion object {
-        fun fromHash(hashMap: QueryDocumentSnapshot) : UsersChats {
+        fun fromHash(hashMap: QueryDocumentSnapshot): UsersChats {
 
             return UsersChats(
                 hashMap["chatId"] as String,

@@ -35,14 +35,14 @@ class SplashActivity : AppCompatActivity() {
         supportActionBar?.hide()
         auth = Firebase.auth
         val currentUser = auth.currentUser
-        if(currentUser != null){
-            GlobalScope.launch (Dispatchers.Main){
+        if (currentUser != null) {
+            GlobalScope.launch(Dispatchers.Main) {
                 delay(2000)
                 startActivity(Intent(this@SplashActivity, MainActivity::class.java))
                 finish()
             }
-        }else {
-            GlobalScope.launch (Dispatchers.Main){
+        } else {
+            GlobalScope.launch(Dispatchers.Main) {
                 delay(2000)
                 startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
                 finish()

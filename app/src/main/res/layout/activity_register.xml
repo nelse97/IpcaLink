@@ -7,27 +7,31 @@
     tools:context=".login.LoginActivity">
 
 
-    <ImageView
+    <TextView
         android:id="@+id/imageView"
-        android:layout_width="128sp"
+        android:layout_width="wrap_content"
         android:layout_height="128sp"
         android:layout_marginTop="89sp"
-        android:background="@drawable/temp_icon"
+        android:gravity="center"
+        android:text="IPCALink"
+        android:textColor="?attr/colorOnSecondary"
+        android:textSize="56dp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/editTextEmail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.021" />
 
     <TextView
         android:layout_width="280sp"
         android:layout_height="56sp"
         android:text="Registar Conta"
-        android:textSize="40sp"
         android:textAlignment="center"
-        android:textStyle="bold"
         android:textColor="?attr/colorPrimary"
+        android:textSize="40sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/editTextEmail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -67,7 +71,7 @@
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.56"/>
+        app:layout_constraintVertical_bias="0.56" />
 
     <EditText
         android:id="@+id/editTextTextPasswordConfirm"
@@ -93,8 +97,8 @@
         android:layout_marginBottom="140sp"
         android:background="@drawable/button_background"
         android:text="Registar"
-        android:textStyle="bold"
         android:textAllCaps="false"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"

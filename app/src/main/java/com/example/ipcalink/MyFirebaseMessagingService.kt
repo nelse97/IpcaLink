@@ -39,12 +39,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 handleNow()
             }
             val clickAction = remoteMessage.data["click_action"]
-
-            println("click Action")
-            println(clickAction)
+            val chatId = remoteMessage.data["click_action"]
+            val icon = remoteMessage.data["icon"]
 
             //broadcastContentReady(applicationContext, remoteMessage.data["title"]!!, remoteMessage.data["content"]!!)
-            sendNotification(remoteMessage.data["title"]!!, remoteMessage.data["content"]!!, clickAction!!)
+            sendNotification(remoteMessage.data["title"]!!, remoteMessage.data["content"]!!, chatId!!, icon!!, clickAction!!)
         }
 
 
@@ -122,7 +121,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
 
     @SuppressLint("RemoteViewLayout")
-    fun getRemoteView(messageTitle : String, messageBody: String) : RemoteViews {
+    fun getRemoteView(messageTitle : String, messageBody: String, icon : String) : RemoteViews {
         val remoteView = RemoteViews("com.example.ipcalink", R.layout.notification)
 
         remoteView.setTextViewText(R.id.title, messageTitle)
@@ -133,7 +132,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
 
-    private fun sendNotification(messageTitle: String, messageBody: String, clickAction : String) {
+    private fun sendNotification(messageTitle: String, messageBody: String, chatId : String, icon : String, clickAction : String) {
         //val intent = Intent(this, MainActivity::class.java)
 
         val intent = Intent(clickAction)
@@ -158,9 +157,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             .setSound(defaultSoundUri)
             .setContentIntent(pendingIntent)
 
-        notificationBuilder.setContent(getRemoteView(messageTitle, messageBody))
+        notificationBuilder.setContent(getRemoteView(messageTitle, messageBody, icon))
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        //notificationManager.cancel(0)
+
 
         // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

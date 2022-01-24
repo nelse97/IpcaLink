@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
             replaceAllBottomNavIcons()
             binding.mainBottomNavCalendarUnderline.visibility = View.VISIBLE
             binding.ibCalendar.setImageResource(R.drawable.ic_selected_calendar_icon)
-           //verifyCurrentFragment(2)
+            //verifyCurrentFragment(2)
         }
 
         binding.ibReminder.setOnClickListener {

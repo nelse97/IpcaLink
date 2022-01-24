@@ -13,7 +13,7 @@ import com.google.firebase.ktx.Firebase
 
 class ResetPasswordActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityResetPasswordBinding
+    private lateinit var binding: ActivityResetPasswordBinding
     private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,10 +31,12 @@ class ResetPasswordActivity : AppCompatActivity() {
             }
             Configuration.UI_MODE_NIGHT_NO -> {
                 window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                this.window.statusBarColor = getColor(R.color.white)}
+                this.window.statusBarColor = getColor(R.color.white)
+            }
             Configuration.UI_MODE_NIGHT_UNDEFINED -> {
                 window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                this.window.statusBarColor = getColor(R.color.white)}
+                this.window.statusBarColor = getColor(R.color.white)
+            }
         }
 
         //enter performs click on send email button
@@ -49,23 +51,24 @@ class ResetPasswordActivity : AppCompatActivity() {
 
             //check erros
             when {
-                binding.editTextEmailAddress.text.isEmpty() ->{
+                binding.editTextEmailAddress.text.isEmpty() -> {
                     binding.editTextEmailAddress.error = "Campo de email vazio"
                 }
-                !email.endsWith("ipca.pt",true)->{
+                !email.endsWith("ipca.pt", true) -> {
                     binding.editTextEmailAddress.error = "O email não pertence ao IPCA."
                 }
-                else ->{
+                else -> {
                     //send email
                     auth
                         .sendPasswordResetEmail(email)
-                        .addOnCompleteListener(this){ task ->
-                            if(task.isSuccessful){
-                                Toast.makeText(baseContext, "Verifique o seu email",
-                                    Toast.LENGTH_SHORT).show()
+                        .addOnCompleteListener(this) { task ->
+                            if (task.isSuccessful) {
+                                Toast.makeText(
+                                    baseContext, "Verifique o seu email",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                                 finish()
-                            }
-                            else {
+                            } else {
                                 Toast.makeText(
                                     baseContext, "Email não registado",
                                     Toast.LENGTH_SHORT

@@ -6,12 +6,13 @@
     android:background="?attr/fullscreenBackgroundColor"
     android:theme="@style/ThemeOverlay.IPCALinkLogin.FullscreenContainer"
     tools:context=".SplashActivity">
+
     <TextView
         android:id="@+id/fullscreen_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
         android:fontFamily="serif"
+        android:gravity="center"
         android:keepScreenOn="true"
         android:text="IPCALink"
         android:textColor="@color/white"

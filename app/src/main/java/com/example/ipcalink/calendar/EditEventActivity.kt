@@ -71,7 +71,6 @@ class EditEventActivity : AppCompatActivity() {
 
     private lateinit var eventIdString : String
 
-    //lateinit var timePicker: SupportedDatePickerDialog
 
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
@@ -296,10 +295,6 @@ class EditEventActivity : AppCompatActivity() {
                         for(oldChatId in oldChatIdList.sortedDescending()) {
                             orderedOldChatsIdsList.add(oldChatId)
                         }
-                        println("orderedChatsIdsList")
-                        println(orderedChatsIdsList)
-                        println("orderedOldChatsIdsList")
-                        println(orderedOldChatsIdsList)
 
                         if(orderedChatsIdsList.containsAll(orderedOldChatsIdsList)) {
                             for(chatId in chatsIdsList) {
@@ -811,8 +806,6 @@ class EditEventActivity : AppCompatActivity() {
     private fun searchUserEvent(eventIdString : String, callback : ()-> Unit) {
 
         dbFirebase.collection("users").document(userUID!!).collection("events").get().addOnSuccessListener { documents ->
-
-
 
             documents.let {
 

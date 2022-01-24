@@ -26,7 +26,12 @@ import java.time.temporal.ChronoUnit
 import java.util.*
 
 
-class RecyclerViewAdapter internal constructor(rl: MutableList<Events>, map : MutableMap<LocalDate, List<Events>>, b : FragmentCalendarBinding, c : Context) : RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder>() {
+class RecyclerViewAdapter internal constructor(
+    rl: MutableList<Events>,
+    map: MutableMap<LocalDate, List<Events>>,
+    b: FragmentCalendarBinding,
+    c: Context
+) : RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder>() {
 
     private val userUID = Firebase.auth.uid
     private val dbFirebase = Firebase.firestore
@@ -42,12 +47,15 @@ class RecyclerViewAdapter internal constructor(rl: MutableList<Events>, map : Mu
     inner class RecyclerViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
-        var title : TextView? = itemView.findViewById(R.id.textViewTitle)
-        var duration : TextView? = itemView.findViewById(R.id.textViewDuration)
-        var chatName : TextView? = itemView.findViewById(R.id.textViewChatName)
+        var title: TextView? = itemView.findViewById(R.id.textViewTitle)
+        var duration: TextView? = itemView.findViewById(R.id.textViewDuration)
+        var chatName: TextView? = itemView.findViewById(R.id.textViewChatName)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewAdapter.RecyclerViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): RecyclerViewAdapter.RecyclerViewHolder {
         val v: View = LayoutInflater.from(parent.context).inflate(
             R.layout.row_view_calendar_events,
             parent, false
@@ -77,7 +85,10 @@ class RecyclerViewAdapter internal constructor(rl: MutableList<Events>, map : Mu
             val intent = Intent(context, EditEventActivity::class.java)
             //intent.putExtra("dayOfWeek", dayOfWeek.toString())
             intent.putExtra("eventId", recyclerList[position].id)
-            intent.putExtra("chatId", calendarSharedPreferences(holder.itemView.context).currentChatId)
+            intent.putExtra(
+                "chatId",
+                calendarSharedPreferences(holder.itemView.context).currentChatId
+            )
             calendarSharedPreferences(holder.itemView.context).control = "firstTime"
 
             startActivity(context, intent, null)
@@ -86,8 +97,14 @@ class RecyclerViewAdapter internal constructor(rl: MutableList<Events>, map : Mu
 
         holder.itemView.apply {
 
-            val startDate = getDate(recyclerList[position].startDate!!.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
-            val endDate = getDate(recyclerList[position].endDate!!.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
+            val startDate = getDate(
+                recyclerList[position].startDate!!.seconds * 1000,
+                "yyyy-MM-dd'T'HH:mm:ss.SSS"
+            )
+            val endDate = getDate(
+                recyclerList[position].endDate!!.seconds * 1000,
+                "yyyy-MM-dd'T'HH:mm:ss.SSS"
+            )
 
 
             val startHour = getHours(startDate)
@@ -103,7 +120,8 @@ class RecyclerViewAdapter internal constructor(rl: MutableList<Events>, map : Mu
 
             holder.title?.text = currentItem.title
             holder.duration?.text = "$startTime-$endTime"
-            holder.chatName?.text = calendarSharedPreferences(holder.itemView.context).currentChatName
+            holder.chatName?.text =
+                calendarSharedPreferences(holder.itemView.context).currentChatName
         }
     }
 
@@ -112,7 +130,7 @@ class RecyclerViewAdapter internal constructor(rl: MutableList<Events>, map : Mu
         return recyclerList.size
     }
 
-    fun removeAt(position: Int, currentChatId : String?, currentChatName : String?) {
+    fun removeAt(position: Int, currentChatId: String?, currentChatName: String?) {
 
         val event = recyclerList[position]
         deleteEvent(event, currentChatId, currentChatName)
@@ -120,8 +138,7 @@ class RecyclerViewAdapter internal constructor(rl: MutableList<Events>, map : Mu
     }
 
 
-
-    private fun deleteEvent(event: Events, currentChatId : String?, currentChatName : String?) {
+    private fun deleteEvent(event: Events, currentChatId: String?, currentChatName: String?) {
 
         binding.calendar.notifyCalendarChanged()
 
@@ -142,7 +159,17 @@ class RecyclerViewAdapter internal constructor(rl: MutableList<Events>, map : Mu
             binding.calendar.notifyDateChanged(date)
 
             date?.let {
-                recyclerMap[date] = recyclerMap[date].orEmpty().minus(Events(event.id, event.title, event.description, event.sendDate, event.senderId, event.startDate, event.endDate))
+                recyclerMap[date] = recyclerMap[date].orEmpty().minus(
+                    Events(
+                        event.id,
+                        event.title,
+                        event.description,
+                        event.sendDate,
+                        event.senderId,
+                        event.startDate,
+                        event.endDate
+                    )
+                )
                 updateAdapterForDate(it)
             }
 
@@ -166,7 +193,17 @@ class RecyclerViewAdapter internal constructor(rl: MutableList<Events>, map : Mu
                     binding.calendar.notifyDateChanged(date)
 
                     date?.let {
-                        recyclerMap[date] = recyclerMap[date].orEmpty().plus(Events(event.id, event.title, event.description, event.sendDate, event.senderId, event.startDate, event.endDate))
+                        recyclerMap[date] = recyclerMap[date].orEmpty().plus(
+                            Events(
+                                event.id,
+                                event.title,
+                                event.description,
+                                event.sendDate,
+                                event.senderId,
+                                event.startDate,
+                                event.endDate
+                            )
+                        )
                         updateAdapterForDate(it)
                     }
 
@@ -179,9 +216,10 @@ class RecyclerViewAdapter internal constructor(rl: MutableList<Events>, map : Mu
         //deleteEvents(event, currentChatId, currentChatName)
     }
 
-    private fun deleteEvents(event : Events, currentChatId : String?, currentChatName : String?) {
-        if(!currentChatId.isNullOrEmpty() && !currentChatName.isNullOrEmpty()) {
-            dbFirebase.collection("chats").document(currentChatId).collection("events").document(event.id!!)
+    private fun deleteEvents(event: Events, currentChatId: String?, currentChatName: String?) {
+        if (!currentChatId.isNullOrEmpty() && !currentChatName.isNullOrEmpty()) {
+            dbFirebase.collection("chats").document(currentChatId).collection("events")
+                .document(event.id!!)
                 .delete().addOnCompleteListener {
                     if (!it.isSuccessful) {
                         return@addOnCompleteListener
@@ -191,7 +229,8 @@ class RecyclerViewAdapter internal constructor(rl: MutableList<Events>, map : Mu
                     }
                 }
         } else {
-            dbFirebase.collection("users").document(userUID!!).collection("events").document(event.id!!)
+            dbFirebase.collection("users").document(userUID!!).collection("events")
+                .document(event.id!!)
                 .delete().addOnCompleteListener {
 
                     if (!it.isSuccessful) {

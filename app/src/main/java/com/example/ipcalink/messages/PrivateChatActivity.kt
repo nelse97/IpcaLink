@@ -1,48 +1,44 @@
 package com.example.ipcalink.messages
 
+import android.app.DownloadManager
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
+import android.provider.OpenableColumns
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.ipcalink.R
-import com.example.ipcalink.databinding.ActivityPrivateChatBinding
-import com.google.firebase.auth.FirebaseAuth
 import com.example.chatappfirebase.Models.Message
+import com.example.ipcalink.R
 import com.example.ipcalink.calendar.CalendarHelper.getDate
+import com.example.ipcalink.databinding.ActivityPrivateChatBinding
+import com.google.android.gms.tasks.Task
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.UploadTask
+import java.io.ByteArrayOutputStream
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
-
-import android.provider.MediaStore
-import android.provider.OpenableColumns
-import android.widget.ImageView
-import com.google.android.gms.tasks.Task
-import java.io.ByteArrayOutputStream
-
-import com.google.firebase.storage.UploadTask
-
-import kotlin.collections.HashMap
-import android.app.DownloadManager
-import android.content.Context
-import android.os.Environment
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
-import java.io.File
 
 
 class PrivateChatActivity : AppCompatActivity() {
@@ -77,8 +73,18 @@ class PrivateChatActivity : AppCompatActivity() {
     lateinit var map: HashMap<*, *>
     var manager: DownloadManager? = null
     private var fbaClicked = false
-    private val rotateOpen: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.rotate_open_anim) }
-    private val rotateClose: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.rotate_close_anim) }
+    private val rotateOpen: Animation by lazy {
+        AnimationUtils.loadAnimation(
+            this,
+            R.anim.rotate_open_anim
+        )
+    }
+    private val rotateClose: Animation by lazy {
+        AnimationUtils.loadAnimation(
+            this,
+            R.anim.rotate_close_anim
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -192,7 +198,7 @@ class PrivateChatActivity : AppCompatActivity() {
     }
 
     private fun setAnimation() {
-        if(!fbaClicked) {
+        if (!fbaClicked) {
             binding.fabPrivateChat.startAnimation(rotateOpen)
         } else {
             binding.fabPrivateChat.startAnimation(rotateClose)
@@ -200,7 +206,7 @@ class PrivateChatActivity : AppCompatActivity() {
     }
 
     private fun setVisibility() {
-        if(!fbaClicked) {
+        if (!fbaClicked) {
             binding.fabGallery.visibility = View.VISIBLE
             binding.fabDocument.visibility = View.VISIBLE
             binding.fabCamera.visibility = View.VISIBLE

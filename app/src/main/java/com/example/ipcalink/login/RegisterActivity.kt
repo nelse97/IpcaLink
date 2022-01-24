@@ -33,15 +33,17 @@ class RegisterActivity : AppCompatActivity() {
             }
             Configuration.UI_MODE_NIGHT_NO -> {
                 window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                this.window.statusBarColor = getColor(R.color.white)}
+                this.window.statusBarColor = getColor(R.color.white)
+            }
             Configuration.UI_MODE_NIGHT_UNDEFINED -> {
                 window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                this.window.statusBarColor = getColor(R.color.white)}
+                this.window.statusBarColor = getColor(R.color.white)
+            }
         }
 
         auth = Firebase.auth
 
-        binding.editTextTextPassword.setOnEditorActionListener{_, _, _ -> binding.editTextTextPasswordConfirm.requestFocus()}
+        binding.editTextTextPassword.setOnEditorActionListener { _, _, _ -> binding.editTextTextPasswordConfirm.requestFocus() }
 
         //enter performs click on register button
         binding.editTextTextPasswordConfirm.setOnEditorActionListener { _, _, _ -> binding.buttonRegister.performClick() }
@@ -49,9 +51,9 @@ class RegisterActivity : AppCompatActivity() {
         //register button
         binding.buttonRegister.setOnClickListener {
 
-            val email : String = binding.editTextEmail.text.toString()
-            val password : String = binding.editTextTextPassword.text.toString()
-            val confirmpassword : String = binding.editTextTextPasswordConfirm.text.toString()
+            val email: String = binding.editTextEmail.text.toString()
+            val password: String = binding.editTextTextPassword.text.toString()
+            val confirmpassword: String = binding.editTextTextPasswordConfirm.text.toString()
 
             //error verifications
             when {
@@ -65,13 +67,15 @@ class RegisterActivity : AppCompatActivity() {
                     binding.editTextTextPasswordConfirm.error = "Preencha este campo"
                 }
                 binding.editTextTextPassword.text.length < 6 -> {
-                    binding.editTextTextPassword.error = "Password tem que ter pelo menos 6 caracteres"
+                    binding.editTextTextPassword.error =
+                        "Password tem que ter pelo menos 6 caracteres"
                 }
                 confirmpassword != password -> {
                     binding.editTextTextPasswordConfirm.error = "Passwords não coencidem"
                 }
-                !email.endsWith("ipca.pt",true)->{
-                    binding.editTextEmail.error = "O registo tem que ser feito com um email do IPCA."
+                !email.endsWith("ipca.pt", true) -> {
+                    binding.editTextEmail.error =
+                        "O registo tem que ser feito com um email do IPCA."
                 }
                 else -> {
                     //creates user in firebase aunth
@@ -107,16 +111,18 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     //send verification email
-    private fun sendVerificationEmail(){
+    private fun sendVerificationEmail() {
 
         val user = FirebaseAuth.getInstance().currentUser
 
         user!!.sendEmailVerification()
-            .addOnCompleteListener{ task ->
-                if(task.isSuccessful){
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
                     FirebaseAuth.getInstance().signOut()
-                    Toast.makeText(baseContext, "Verifique o seu email",
-                        Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        baseContext, "Verifique o seu email",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
     }

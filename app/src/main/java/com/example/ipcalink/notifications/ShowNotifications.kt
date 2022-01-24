@@ -5,16 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ipcalink.R
+import com.example.ipcalink.databinding.FragmentShowNotificacoesBinding
 import com.example.ipcalink.models.Notification
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import androidx.appcompat.app.AppCompatActivity
-import com.example.ipcalink.databinding.FragmentShowNotificacoesBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -25,7 +25,7 @@ class ShowNotifications : Fragment() {
     private var _binding: FragmentShowNotificacoesBinding? = null
     private val binding get() = _binding!!
 
-    private var list : ArrayList<Notification> = ArrayList()
+    private var list: ArrayList<Notification> = ArrayList()
     private var mAdapter: RecyclerView.Adapter<*>? = null
     private var mLayoutManager: LinearLayoutManager? = null
 
@@ -64,26 +64,26 @@ class ShowNotifications : Fragment() {
 
     private fun getNotifications(context: Context) {
 
-        dbFirebase.collection("users").document("EJ1NUwpOoziRyiWWzNej").collection("notifications").addSnapshotListener { value, error ->
+        dbFirebase.collection("users").document("EJ1NUwpOoziRyiWWzNej").collection("notifications")
+            .addSnapshotListener { value, error ->
 
-            if (error != null) {
-                Log.w("ShowNotificationsFragment", "Listen failed.", error)
-                return@addSnapshotListener
+                if (error != null) {
+                    Log.w("ShowNotificationsFragment", "Listen failed.", error)
+                    return@addSnapshotListener
+                }
+
+                for (query in value!!) {
+
+                    val notification = Notification.fromHash(query, context)
+
+                    val date = notification.sendDate!!.removeRange(5, 19)
+
+                    list.add(Notification(notification.id, notification.title, notification.body, notification.iv, date, notification.senderId))
+                }
+
+                binding.recyclerView.adapter!!.notifyItemInserted(list.size - 1)
             }
-
-            for(query in value!!){
-
-                val notification = Notification.fromHash(query, context)
-
-                val date = notification.sendDate!!.removeRange(5, 19)
-
-                list.add(Notification(notification.id, notification.title, notification.body, notification.secretKey, notification.iv, date, notification.senderId))
-            }
-
-            binding.recyclerView.adapter!!.notifyItemInserted(list.size - 1)
-        }
     }
-
 
 
     inner class Adapter : RecyclerView.Adapter<Adapter.ViewHolder>() {
@@ -92,7 +92,8 @@ class ShowNotifications : Fragment() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             return ViewHolder(
-                LayoutInflater.from(parent.context).inflate(R.layout.row_view_notification, parent, false)
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.row_view_notification, parent, false)
             )
         }
 

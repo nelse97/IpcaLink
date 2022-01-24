@@ -4,10 +4,10 @@ import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.example.ipcalink.databinding.FragmentProfileBinding
 import com.example.ipcalink.login.LoginActivity
 import com.example.ipcalink.models.User
@@ -17,7 +17,7 @@ import com.google.firebase.ktx.Firebase
 
 class ProfileFragment : Fragment() {
 
-    private lateinit var _binding : FragmentProfileBinding
+    private lateinit var _binding: FragmentProfileBinding
     private val binding get() = _binding!!
     private val dbFirebase = Firebase.firestore
     private val userID = Firebase.auth.uid
@@ -39,7 +39,7 @@ class ProfileFragment : Fragment() {
 
         binding.buttonSignOut.setOnClickListener {
             Firebase.auth.signOut()
-            activity?.startActivity(Intent(activity, LoginActivity::class.java ))
+            activity?.startActivity(Intent(activity, LoginActivity::class.java))
             activity?.finish()
         }
         binding.buttonEdit.setOnClickListener {
@@ -58,7 +58,15 @@ class ProfileFragment : Fragment() {
             binding.textViewBio.text = userInfo.bio
 
             val userDb = dbFirebase.collection("users").document(userID!!)
-            val userNewInfo = User(userInfo.userId,userInfo.name, userInfo.photoUrl, userInfo.email, userInfo.bio, userInfo.lastSeen, userInfo.isOnline!!).toHash()
+            val userNewInfo = User(
+                userInfo.userId,
+                userInfo.name,
+                userInfo.photoUrl,
+                userInfo.email,
+                userInfo.bio,
+                userInfo.lastSeen,
+                userInfo.isOnline!!
+            ).toHash()
 
             userDb.update(userNewInfo).addOnCompleteListener {
                 if (!it.isSuccessful) {
@@ -76,7 +84,7 @@ class ProfileFragment : Fragment() {
                     binding.textViewEmail.text = document.getString("email")
                     binding.textViewBio.text = document.getString("bio")
                     binding.editTextBio.setText(document.getString("bio"))
-                    //userInfo = User.fromHash(document)
+                    userInfo = User.fromHashDoc(document)
                 } else {
                     Log.d(TAG, "No such document")
                 }

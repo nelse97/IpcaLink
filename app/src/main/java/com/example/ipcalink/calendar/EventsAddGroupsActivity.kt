@@ -20,23 +20,23 @@ import com.example.ipcalink.models.UsersChats
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import java.util.ArrayList
+import java.util.*
 
 
 class EventsAddGroupsActivity : AppCompatActivity() {
 
-    private var _binding : ActivityEventsAddGroupsBinding? = null
+    private var _binding: ActivityEventsAddGroupsBinding? = null
     private val binding get() = _binding!!
 
     private var chatsAdapter: RecyclerView.Adapter<*>? = null
-    private var chatsList : ArrayList<UsersChats> = ArrayList()
+    private var chatsList: ArrayList<UsersChats> = ArrayList()
 
-    private var selectedChatsIdsList : ArrayList<String> = ArrayList()
-    private var selectedChatsNameList : ArrayList<String> = ArrayList()
+    private var selectedChatsIdsList: ArrayList<String> = ArrayList()
+    private var selectedChatsNameList: ArrayList<String> = ArrayList()
 
-    private var oldSelectedChatsIdsList : ArrayList<String> = ArrayList()
+    private var oldSelectedChatsIdsList: ArrayList<String> = ArrayList()
 
-    private var selectedChatsPhotoList : ArrayList<String> = ArrayList()
+    private var selectedChatsPhotoList: ArrayList<String> = ArrayList()
     private var layoutManager: LinearLayoutManager? = null
 
     private val dbFirebase = Firebase.firestore
@@ -63,7 +63,7 @@ class EventsAddGroupsActivity : AppCompatActivity() {
         val names = intent.getStringArrayListExtra("chatsNameList")
         val photos = intent.getStringArrayListExtra("chatsPhotoList")
 
-        if(ids != null && names != null && photos != null) {
+        if (ids != null && names != null && photos != null) {
             selectedChatsIdsList = ids
             selectedChatsNameList = names
             selectedChatsPhotoList = photos
@@ -90,8 +90,8 @@ class EventsAddGroupsActivity : AppCompatActivity() {
 
             val returnIntent = Intent(this, AddEventActivity::class.java)
             returnIntent.putExtra("selectedChatsPhotoList", selectedChatsPhotoList)
-            returnIntent.putExtra("selectedChatsIdsList",   selectedChatsIdsList)
-            returnIntent.putExtra("selectedChatsNameList",   selectedChatsNameList)
+            returnIntent.putExtra("selectedChatsIdsList", selectedChatsIdsList)
+            returnIntent.putExtra("selectedChatsNameList", selectedChatsNameList)
             returnIntent.putExtra("oldSelectedChatsIdsList", oldSelectedChatsIdsList)
 
             setResult(Activity.RESULT_OK, returnIntent)
@@ -106,7 +106,8 @@ class EventsAddGroupsActivity : AppCompatActivity() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             return ViewHolder(
-                LayoutInflater.from(parent.context).inflate(R.layout.row_view_events_add_group, parent, false)
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.row_view_events_add_group, parent, false)
             )
         }
 
@@ -118,28 +119,28 @@ class EventsAddGroupsActivity : AppCompatActivity() {
 
                 val toggleButton = findViewById<ToggleButton>(R.id.toggleButton)
 
-                if(!selectedChatsIdsList.isNullOrEmpty()) {
-                    for(s in selectedChatsIdsList) {
-                        if(chatsList[position].chatId == s) {
+                if (!selectedChatsIdsList.isNullOrEmpty()) {
+                    for (s in selectedChatsIdsList) {
+                        if (chatsList[position].chatId == s) {
                             toggleButton.toggle()
                         }
                     }
                 }
 
                 toggleButton.setOnCheckedChangeListener { _, isChecked ->
-                    if(isChecked) {
+                    if (isChecked) {
 
                         var newChat = true
 
-                        if(!selectedChatsIdsList.isNullOrEmpty()) {
-                            for(s in selectedChatsIdsList) {
-                                if(s == chatsList[position].chatId) {
+                        if (!selectedChatsIdsList.isNullOrEmpty()) {
+                            for (s in selectedChatsIdsList) {
+                                if (s == chatsList[position].chatId) {
                                     newChat = false
                                 }
                             }
                         }
 
-                        if(newChat) {
+                        if (newChat) {
                             selectedChatsNameList.add(chatsList[position].chatName!!)
                             selectedChatsIdsList.add(chatsList[position].chatId!!)
                             selectedChatsPhotoList.add(chatsList[position].photoUrl!!)
@@ -149,16 +150,16 @@ class EventsAddGroupsActivity : AppCompatActivity() {
 
                         var newChat = false
 
-                        if(!selectedChatsIdsList.isNullOrEmpty()) {
-                            for(s in selectedChatsIdsList) {
-                                if(s == chatsList[position].chatId) {
+                        if (!selectedChatsIdsList.isNullOrEmpty()) {
+                            for (s in selectedChatsIdsList) {
+                                if (s == chatsList[position].chatId) {
                                     newChat = false
                                 }
                             }
                         }
 
 
-                        if(!newChat) {
+                        if (!newChat) {
                             selectedChatsNameList.remove(chatsList[position].chatName)
                             selectedChatsIdsList.remove(chatsList[position].chatId)
                             selectedChatsPhotoList.remove(chatsList[position].photoUrl)
@@ -182,25 +183,35 @@ class EventsAddGroupsActivity : AppCompatActivity() {
     private fun insertingChats() {
 
 
-        dbFirebase.collection("users").document(userUID!!).collection("chats").get().addOnCompleteListener {
+        dbFirebase.collection("users").document(userUID!!).collection("chats").get()
+            .addOnCompleteListener {
 
-            if (it.exception != null) {
-                Log.w("ShowNotificationsFragment", "Listen failed.", it.exception)
-                return@addOnCompleteListener
+                if (it.exception != null) {
+                    Log.w("ShowNotificationsFragment", "Listen failed.", it.exception)
+                    return@addOnCompleteListener
+                }
+
+                for (query in it.result!!) {
+
+                    val usersChats = UsersChats.fromHash(query)
+
+                    chatsList.add(
+                        UsersChats(
+                            usersChats.chatId,
+                            usersChats.chatName,
+                            usersChats.chatType,
+                            usersChats.photoUrl,
+                            usersChats.lastMessage,
+                            usersChats.lastMessageSenderId,
+                            usersChats.lastMessageTimestamp
+                        )
+                    )
+
+                }
+
+                chatsAdapter?.notifyDataSetChanged()
+
             }
-
-            for (query in it.result!!) {
-
-                val usersChats = UsersChats.fromHash(query)
-
-                chatsList.add(UsersChats(usersChats.chatId, usersChats.chatName, usersChats.chatType, usersChats.photoUrl, usersChats.lastMessage,
-                    usersChats.lastMessageSenderId, usersChats.lastMessageTimestamp))
-
-            }
-
-            chatsAdapter?.notifyDataSetChanged()
-
-        }
     }
 
 }
