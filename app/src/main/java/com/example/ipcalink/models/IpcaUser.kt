@@ -8,7 +8,7 @@ class IpcaUser {
     var email       : String = ""
     var type        : String = ""
     var gender      : String = ""
-    var userId         : String = ""
+    var userId      : String = ""
 
     constructor()
 

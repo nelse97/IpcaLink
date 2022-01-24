@@ -172,7 +172,7 @@ class LoginActivity : AppCompatActivity() {
                     println(user.name)
                 }
                 callback()
-
+            }.addOnCompleteListener {
                 db.collection("users")
                     .document(auth.currentUser!!.uid)
                     .get()
@@ -183,8 +183,6 @@ class LoginActivity : AppCompatActivity() {
                                 .set(user)
                         }
                         println(user.userId)
-                    }.addOnFailureListener {
-                        println("fail")
                     }
             }
 
@@ -287,9 +285,9 @@ class LoginActivity : AppCompatActivity() {
                                     println(subdoc.id)
                                 }
                             }
-                        }
                     }
                 }
         }
+    }
 
 }
