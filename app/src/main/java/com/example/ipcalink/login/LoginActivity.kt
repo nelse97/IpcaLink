@@ -276,7 +276,6 @@ class LoginActivity : AppCompatActivity() {
                 .whereEqualTo("schoolYear",schoolYear)
                 .get()
                 .addOnSuccessListener { documents ->
-
                     for (document in documents){
                         println(document.id)
                         db.collection("ipca")
@@ -287,9 +286,21 @@ class LoginActivity : AppCompatActivity() {
                             .get()
                             .addOnSuccessListener { subdocs ->
                                 for(subdoc in subdocs){
-                                    val subject : Subjects = document.toObject()
-                                    var ipcaChat = Chats("", subject.name,"","","","")
-
+                                    val subject : Subjects = subdoc.toObject()
+                                    if (subject.semester == semester){
+                                        var ipcaChat = Chats("", subject.name,"","","","")
+                                        val docRef = db.collection("chatsIpca")
+                                        docRef.document()
+                                            .set(ipcaChat)
+                                            .addOnSuccessListener {
+                                                docRef.whereEqualTo("chatName", ipcaChat.chatName).get().addOnSuccessListener { subsubdocs ->
+                                                    for(subsubdoc in subsubdocs){
+                                                        ipcaChat.chatId = document.id
+                                                        docRef.document(document.id).set(ipcaChat)
+                                                    }
+                                                }
+                                            }
+                                    }
 
                                 }
                             }
