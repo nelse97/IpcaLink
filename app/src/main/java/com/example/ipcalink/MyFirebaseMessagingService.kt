@@ -177,8 +177,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     companion object {
 
         private const val TAG = "MyFirebaseMsgService"
-        const val BROADCAST_NEW_NOTIFICATION = "ipca.example.photoshare.notification"
-        const val NOTIFICATION_BODY = "ipca.example.photoshare.notification.body"
-        const val NOTIFICATION_HEAD = "ipca.example.photoshare.notification.head"
+        const val BROADCAST_NEW_NOTIFICATION = "com.example.ipcalink.notification"
+        const val NOTIFICATION_BODY = "com.example.ipcalink.notification.body"
+        const val NOTIFICATION_HEAD = "com.example.ipcalink.notification.head"
     }
 }

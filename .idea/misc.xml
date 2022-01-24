@@ -3,6 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Jorge/Desktop/Projeto IPCA LINK/IpcaLink/app/src/main/res/layout/activity_add_event.xml" value="0.25" />
+        <entry key="..\:/Users/Jorge/Desktop/Projeto IPCA LINK/IpcaLink/app/src/main/res/layout/activity_events_add_groups.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Jorge/Desktop/Projeto IPCA LINK/IpcaLink/app/src/main/res/layout/fragment_calendar.xml" value="0.33" />
+        <entry key="..\:/Users/Jorge/Desktop/Projeto IPCA LINK/IpcaLink/app/src/main/res/layout/fragment_profile.xml" value="0.17831813576494426" />
+        <entry key="..\:/Users/Jorge/Desktop/Projeto IPCA LINK/IpcaLink/app/src/main/res/layout/fragment_show_notificacoes.xml" value="0.17831813576494426" />
+        <entry key="..\:/Users/Jorge/Desktop/Projeto IPCA LINK/IpcaLink/app/src/main/res/layout/list_item.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Jorge/Desktop/Projeto IPCA LINK/IpcaLink/app/src/main/res/layout/notification.xml" value="0.17831813576494426" />
+        <entry key="..\:/Users/Jorge/Desktop/Projeto IPCA LINK/IpcaLink/app/src/main/res/layout/row_view_notification.xml" value="0.17831813576494426" />
         <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/drawable/background.xml" value="0.3828125" />
         <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/drawable/bottom_main_nav_item_colors.xml" value="0.3828125" />
         <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/drawable/button_background.xml" value="0.22135416666666666" />
