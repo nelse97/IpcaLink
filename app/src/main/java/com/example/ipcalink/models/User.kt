@@ -1,6 +1,7 @@
 package com.example.ipcalink.models
 
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QueryDocumentSnapshot
 
 class User {
@@ -57,6 +58,18 @@ class User {
                 hashMap["bio"] as String,
                 hashMap["lastSeen"] as Timestamp,
                 hashMap["isOnline"] as Boolean
+            )
+            return user
+        }
+        fun fromHashDoc(hashMap: DocumentSnapshot): User {
+            val user = User(
+                hashMap["userId"] as String,
+                hashMap["name"    ] as String,
+                hashMap["photoUrl"   ] as String,
+                hashMap["email"   ] as String,
+                hashMap["bio"   ] as String,
+                hashMap["lastSeen"   ] as Timestamp,
+                hashMap["isOnline"   ] as Boolean
             )
             return user
         }

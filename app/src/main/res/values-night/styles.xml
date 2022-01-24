@@ -6,6 +6,7 @@
 
     <style name="Widget.Theme.IPCALinkLogin.ButtonBar.Fullscreen" parent="">
         <item name="android:background">@color/black</item>
+        <item name="android:color">@color/white</item>
         <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
         <item name="android:fontFamily">@font/montserrat_regular</item>
     </style>

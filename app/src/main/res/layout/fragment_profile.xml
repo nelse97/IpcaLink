@@ -136,36 +136,65 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
-                <Button
+                <androidx.cardview.widget.CardView
                     android:id="@+id/buttonEdit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+<<<<<<< Updated upstream
                     android:layout_marginTop="8dp"
                     android:backgroundTint="#FFFFFF"
                     android:elevation="15dp"
                     android:text="Editar"
                     android:textColor="#272727"
                     android:textSize="15sp"
+=======
+                    android:layout_marginTop="12dp"
+>>>>>>> Stashed changes
                     android:translationZ="15dp"
+                    app:cardCornerRadius="20dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/editTextBio" />
+                    app:layout_constraintTop_toBottomOf="@+id/editTextBio">
 
-                <Button
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:text="Editar"
+                        android:textColor="#272727"
+                        android:textSize="16sp" />
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
                     android:id="@+id/buttonSave"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+<<<<<<< Updated upstream
                     android:layout_marginTop="8dp"
                     android:backgroundTint="#004E38"
                     android:elevation="15dp"
                     android:text="Guardar"
                     android:textColor="#FFFFFF"
                     android:textSize="15sp"
+=======
+                    android:layout_marginTop="12dp"
+                    android:backgroundTint="@color/colorPrimary"
+>>>>>>> Stashed changes
                     android:translationZ="15dp"
                     android:visibility="invisible"
+                    app:cardCornerRadius="20dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/editTextBio" />
+                    app:layout_constraintTop_toBottomOf="@+id/editTextBio">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:text="Guardar"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp" />
+                </androidx.cardview.widget.CardView>
 
 
                 <de.hdodenhof.circleimageview.CircleImageView

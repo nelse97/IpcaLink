@@ -3,10 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+<<<<<<< Updated upstream
         <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLink/app/src/main/res/layout/activity_add_event.xml" value="0.24166666666666667" />
         <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLink/app/src/main/res/layout/activity_boarding.xml" value="0.24166666666666667" />
         <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLink/app/src/main/res/layout/activity_events_add_groups.xml" value="0.24166666666666667" />
         <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLink/app/src/main/res/layout/activity_files.xml" value="0.24166666666666667" />
+=======
+        <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/drawable/button_background.xml" value="0.3828125" />
+        <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/drawable/button_background_white.xml" value="0.3828125" />
+        <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/layout/fragment_profile.xml" value="0.36666666666666664" />
+>>>>>>> Stashed changes
         <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLink/app/src/main/res/layout/activity_login.xml" value="0.33" />
         <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLink/app/src/main/res/layout/activity_main.xml" value="0.13680555555555557" />
         <entry key="..\:/Users/xxedu/OneDrive/Documents/GitHub/IpcaLink/app/src/main/res/layout/activity_new_message.xml" value="0.24166666666666667" />
