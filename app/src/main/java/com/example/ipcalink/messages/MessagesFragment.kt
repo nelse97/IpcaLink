@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.ipcalink.R
 import com.example.ipcalink.databinding.FragmentMessagesBinding
-import com.example.ipcalink.fragments.SchoolMessagesFragment
 
 class MessagesFragment : Fragment() {
 
@@ -29,10 +28,6 @@ class MessagesFragment : Fragment() {
 
         binding.tvPrivateMessagesTopBar.setTypeface(null, Typeface.BOLD)
         binding.tvSchoolMessagesTopBar.setTypeface(null, Typeface.NORMAL)
-
-        binding.fabAddPrivateMessage.setOnClickListener {
-            startActivity(Intent(context, NewMessageActivity::class.java))
-        }
 
         binding.llPrivateMessages.setOnClickListener {
             replaceFragment(privateMessagesFragment)

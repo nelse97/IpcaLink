@@ -110,21 +110,11 @@
             android:id="@+id/messagesFrameContainer"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
-    </LinearLayout>
+            android:layout_weight="1">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabAddPrivateMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:backgroundTint="@color/colorPrimary"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_add_icon"
-        app:fabCustomSize="60dp"
-        app:maxImageSize="14dp"
-        app:tint="@android:color/white" />
+        </FrameLayout>
+
+    </LinearLayout>
 
 
 </RelativeLayout>

@@ -49,11 +49,6 @@ class MultimediaFilesFragment : Fragment() {
             .orderBy("timestamp")
             .addSnapshotListener { messages, e ->
                 if (e != null) {
-                    Toast.makeText(
-                        activity,
-                        "Ocorreu um erro ao tentar listar todas as suas mensagens. Tente novamente mais tarde.",
-                        Toast.LENGTH_SHORT
-                    ).show()
                     Log.d("PrivateChatActivity", e.message.toString())
                     return@addSnapshotListener
                 } else {

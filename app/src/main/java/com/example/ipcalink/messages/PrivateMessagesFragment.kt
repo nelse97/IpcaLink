@@ -161,7 +161,7 @@ class PrivateMessagesFragment : Fragment() {
 
             if (userChat.lastMessageTimestamp != null) {
                 holder.chatRowTime.visibility = View.VISIBLE
-                val date = getDate(userChat.lastMessageTimestamp!!.seconds * 1000, "mm:ss")
+                val date = getDate(userChat.lastMessageTimestamp!!.seconds * 1000, "HH:mm")
                 holder.chatRowTime.text = date
             } else {
                 holder.chatRowTime.visibility = View.GONE
@@ -170,6 +170,7 @@ class PrivateMessagesFragment : Fragment() {
             holder.itemView.setOnClickListener {
                 clickListener(userChats[position])
             }
+
 
         }
 

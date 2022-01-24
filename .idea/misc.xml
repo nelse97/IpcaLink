@@ -6,14 +6,18 @@
         <entry key="app/src/main/res/drawable/bg_chat_ballon_sender.xml" value="0.1734375" />
         <entry key="app/src/main/res/drawable/custom_round_box_green_stroke.xml" value="0.19895833333333332" />
         <entry key="app/src/main/res/drawable/ic_back_arrow_white.xml" value="0.19895833333333332" />
+        <entry key="app/src/main/res/drawable/ic_document.xml" value="0.3104166666666667" />
+        <entry key="app/src/main/res/drawable/ic_document_green_filled.xml" value="0.3104166666666667" />
+        <entry key="app/src/main/res/drawable/ic_download_green.xml" value="0.18229166666666666" />
         <entry key="app/src/main/res/drawable/ic_group_add.xml" value="0.19895833333333332" />
         <entry key="app/src/main/res/drawable/ic_search_grey.xml" value="0.19895833333333332" />
         <entry key="app/src/main/res/drawable/multimedia_card_view.xml" value="0.29635416666666664" />
         <entry key="app/src/main/res/layout/activity_files.xml" value="0.375" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.17708333333333334" />
         <entry key="app/src/main/res/layout/activity_new_message.xml" value="0.13802083333333334" />
-        <entry key="app/src/main/res/layout/activity_private_chat.xml" value="0.178125" />
+        <entry key="app/src/main/res/layout/activity_private_chat.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_private_chat_profile_quick_view.xml" value="0.2642857142857143" />
+        <entry key="app/src/main/res/layout/card_view_document.xml" value="0.375" />
         <entry key="app/src/main/res/layout/card_view_multimedia.xml" value="0.28974358974358977" />
         <entry key="app/src/main/res/layout/fragment_document_files.xml" value="0.17708333333333334" />
         <entry key="app/src/main/res/layout/fragment_messages.xml" value="0.17708333333333334" />

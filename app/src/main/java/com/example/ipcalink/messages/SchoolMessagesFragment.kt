@@ -1,4 +1,4 @@
-package com.example.ipcalink.fragments
+package com.example.ipcalink.messages
 
 import android.os.Bundle
 import android.view.LayoutInflater

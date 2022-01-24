@@ -11,6 +11,7 @@ import com.example.ipcalink.fragments.ProfileFragment
 import com.example.ipcalink.fragments.ReminderFragment
 import com.example.ipcalink.login.LoginActivity
 import com.example.ipcalink.messages.MessagesFragment
+import com.example.ipcalink.messages.NewMessageActivity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -51,6 +52,10 @@ class MainActivity : AppCompatActivity() {
 
             }
         }*/
+
+        binding.fabAddPrivateMessage.setOnClickListener {
+            startActivity(Intent(this, NewMessageActivity::class.java))
+        }
 
         binding.ibMessages.setOnClickListener {
             replaceFragment(messagesFragment)

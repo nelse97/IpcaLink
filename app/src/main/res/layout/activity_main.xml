@@ -134,5 +134,21 @@
 
     </LinearLayout>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddPrivateMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="100dp"
+        android:clickable="true"
+        android:backgroundTint="@color/colorPrimary"
+        android:scaleType="fitCenter"
+        android:focusable="true"
+        app:srcCompat="@drawable/ic_add_icon"
+        app:fabCustomSize="60dp"
+        app:maxImageSize="14dp"
+        app:tint="@android:color/white"/>
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

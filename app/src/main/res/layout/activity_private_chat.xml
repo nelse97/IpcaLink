@@ -97,43 +97,33 @@
         </androidx.recyclerview.widget.RecyclerView>
 
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linearLayout4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:orientation="horizontal"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.312"
             app:layout_constraintStart_toStartOf="parent">
 
             <EditText
                 android:id="@+id/etMessagePrivateChat"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="8dp"
                 android:layout_weight="20"
                 android:background="@drawable/bg_textbox_chat"
-                android:hint="Escreva aqui a sua mensagem"
+                android:hint="Escrever..."
                 android:inputType="none|textMultiLine|text"
-                android:textSize="16sp" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fabPrivateChat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="8dp"
-                android:backgroundTint="@color/black"
-                android:elevation="10dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_add_icon"
-                android:visibility="visible"
-                app:fabCustomSize="60dp"
-                app:maxImageSize="18dp"
-                app:tint="@android:color/white" />
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/llFabOptions"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <LinearLayout
                 android:id="@+id/llFabOptions"
@@ -142,25 +132,15 @@
                 android:layout_margin="10dp"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent">
 
                 <LinearLayout
+                    android:id="@+id/llMediaOptions"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/fabMic"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="2dp"
-                        android:onClick="sendVoiceMessage"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/ic_mic"
-                        app:backgroundTint="@color/black"
-                        app:elevation="5dp"
-                        app:fabCustomSize="60dp"
-                        app:tint="@android:color/white" />
+                    android:orientation="horizontal"
+                    android:visibility="visible">
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/fabGallery"
@@ -169,10 +149,25 @@
                         android:layout_margin="2dp"
                         android:scaleType="fitCenter"
                         android:src="@drawable/ic_gallery"
+                        android:visibility="gone"
                         app:backgroundTint="@color/black"
                         app:elevation="5dp"
-                        app:fabCustomSize="60dp"
+                        app:fabCustomSize="50dp"
                         app:maxImageSize="20dp"
+                        app:tint="@android:color/white" />
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/fabCamera"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_camera"
+                        android:visibility="gone"
+                        app:backgroundTint="@color/black"
+                        app:elevation="5dp"
+                        app:fabCustomSize="50dp"
+                        app:maxImageSize="22dp"
                         app:tint="@android:color/white" />
 
                 </LinearLayout>
@@ -183,34 +178,36 @@
                     android:orientation="horizontal">
 
                     <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/fabCamera"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="2dp"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/ic_camera"
-                        app:backgroundTint="@color/black"
-                        app:elevation="5dp"
-                        app:fabCustomSize="60dp"
-                        app:maxImageSize="22dp"
-                        app:tint="@android:color/white" />
-
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/fabDocument"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="2dp"
                         android:scaleType="fitCenter"
                         android:src="@drawable/ic_document"
+                        android:visibility="gone"
                         app:backgroundTint="@color/black"
                         app:elevation="5dp"
-                        app:fabCustomSize="60dp"
+                        app:fabCustomSize="50dp"
+                        app:maxImageSize="22dp"
+                        app:tint="@android:color/white" />
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/fabPrivateChat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:backgroundTint="@color/black"
+                        android:elevation="5dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_add_icon"
+                        android:visibility="visible"
+                        app:fabCustomSize="50dp"
                         app:maxImageSize="22dp"
                         app:tint="@android:color/white" />
                 </LinearLayout>
 
             </LinearLayout>
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
