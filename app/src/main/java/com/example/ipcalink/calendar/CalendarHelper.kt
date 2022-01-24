@@ -49,7 +49,7 @@ object CalendarHelper {
     fun DateFormater(date: String): String {
 
         val inputFormatter =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS",  Locale.ENGLISH)
+            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.ENGLISH)
         val outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH)
         val dateToFormat = LocalDate.parse(date, inputFormatter)
         val formattedDate = outputFormatter.format(dateToFormat)
@@ -60,7 +60,7 @@ object CalendarHelper {
     fun CalendarDateFormatter(date: String): String {
 
         val inputFormatter =
-            DateTimeFormatter.ofPattern("EEE, dd MMM yyyy",  myLocale)
+            DateTimeFormatter.ofPattern("EEE, dd MMM yyyy", myLocale)
         val outputFormatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy", Locale.ENGLISH)
         val dateToFormat = LocalDate.parse(date, inputFormatter)
         val formattedDate = outputFormatter.format(dateToFormat)

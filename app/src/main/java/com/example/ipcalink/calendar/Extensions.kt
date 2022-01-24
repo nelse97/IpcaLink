@@ -59,13 +59,15 @@ object Extensions {
 
 
     //This function takes the id of a drawable and gets the object correspondent to that drawable
-    internal fun Context.getDrawableCompat(@DrawableRes drawable: Int) = ContextCompat.getDrawable(this, drawable)
+    internal fun Context.getDrawableCompat(@DrawableRes drawable: Int) =
+        ContextCompat.getDrawable(this, drawable)
 
     //This function takes the id of a color and gets the object correspondent to that color
     internal fun Context.getColorCompat(@ColorRes color: Int) = ContextCompat.getColor(this, color)
 
     //This function takes the id of a color and gets the object correspondent and then sets the text with that color
-    internal fun TextView.setTextColorRes(@ColorRes color: Int) = setTextColor(context.getColorCompat(color))
+    internal fun TextView.setTextColorRes(@ColorRes color: Int) =
+        setTextColor(context.getColorCompat(color))
 
     //This function returns the days of the week from my locale
     fun daysOfWeekFromLocale(): Array<DayOfWeek> {

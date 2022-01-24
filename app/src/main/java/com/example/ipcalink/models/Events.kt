@@ -6,13 +6,13 @@ import com.google.firebase.firestore.QueryDocumentSnapshot
 
 class Events {
 
-    var id : String? = null
-    var title : String? = null
-    var description : String? = null
-    var sendDate : Timestamp? = null
-    var senderId : String? = null
-    var startDate : Timestamp? = null
-    var endDate : Timestamp? = null
+    var id: String? = null
+    var title: String? = null
+    var description: String? = null
+    var sendDate: Timestamp? = null
+    var senderId: String? = null
+    var startDate: Timestamp? = null
+    var endDate: Timestamp? = null
 
     constructor(
         id: String?,
@@ -33,7 +33,7 @@ class Events {
     }
 
 
-    fun toHash() : HashMap<String, Any>{
+    fun toHash(): HashMap<String, Any> {
         val hashMap = HashMap<String, Any>()
 
         hashMap["id"] = id!!

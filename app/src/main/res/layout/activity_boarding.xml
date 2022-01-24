@@ -11,17 +11,17 @@
         android:id="@+id/buttonSkip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="?attr/colorOnSecondary"
-        android:textAllCaps="false"
-        android:textSize="10sp"
+        android:background="@drawable/no_background"
+        android:drawableTop="@drawable/ic_chevron_right_black_24dp"
         android:text="Skip"
+        android:textAllCaps="false"
+        android:textColor="?attr/colorOnSecondary"
+        android:textSize="10sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:drawableTop="@drawable/ic_chevron_right_black_24dp"
-        android:background="@drawable/no_background"
         tools:ignore="SmallSp" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

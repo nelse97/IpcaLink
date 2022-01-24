@@ -1,5 +1,5 @@
 package com.example.ipcalink
 
 object FcmToken {
-    var fcmToken : String? = null
+    var fcmToken: String? = null
 }

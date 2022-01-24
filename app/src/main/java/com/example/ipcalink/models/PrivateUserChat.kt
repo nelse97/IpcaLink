@@ -4,22 +4,22 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.QueryDocumentSnapshot
 
 class PrivateUserChat {
-    var chatId : String? = null
-    var chatName : String? = null
-    var chatType : String? = null
-    var photoUrl : String? = null
-    var lastMessage : String? = null
-    var chatUserId : String? = null
-    var lastMessageTimestamp : Timestamp? = null
+    var chatId: String? = null
+    var chatName: String? = null
+    var chatType: String? = null
+    var photoUrl: String? = null
+    var lastMessage: String? = null
+    var chatUserId: String? = null
+    var lastMessageTimestamp: Timestamp? = null
 
     constructor(
-            chatId: String?,
-            chatName: String?,
-            chatType: String?,
-            photoUrl: String?,
-            lastMessage: String?,
-            senderId: String?,
-            lastMessageTimestamp: Timestamp?
+        chatId: String?,
+        chatName: String?,
+        chatType: String?,
+        photoUrl: String?,
+        lastMessage: String?,
+        senderId: String?,
+        lastMessageTimestamp: Timestamp?
     ) {
         this.chatId = chatId
         this.chatName = chatName
@@ -34,7 +34,7 @@ class PrivateUserChat {
     constructor()
 
 
-    fun toHash() : HashMap<String, Any>{
+    fun toHash(): HashMap<String, Any> {
         val hashMap = HashMap<String, Any>()
 
         hashMap["chatId"] = chatId!!
@@ -49,15 +49,15 @@ class PrivateUserChat {
     }
 
     companion object {
-        fun fromHash(hashMap: QueryDocumentSnapshot) : PrivateUserChat {
+        fun fromHash(hashMap: QueryDocumentSnapshot): PrivateUserChat {
             return PrivateUserChat(
-                    hashMap["chatId"] as String,
-                    hashMap["chatName"] as String,
-                    hashMap["chatType"] as String,
-                    hashMap["photoUrl"] as String,
-                    hashMap["lastMessage"] as String,
-                    hashMap["lastMessageSenderId"] as String,
-                    hashMap["lastMessageTimestamp"] as Timestamp?
+                hashMap["chatId"] as String,
+                hashMap["chatName"] as String,
+                hashMap["chatType"] as String,
+                hashMap["photoUrl"] as String,
+                hashMap["lastMessage"] as String,
+                hashMap["lastMessageSenderId"] as String,
+                hashMap["lastMessageTimestamp"] as Timestamp?
             )
         }
     }

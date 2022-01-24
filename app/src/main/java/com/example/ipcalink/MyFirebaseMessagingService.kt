@@ -44,7 +44,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             println(clickAction)
 
             //broadcastContentReady(applicationContext, remoteMessage.data["title"]!!, remoteMessage.data["content"]!!)
-            sendNotification(remoteMessage.data["title"]!!, remoteMessage.data["content"]!!, clickAction!!)
+            sendNotification(
+                remoteMessage.data["title"]!!,
+                remoteMessage.data["content"]!!,
+                clickAction!!
+            )
         }
 
 
@@ -122,7 +126,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
 
     @SuppressLint("RemoteViewLayout")
-    fun getRemoteView(messageTitle : String, messageBody: String) : RemoteViews {
+    fun getRemoteView(messageTitle: String, messageBody: String): RemoteViews {
         val remoteView = RemoteViews("com.example.ipcalink", R.layout.notification)
 
         remoteView.setTextViewText(R.id.title, messageTitle)
@@ -133,7 +137,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
 
-    private fun sendNotification(messageTitle: String, messageBody: String, clickAction : String) {
+    private fun sendNotification(messageTitle: String, messageBody: String, clickAction: String) {
         //val intent = Intent(this, MainActivity::class.java)
 
         val intent = Intent(clickAction)
@@ -142,8 +146,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         //intent.putExtra("chat_id", chatId)
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-            PendingIntent.FLAG_ONE_SHOT)
+        val pendingIntent = PendingIntent.getActivity(
+            this, 0 /* Request code */, intent,
+            PendingIntent.FLAG_ONE_SHOT
+        )
 
 
         //Defining the sound that the notification makes when appearing
@@ -160,13 +166,16 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         notificationBuilder.setContent(getRemoteView(messageTitle, messageBody))
 
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(channelId,
+            val channel = NotificationChannel(
+                channelId,
                 channelName,
-                NotificationManager.IMPORTANCE_HIGH)
+                NotificationManager.IMPORTANCE_HIGH
+            )
             notificationManager.createNotificationChannel(channel)
         }
 

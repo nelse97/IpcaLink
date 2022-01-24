@@ -2,21 +2,19 @@ package com.example.ipcalink.messages
 
 import android.app.DownloadManager
 import android.content.Context
-import android.media.Image
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.chatappfirebase.Models.Message
 import com.example.ipcalink.R
 import com.example.ipcalink.databinding.FragmentDocumentFilesBinding
@@ -55,7 +53,7 @@ class DocumentFilesFragment : Fragment() {
                     messagesList.clear()
                     for (message in messages!!) {
                         val newMessage = message.toObject<Message>()
-                        if(newMessage.documentUrl != "") {
+                        if (newMessage.documentUrl != "") {
                             messagesList.add(newMessage)
                         }
                     }
@@ -72,7 +70,8 @@ class DocumentFilesFragment : Fragment() {
         RecyclerView.Adapter<DocumentFilesFragment.DocumentsAdapter.MyViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-            val row = LayoutInflater.from(activity).inflate(R.layout.card_view_document, parent, false)
+            val row =
+                LayoutInflater.from(activity).inflate(R.layout.card_view_document, parent, false)
             return MyViewHolder(row)
         }
 

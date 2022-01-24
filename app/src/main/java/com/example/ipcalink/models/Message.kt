@@ -13,7 +13,14 @@ class Message {
 
     constructor()
 
-    constructor(senderId: String, body: String, photoUrl: String, documentUrl: String, timestamp: Timestamp, unreadCount: Int) {
+    constructor(
+        senderId: String,
+        body: String,
+        photoUrl: String,
+        documentUrl: String,
+        timestamp: Timestamp,
+        unreadCount: Int
+    ) {
         this.senderId = senderId
         this.body = body
         this.photoUrl = photoUrl

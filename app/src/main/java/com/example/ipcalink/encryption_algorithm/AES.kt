@@ -12,7 +12,7 @@ import javax.crypto.spec.GCMParameterSpec
 
 object AES {
 
-    fun generateAESKey() : ByteArray {
+    fun generateAESKey(): ByteArray {
 
         val keyGenerator = KeyGenerator.getInstance("AES")
         keyGenerator.init(128)
@@ -22,9 +22,9 @@ object AES {
     }
 
 
-    fun AesEncrypt(text : String, iv : ByteArray, secretKey : SecretKey) : String {
+    fun AesEncrypt(text: String, iv: ByteArray, secretKey: SecretKey): String {
 
-        var cipherTextString : String? = null
+        var cipherTextString: String? = null
 
         try {
 
@@ -60,9 +60,9 @@ object AES {
         return cipherTextString!!
     }
 
-    fun AesDecrypt(encryptedText : String, iv: ByteArray, secretKey : SecretKey) : String {
+    fun AesDecrypt(encryptedText: String, iv: ByteArray, secretKey: SecretKey): String {
 
-        var text : String? = null
+        var text: String? = null
 
         try {
 
@@ -101,7 +101,7 @@ object AES {
     }
 
     //Here i generate a random IV
-    fun GeneratingRandomIv() : ByteArray {
+    fun GeneratingRandomIv(): ByteArray {
 
         //I generate a random IV byteArray with 12 bytes using the SHA1PRNG algorithm
         val randomSecureRandom = SecureRandom.getInstance("SHA1PRNG")

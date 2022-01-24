@@ -17,10 +17,10 @@ import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.*
-import com.example.ipcalink.calendar.Extensions.daysOfWeekFromLocale
 import com.example.ipcalink.R
 import com.example.ipcalink.calendar.CalendarHelper.DateFormater
 import com.example.ipcalink.calendar.CalendarHelper.getDate
+import com.example.ipcalink.calendar.Extensions.daysOfWeekFromLocale
 import com.example.ipcalink.calendar.Extensions.makeInVisible
 import com.example.ipcalink.calendar.Extensions.makeVisible
 import com.example.ipcalink.calendar.Extensions.setTextColorRes
@@ -29,28 +29,28 @@ import com.example.ipcalink.databinding.FragmentCalendarBinding
 import com.example.ipcalink.models.Events
 import com.example.ipcalink.models.UsersChats
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.DayOwner
 import com.kizitonwose.calendarview.model.InDateStyle
+import com.kizitonwose.calendarview.model.OutDateStyle
 import com.kizitonwose.calendarview.ui.DayBinder
 import com.kizitonwose.calendarview.ui.ViewContainer
+import com.kizitonwose.calendarview.utils.Size
 import com.kizitonwose.calendarview.utils.next
 import com.kizitonwose.calendarview.utils.yearMonth
 import java.time.*
 import java.time.format.DateTimeFormatter
-import java.util.*
-import com.google.firebase.firestore.ListenerRegistration
-import com.google.firebase.firestore.QuerySnapshot
-import com.kizitonwose.calendarview.model.OutDateStyle
-import com.kizitonwose.calendarview.utils.Size
 import java.time.temporal.ChronoUnit
+import java.util.*
 
 
 class CalendarFragment : Fragment() {
 
-    private var _binding : FragmentCalendarBinding? = null
+    private var _binding: FragmentCalendarBinding? = null
     private val binding get() = _binding!!
 
     private val dbFirebase = Firebase.firestore
@@ -65,7 +65,7 @@ class CalendarFragment : Fragment() {
     private val eventsMap = mutableMapOf<LocalDate, List<Events>>()
     private val eventsList = mutableListOf<Events>()
 
-    private var chatsList : ArrayList<UsersChats> = ArrayList()
+    private var chatsList: ArrayList<UsersChats> = ArrayList()
 
     private val userUID = Firebase.auth.uid
 
@@ -79,7 +79,7 @@ class CalendarFragment : Fragment() {
     private var imageHamburgerControl = 1*/
 
 
-    private lateinit var registration : ListenerRegistration
+    private lateinit var registration: ListenerRegistration
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -110,7 +110,6 @@ class CalendarFragment : Fragment() {
         chatsAdapter = ChatsAdapter()
         binding.recyclerViewGroupChats.itemAnimator = DefaultItemAnimator()
         binding.recyclerViewGroupChats.adapter = chatsAdapter
-
 
 
         //Get the days of the week from my current locale
@@ -160,7 +159,7 @@ class CalendarFragment : Fragment() {
         //so that they can filter the events that appear on the calendar
         //If the toogle button has the state 'off' the calendar shows all of the events
         binding.toggleHamburger.setOnCheckedChangeListener { _, isChecked ->
-            if(isChecked) {
+            if (isChecked) {
                 chatsList.clear()
                 binding.recyclerViewGroupChats.visibility = View.VISIBLE
                 insertingChats()
@@ -177,7 +176,7 @@ class CalendarFragment : Fragment() {
         //This class deals with the clicks done by the user on the calendar days
         class DayViewContainer(view: View) : ViewContainer(view) {
             // Will be set when this container is bound. See the dayBinder.
-            lateinit var day : CalendarDay
+            lateinit var day: CalendarDay
             val binding = CalendarDayBinding.bind(view)
 
 
@@ -197,7 +196,7 @@ class CalendarFragment : Fragment() {
             override fun bind(container: DayViewContainer, day: CalendarDay) {
                 container.day = day
 
-                val textViewDay  = container.binding.textViewDay
+                val textViewDay = container.binding.textViewDay
                 val cardView1 = container.binding.cardView1
                 val cardView2 = container.binding.cardView2
 
@@ -207,7 +206,7 @@ class CalendarFragment : Fragment() {
                     textViewDay.makeVisible()
                     when (day.date) {
                         today -> {
-                            if(today != selectedDate) {
+                            if (today != selectedDate) {
                                 textViewDay.setTextColorRes(R.color.black)
                                 textViewDay.setBackgroundResource(R.drawable.calendar_today)
                                 cardView1.isVisible = eventsMap[day.date].orEmpty().isNotEmpty()
@@ -248,7 +247,8 @@ class CalendarFragment : Fragment() {
             if (binding.calendar.maxRowCount == 6) {
 
                 var month = monthTitleFormatter.format(it.yearMonth)
-                month = month.substring(0, 1).uppercase(Locale.getDefault()) + month.substring(1).lowercase(Locale.getDefault())
+                month = month.substring(0, 1).uppercase(Locale.getDefault()) + month.substring(1)
+                    .lowercase(Locale.getDefault())
 
                 binding.textViewYear.text = it.yearMonth.year.toString()
                 binding.textViewMonth.text = month
@@ -263,14 +263,18 @@ class CalendarFragment : Fragment() {
 
                 if (firstDate.yearMonth == lastDate.yearMonth) {
 
-                    var month =  monthTitleFormatter.format(firstDate)
-                    month = month.substring(0, 1).uppercase(Locale.getDefault()) + month.substring(1).lowercase(Locale.getDefault())
+                    var month = monthTitleFormatter.format(firstDate)
+                    month =
+                        month.substring(0, 1).uppercase(Locale.getDefault()) + month.substring(1)
+                            .lowercase(Locale.getDefault())
 
                     binding.textViewYear.text = firstDate.yearMonth.year.toString()
                     binding.textViewMonth.text = month
                 } else {
-                    var month =  monthTitleFormatter.format(lastDate)
-                    month = month.substring(0, 1).uppercase(Locale.getDefault()) + month.substring(1).lowercase(Locale.getDefault())
+                    var month = monthTitleFormatter.format(lastDate)
+                    month =
+                        month.substring(0, 1).uppercase(Locale.getDefault()) + month.substring(1)
+                            .lowercase(Locale.getDefault())
 
                     binding.textViewMonth.text = month
                     if (firstDate.year == lastDate.year) {
@@ -278,7 +282,8 @@ class CalendarFragment : Fragment() {
                     } else {
                         /*binding.textViewMonth.text =
                             monthTitleFormatter.format(firstDate) + "-" + monthTitleFormatter.format(lastDate)*/
-                        binding.textViewYear.text = "${firstDate.yearMonth.year} - ${lastDate.yearMonth.year}"
+                        binding.textViewYear.text =
+                            "${firstDate.yearMonth.year} - ${lastDate.yearMonth.year}"
                     }
                 }
             }
@@ -292,14 +297,17 @@ class CalendarFragment : Fragment() {
         //the calendar will enter week mode or month mode
         binding.toggleButtonArrow.setOnClickListener {
 
-            val firstDate = binding.calendar.findFirstVisibleDay()?.date ?: return@setOnClickListener
+            val firstDate =
+                binding.calendar.findFirstVisibleDay()?.date ?: return@setOnClickListener
             val lastDate = binding.calendar.findLastVisibleDay()?.date ?: return@setOnClickListener
 
             val oneWeekHeight = binding.calendar.daySize.height
             val oneMonthHeight = oneWeekHeight * 6
 
-            val oldHeight = if(binding.toggleButtonArrow.isChecked) oneMonthHeight else oneWeekHeight
-            val newHeight = if(binding.toggleButtonArrow.isChecked) oneWeekHeight else oneMonthHeight
+            val oldHeight =
+                if (binding.toggleButtonArrow.isChecked) oneMonthHeight else oneWeekHeight
+            val newHeight =
+                if (binding.toggleButtonArrow.isChecked) oneWeekHeight else oneMonthHeight
 
 
             // Animate calendar height changes.
@@ -377,34 +385,44 @@ class CalendarFragment : Fragment() {
     private fun insertingChats() {
 
 
-        dbFirebase.collection("users").document(userUID!!).collection("chats").addSnapshotListener { value, error ->
+        dbFirebase.collection("users").document(userUID!!).collection("chats")
+            .addSnapshotListener { value, error ->
 
-            if (error != null) {
-                Log.w("ShowNotificationsFragment", "Listen failed.", error)
-                return@addSnapshotListener
-            }
-
-            //var firstChat = true
-
-            for (query in value!!) {
-
-                val usersChats = UsersChats.fromHash(query)
-
-                /*if(firstChat) {
-                    currentChatId = chat.chatId!!
-                    currentChatName = chat.chatName!!
+                if (error != null) {
+                    Log.w("ShowNotificationsFragment", "Listen failed.", error)
+                    return@addSnapshotListener
                 }
 
-                firstChat = false*/
+                //var firstChat = true
 
-                chatsList.add(UsersChats(usersChats.chatId, usersChats.chatName, usersChats.chatType, usersChats.photoUrl, usersChats.lastMessage,
-                    usersChats.lastMessageSenderId, usersChats.lastMessageTimestamp))
+                for (query in value!!) {
 
+                    val usersChats = UsersChats.fromHash(query)
+
+                    /*if(firstChat) {
+                        currentChatId = chat.chatId!!
+                        currentChatName = chat.chatName!!
+                    }
+
+                    firstChat = false*/
+
+                    chatsList.add(
+                        UsersChats(
+                            usersChats.chatId,
+                            usersChats.chatName,
+                            usersChats.chatType,
+                            usersChats.photoUrl,
+                            usersChats.lastMessage,
+                            usersChats.lastMessageSenderId,
+                            usersChats.lastMessageTimestamp
+                        )
+                    )
+
+                }
+                chatsAdapter?.notifyDataSetChanged()
+
+                //searchingEvents()
             }
-            chatsAdapter?.notifyDataSetChanged()
-
-            //searchingEvents()
-        }
     }
 
     private fun selectDate(date: LocalDate) {
@@ -421,11 +439,11 @@ class CalendarFragment : Fragment() {
     }
 
 
-    private fun saveEvent(value : QuerySnapshot) {
+    private fun saveEvent(value: QuerySnapshot) {
 
         eventsMap.clear()
 
-        for(query in value){
+        for (query in value) {
 
             val event = Events.fromHash(query)
 
@@ -445,7 +463,17 @@ class CalendarFragment : Fragment() {
             while (i <= dayDiff) {
 
                 date?.let {
-                    eventsMap[it] = eventsMap[it].orEmpty().plus(Events(event.id, event.title, event.description, event.sendDate, event.senderId, event.startDate, event.endDate))
+                    eventsMap[it] = eventsMap[it].orEmpty().plus(
+                        Events(
+                            event.id,
+                            event.title,
+                            event.description,
+                            event.sendDate,
+                            event.senderId,
+                            event.startDate,
+                            event.endDate
+                        )
+                    )
                     updateAdapterForDate(it)
                     binding.calendar.notifyDateChanged(it)
                 }
@@ -505,7 +533,7 @@ class CalendarFragment : Fragment() {
         eventsAdapter?.notifyDataSetChanged()
 
 
-        if(eventsMap[date] != null) {
+        if (eventsMap[date] != null) {
             binding.textView6.visibility = View.GONE
         } else {
             binding.textView6.visibility = View.VISIBLE
@@ -572,7 +600,8 @@ class CalendarFragment : Fragment() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             return ViewHolder(
-                LayoutInflater.from(parent.context).inflate(R.layout.row_view_calendar_chat_groups, parent, false)
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.row_view_calendar_chat_groups, parent, false)
             )
         }
 
@@ -581,8 +610,10 @@ class CalendarFragment : Fragment() {
 
             holder.v.setOnClickListener {
 
-                calendarSharedPreferences(requireContext()).currentChatId = chatsList[position].chatId!!
-                calendarSharedPreferences(requireContext()).currentChatName = chatsList[position].chatName!!
+                calendarSharedPreferences(requireContext()).currentChatId =
+                    chatsList[position].chatId!!
+                calendarSharedPreferences(requireContext()).currentChatName =
+                    chatsList[position].chatName!!
                 searchingEventsFromAChat()
             }
 
@@ -599,25 +630,26 @@ class CalendarFragment : Fragment() {
     }
 
 
-
     private fun searchingEvents() {
 
-        registration = dbFirebase.collection("users").document(userUID!!).collection("events").addSnapshotListener { value, error ->
+        registration = dbFirebase.collection("users").document(userUID!!).collection("events")
+            .addSnapshotListener { value, error ->
 
-            if (error != null) {
-                Log.w("ShowNotificationsFragment", "Listen failed.", error)
-                return@addSnapshotListener
-            }
+                if (error != null) {
+                    Log.w("ShowNotificationsFragment", "Listen failed.", error)
+                    return@addSnapshotListener
+                }
 
-            if (value != null) {
-                saveEvent(value)
+                if (value != null) {
+                    saveEvent(value)
+                }
             }
-        }
     }
 
     private fun searchingEventsFromAChat() {
 
-        dbFirebase.collection("chats").document(calendarSharedPreferences(requireContext()).currentChatId!!)
+        dbFirebase.collection("chats")
+            .document(calendarSharedPreferences(requireContext()).currentChatId!!)
             .collection("events").addSnapshotListener { value, error ->
 
                 if (error != null) {
@@ -633,14 +665,19 @@ class CalendarFragment : Fragment() {
 
     private fun setUpRecyclerView() {
         eventsAdapter = RecyclerViewAdapter(eventsList, eventsMap, binding, requireContext())
-        binding.recyclerViewEvents.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        binding.recyclerViewEvents.layoutManager =
+            LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         binding.recyclerViewEvents.adapter = eventsAdapter
 
         //When the user does a swipe to the left this code is executed
         val swipeHandler = object : SwipeToDeleteCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val adapter = binding.recyclerViewEvents.adapter as RecyclerViewAdapter
-                adapter.removeAt(viewHolder.adapterPosition, calendarSharedPreferences(requireContext()).currentChatId, calendarSharedPreferences(requireContext()).currentChatName)
+                adapter.removeAt(
+                    viewHolder.adapterPosition,
+                    calendarSharedPreferences(requireContext()).currentChatId,
+                    calendarSharedPreferences(requireContext()).currentChatName
+                )
             }
 
 

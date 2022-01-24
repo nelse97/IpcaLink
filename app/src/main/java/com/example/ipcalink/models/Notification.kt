@@ -1,20 +1,16 @@
 package com.example.ipcalink.models
 
 import android.content.Context
-import android.util.Base64
-import com.example.ipcalink.encryption_algorithm.AES.AesDecrypt
-import com.example.ipcalink.encryptedSharedPreferences.ESP
 import com.google.firebase.firestore.QueryDocumentSnapshot
-import javax.crypto.spec.SecretKeySpec
 
 class Notification {
-    var id : String? = null
-    var title : String? = null
-    var body : String? = null
-    var secretKey : String? = null
-    var iv : String? = null
-    var sendDate : String? = null
-    var senderId : String? = null
+    var id: String? = null
+    var title: String? = null
+    var body: String? = null
+    var secretKey: String? = null
+    var iv: String? = null
+    var sendDate: String? = null
+    var senderId: String? = null
 
     constructor(
         id: String?,
@@ -35,7 +31,7 @@ class Notification {
     }
 
 
-    fun toHash() : HashMap<String, Any>{
+    fun toHash(): HashMap<String, Any> {
         val hashMap = HashMap<String, Any>()
 
         hashMap["id"] = id!!

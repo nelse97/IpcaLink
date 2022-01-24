@@ -12,76 +12,76 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:fontFamily="@font/montserrat_semi_bold"
         android:gravity="center"
         android:text="Dom."
         android:textColor="@color/colorPrimary"
-        android:textSize="11sp"
-        android:fontFamily="@font/montserrat_semi_bold"/>
+        android:textSize="11sp" />
 
     <TextView
         android:id="@+id/legendText2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:fontFamily="@font/montserrat_semi_bold"
         android:gravity="center"
         android:text="Seg."
         android:textColor="@color/colorPrimary"
-        android:textSize="11sp"
-        android:fontFamily="@font/montserrat_semi_bold"/>
+        android:textSize="11sp" />
 
     <TextView
         android:id="@+id/legendText3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:fontFamily="@font/montserrat_semi_bold"
         android:gravity="center"
         android:text="Ter."
         android:textColor="@color/colorPrimary"
-        android:textSize="11sp"
-        android:fontFamily="@font/montserrat_semi_bold"/>
+        android:textSize="11sp" />
 
     <TextView
         android:id="@+id/legendText4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:fontFamily="@font/montserrat_semi_bold"
         android:gravity="center"
         android:text="Qua."
         android:textColor="@color/colorPrimary"
-        android:textSize="11sp"
-        android:fontFamily="@font/montserrat_semi_bold"/>
+        android:textSize="11sp" />
 
     <TextView
         android:id="@+id/legendText5"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:fontFamily="@font/montserrat_semi_bold"
         android:gravity="center"
         android:text="Qui."
         android:textColor="@color/colorPrimary"
-        android:textSize="11sp"
-        android:fontFamily="@font/montserrat_semi_bold"/>
+        android:textSize="11sp" />
 
     <TextView
         android:id="@+id/legendText6"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:fontFamily="@font/montserrat_semi_bold"
         android:gravity="center"
         android:text="Sex."
         android:textColor="@color/colorPrimary"
-        android:textSize="11sp"
-        android:fontFamily="@font/montserrat_semi_bold"/>
+        android:textSize="11sp" />
 
     <TextView
         android:id="@+id/legendText7"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:fontFamily="@font/montserrat_semi_bold"
         android:gravity="center"
         android:text="Sáb"
         android:textColor="@color/colorPrimary"
-        android:textSize="11sp"
-        android:fontFamily="@font/montserrat_semi_bold"/>
+        android:textSize="11sp" />
 
 </LinearLayout>

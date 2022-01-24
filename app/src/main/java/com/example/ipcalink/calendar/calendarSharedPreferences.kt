@@ -4,18 +4,17 @@ import android.content.Context
 import android.content.SharedPreferences
 
 
-lateinit var sharedPreferences : SharedPreferences
+lateinit var sharedPreferences: SharedPreferences
 
 
 class calendarSharedPreferences {
 
-    constructor(context: Context){
+    constructor(context: Context) {
         sharedPreferences =
-            context.
-            getSharedPreferences("CALENDAR_PREF", Context.MODE_PRIVATE)
+            context.getSharedPreferences("CALENDAR_PREF", Context.MODE_PRIVATE)
     }
 
-    var currentChatId : String?
+    var currentChatId: String?
         get() = sharedPreferences.getString("CURRENT_CHAT_ID", "")
         set(value) {
             val editor: SharedPreferences.Editor = sharedPreferences.edit()
@@ -23,7 +22,7 @@ class calendarSharedPreferences {
             editor.apply()
         }
 
-    var currentChatName : String?
+    var currentChatName: String?
         get() = sharedPreferences.getString("CURRENT_CHAT_NAME", "")
         set(value) {
             val editor: SharedPreferences.Editor = sharedPreferences.edit()
@@ -31,7 +30,7 @@ class calendarSharedPreferences {
             editor.apply()
         }
 
-    var control : String?
+    var control: String?
         get() = sharedPreferences.getString("CONTROL", "")
         set(value) {
             val editor: SharedPreferences.Editor = sharedPreferences.edit()
