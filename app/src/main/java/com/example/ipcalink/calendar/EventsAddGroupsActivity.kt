@@ -67,7 +67,6 @@ class EventsAddGroupsActivity : AppCompatActivity() {
             selectedChatsIdsList = ids
             selectedChatsNameList = names
             selectedChatsPhotoList = photos
-            //oldSelectedChatsIdsList.addAll(ids)
         }
 
         calendarSharedPreferences(this).control = "notFirstTime"

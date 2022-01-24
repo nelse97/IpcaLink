@@ -1,6 +1,7 @@
 package com.example.ipcalink.notifications
 
 import android.annotation.SuppressLint
+import android.content.ContentValues
 import android.os.Build
 import android.os.Bundle
 import android.util.Base64
@@ -11,14 +12,17 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.ipcalink.FcmToken
 import com.example.ipcalink.encryption_algorithm.AES.GeneratingRandomIv
 import com.example.ipcalink.databinding.FragmentPushNotificationBinding
 import com.example.ipcalink.encryptedSharedPreferences.ESP
 import com.example.ipcalink.encryption_algorithm.AES.AesEncrypt
 import com.example.ipcalink.models.Notification
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.*
 import org.json.JSONArray
 import org.json.JSONObject
@@ -42,11 +46,11 @@ class PushNotificationFragment : Fragment() {
     private val binding get() = _binding!!
 
     //Devices to be added to a group
-    private var device1Token : String = "dqyykwh4R9u_hMk7AALfsQ:APA91bGhtfqiZjoE-xzyZPB8DIUpQ4xuHndpuG-ACDgRgOeWxd6Rwd8h-Zq_va881z8MibUfT-rJxu8V0Vw5aBbfSnSf6FZuGBYCMlaNDNkoAYnw3wfoOrP5C6TO7WaKJwCG8Drc0ST9"
-    private var device2Token : String = "cCPpFmDjS_2JTzyB9HDoVb:APA91bGD-OcyZ9cET00MrF1TzpLWzw_1UHV8a4TQF69p7BJTjq6IFB_KGYNN55UQ0h14ZKHM8RskV06rSudb3pG5w5XfQw4v5CH8x8u--NoFVJylXarKa5wdi5exUeEv0yt6bVb7T6qk"
+    private var device1Token : String = "d-NN8p1oTZqb8rc3gAXJYp:APA91bFNx3wtLpSAp04wQwYG0UdYIzjpKpUKwkb1zSViB81gr2Pz7wNOyIctvNrYH22Lf-dJD_CKk5c5kmFEyBoMTbdaAXE6IGiHxulibUCaECSlNRagfs0H9vXOZG3RAC2eUNWugfuB"
+    private var device2Token : String = "cjb2nyKXSXe52aDkAfQBxU:APA91bEW6gmAWzoc6s2Hs22hX1e55Co1PA8eeN8b71PPeWyZge-y-qfVrF6_e90yRlfXrTsIwK7PUDArwm2S3SUdHlBisv5aMSDaklc90CD_lEyfiihbEp9AUEQ4aMvBBzoVLP1jknJi"
 
     //Notification Group Info
-    private var notificationKey : String = "APA91bGNFa83cbX4lV9blvXVStnwJzL2Dvs0eY3QDlrjwuep6IQhy68VCPVN5gnW0_WQ4xobwUqB0BIylmg4-VkmkbB3yrRSktdOVfx3FITwrkmIQhWEvrw"
+    private var notificationKey : String = "APA91bGmGPmuwTdidq_lmVwQoOnYe6oyosl8_TF1P1SHEqFNgU0R3oryGWriZIi8oyFzdZtFYkc6acAs7T9ULYtUoGwCURjSxJxBQhcBtwtcbuaUCDtCJ34"
     lateinit var notificationKeyName : String
 
     //private var fcmToken : String = "cbTnqtSCQ66yt7ZMj6qaMU:APA91bGuUEHDHr3YcqxPqq_VsyV8C_guLdARu0hhziThefQLYovzKGb7MjiBN5108YhiCr_e6gft66d2G2XUyeQxEqlrvvSVV8EjJ8DYTbH1oBAtyier1a_BkAX881AIiZmnbEPlTMuZ"
@@ -101,8 +105,8 @@ class PushNotificationFragment : Fragment() {
             GlobalScope.launch(Dispatchers.IO) {
 
                 //I create a notification group
-                createNotificationGroup("Aplicacoes Moveis S77po7vNGjtKja2Rinyb", registrationIds)
-
+                //createNotificationGroup("Aplicacoes Moveis S77po7vNGjtKja2Rinyb", registrationIds)
+                //createNotificationGroup("hhhhghgh", registrationIds)
                 //I add elements to a notification group
                 /*addElementsToGroup("Aplicacoes Moveis S77po7vNGjtKja2Rinyb",
                     notificationKey,
@@ -117,7 +121,7 @@ class PushNotificationFragment : Fragment() {
                 //I will use this code to encrypt data
 
                 //I generate a random iv
-                val iv = GeneratingRandomIv()
+                /*val iv = GeneratingRandomIv()
 
                 //I have to get all the key and search for the key that corresponds to the group where the user is situated
                 val keys = ESP(requireContext()).keysPref
@@ -145,7 +149,7 @@ class PushNotificationFragment : Fragment() {
                 val encryptedMessage = AesEncrypt(message, iv, secretKey)
 
                 //I need the iv so the user can decrypt the message in the future
-                val ivTitleString = Base64.encodeToString(iv, Base64.DEFAULT)
+                val ivTitleString = Base64.encodeToString(iv, Base64.DEFAULT)*/
 
                 val chatGroupIcon = ""
                 val chatId = ""
@@ -159,7 +163,7 @@ class PushNotificationFragment : Fragment() {
 
 
                 //I save a message that has been send from a group to the firebase
-                sendNotificationToFirebase(title, encryptedMessage, ivTitleString, userUID!!)
+                //sendNotificationToFirebase(title, message, ivTitleString, userUID!!)
             }
         }
     }

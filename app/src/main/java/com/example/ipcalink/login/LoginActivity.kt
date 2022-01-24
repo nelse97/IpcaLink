@@ -202,6 +202,7 @@ class LoginActivity : AppCompatActivity() {
             }
 
             // Get new FCM registration token
+            println(task.result)
             FcmToken.fcmToken = task.result
 
         }).addOnSuccessListener {

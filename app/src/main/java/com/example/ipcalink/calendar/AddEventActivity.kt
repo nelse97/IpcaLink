@@ -92,7 +92,6 @@ class AddEventActivity : AppCompatActivity() {
         binding.recyclerViewGroups.adapter = chatsAdapter
 
         val dateString = intent.getStringExtra("date")
-        //val chatId = intent.getStringExtra("chatId")
 
         val date = LocalDate.parse(dateString)
 
@@ -367,19 +366,9 @@ class AddEventActivity : AppCompatActivity() {
         binding.minutePicker.minValue = 0
         binding.minutePicker.maxValue = minutes.size - 1
         binding.minutePicker.displayedValues = minutes
-        //mBottomSheetDialog.setContentView(it)
         bottomSheetDialog2.show()
 
-        /*var hourStr = "00"
-        var minuteStr = "00"
 
-        binding.hourPicker.setOnValueChangedListener { picker, oldVal, newVal ->
-            hourStr = if (newVal < 10) "0${newVal}" else "$newVal"
-        }
-
-        binding.minutePicker.setOnValueChangedListener { picker, oldVal, newVal ->
-            minuteStr = if (newVal < 10) "0${newVal}" else "$newVal"
-        }*/
 
         binding.cardViewCancel.setOnClickListener {
             binding.CardViewTimePicker.visibility = View.GONE
@@ -475,19 +464,7 @@ class AddEventActivity : AppCompatActivity() {
             i++
         }
 
-
-        /*val startDate = getDate(timeStampStart.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
-        val endDate = getDate(timeStampEnd.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
-
-        val even = Event(eventChat.id, title, body, sendDate, senderId, startDate, endDate, subject).toHash()
-
-        //Return to Profile view activity the edited user
-        returnIntent.putExtra("event", startDate)
-        returnIntent.putExtra("end_date", endDate)
-        setResult(Activity.RESULT_OK, returnIntent)*/
-
         finish()
-
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -514,35 +491,9 @@ class AddEventActivity : AppCompatActivity() {
             }
         }
 
-        /*val startDate = getDate(timeStampStart.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
-        val endDate = getDate(timeStampEnd.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
-
-        val even = Event(eventChat.id, title, body, sendDate, senderId, startDate, endDate, subject).toHash()
-
-        //Return to Profile view activity the edited user
-        returnIntent.putExtra("event", startDate)
-        returnIntent.putExtra("end_date", endDate)
-        setResult(Activity.RESULT_OK, returnIntent)*/
-
         finish()
 
     }
-
-    /*fun getDate(milliSeconds: Long, dateFormat: String?): String {
-        // Create a DateFormatter object for displaying date in specified format.
-        val formatter = SimpleDateFormat(dateFormat)
-
-        // Create a calendar object that will convert the date and time value in milliseconds to date.
-        val calendar: Calendar = Calendar.getInstance()
-        calendar.timeInMillis = milliSeconds
-        return formatter.format(calendar.time)
-    }*/
-
-    /*override fun onTimeSet(view: TimePicker, hourOfDay: Int, minute: Int) {
-        val hourStr = if (hourOfDay < 10) "0${hourOfDay}" else "$hourOfDay"
-        val minuteStr = if (minute < 10) "0${minute}" else "$minute"
-        binding.textViewStartTime.text = "${hourStr}:${minuteStr}"
-    }*/
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -595,28 +546,4 @@ class AddEventActivity : AppCompatActivity() {
             return chatsPhotoList.size
         }
     }
-
-    /*fun getChats(chatsIds :  ArrayList<String>?) {
-        for (chatId in chatsIds!!) {
-            dbFirebase.collection("chats").document(chatId).collection("events").get().addOnCompleteListener {
-
-                if (it.exception != null) {
-                    Log.w("ShowNotificationsFragment", "Listen failed.", it.exception)
-                    return@addOnCompleteListener
-                }
-
-                for (query in it.result!!) {
-
-                    val usersChats = UsersChats.fromHash(query)
-
-                    chatsList.add(UsersChats(usersChats.chatId, usersChats.chatName, usersChats.chatType, usersChats.photoUrl, usersChats.lastMessage,
-                        usersChats.lastMessageSenderId, usersChats.lastMessageTimestamp))
-
-                }
-
-                chatsAdapter?.notifyDataSetChanged()
-
-            }
-        }
-    }*/
 }
