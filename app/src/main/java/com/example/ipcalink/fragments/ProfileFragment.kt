@@ -8,14 +8,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import com.example.ipcalink.R
 import com.example.ipcalink.databinding.FragmentProfileBinding
 import com.example.ipcalink.login.LoginActivity
-import com.example.ipcalink.models.Events
 import com.example.ipcalink.models.User
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -62,7 +58,7 @@ class ProfileFragment : Fragment() {
             binding.textViewBio.text = userInfo.bio
 
             val userDb = dbFirebase.collection("users").document(userID!!)
-            val userNewInfo = User(userInfo.userId,userInfo.name, userInfo.photoURl, userInfo.email, userInfo.bio, userInfo.isOnline!!, userInfo.lastSeen!!).toHash()
+            val userNewInfo = User(userInfo.userId,userInfo.name, userInfo.photoUrl, userInfo.email, userInfo.bio, userInfo.lastSeen, userInfo.isOnline!!).toHash()
 
             userDb.update(userNewInfo).addOnCompleteListener {
                 if (!it.isSuccessful) {
@@ -80,7 +76,7 @@ class ProfileFragment : Fragment() {
                     binding.textViewEmail.text = document.getString("email")
                     binding.textViewBio.text = document.getString("bio")
                     binding.editTextBio.setText(document.getString("bio"))
-                    userInfo = User.fromHashDoc(document)
+                    //userInfo = User.fromHash(document)
                 } else {
                     Log.d(TAG, "No such document")
                 }
