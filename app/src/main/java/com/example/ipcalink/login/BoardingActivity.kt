@@ -35,10 +35,12 @@ class BoardingActivity : AppCompatActivity() {
             }
             Configuration.UI_MODE_NIGHT_NO -> {
                 window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                this.window.statusBarColor = getColor(R.color.white)}
+                this.window.statusBarColor = getColor(R.color.white)
+            }
             Configuration.UI_MODE_NIGHT_UNDEFINED -> {
                 window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-                this.window.statusBarColor = getColor(R.color.white)}
+                this.window.statusBarColor = getColor(R.color.white)
+            }
         }
 
         val navView: BottomNavigationView = binding.navView
