@@ -76,7 +76,7 @@ class ProfileFragment : Fragment() {
                     binding.textViewEmail.text = document.getString("email")
                     binding.textViewBio.text = document.getString("bio")
                     binding.editTextBio.setText(document.getString("bio"))
-                    //userInfo = User.fromHash(document)
+                    userInfo = User.fromHashDoc(document)
                 } else {
                     Log.d(TAG, "No such document")
                 }
