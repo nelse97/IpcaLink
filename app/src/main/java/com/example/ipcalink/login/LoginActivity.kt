@@ -161,6 +161,19 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    private fun createUser() {
+        db.collection("users")
+            .document(auth.currentUser!!.uid)
+            .get()
+            .addOnCompleteListener {
+                if (!it.result!!.exists()) {
+                    db.collection("users")
+                        .document(auth.currentUser!!.uid)
+                        .set(user)
+                }
+            }
+    }
+
     private fun createdata() {
 
         user = IpcaUser("", auth.currentUser!!.email!!, "", "", auth.currentUser!!.uid)
@@ -170,28 +183,18 @@ class LoginActivity : AppCompatActivity() {
             .whereEqualTo("email", auth.currentUser!!.email)
             .get()
             .addOnSuccessListener { documents ->
-                println(1)
 
                 for (document in documents) {
                     docid = document.id
                     user = document.toObject()
-                    println(user.name)
                 }
+                createUser()
                 if (!documents.isEmpty) {
                     callback()
                 }
+
             }.addOnCompleteListener {
-                db.collection("users")
-                    .document(auth.currentUser!!.uid)
-                    .get()
-                    .addOnCompleteListener {
-                        if (!it.result!!.exists()) {
-                            db.collection("users")
-                                .document(auth.currentUser!!.uid)
-                                .set(user)
-                        }
-                        println(user.userId)
-                    }
+                createUser()
             }
 
 
@@ -202,7 +205,6 @@ class LoginActivity : AppCompatActivity() {
             }
 
             // Get new FCM registration token
-            println(task.result)
             FcmToken.fcmToken = task.result
 
         }).addOnSuccessListener {
@@ -277,7 +279,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun callback() {
-        println(schoolYear)
         if (schoolYear != "null") {
             db.collection("ipca")
                 .document(docid)
@@ -286,7 +287,6 @@ class LoginActivity : AppCompatActivity() {
                 .get()
                 .addOnSuccessListener { documents ->
                     for (document in documents) {
-                        println(document.id)
                         db.collection("ipca")
                             .document(docid)
                             .collection("cursos")
@@ -301,7 +301,9 @@ class LoginActivity : AppCompatActivity() {
                                     val docRef = db.collection("chatsIpca")
                                     docRef.whereEqualTo("chatName", ipcaChat.chatName).get()
                                         .addOnCompleteListener {
+                                            println(1)
                                             if (it.result!!.isEmpty) {
+                                                println(2)
                                                 docRef.document()
                                                     .set(ipcaChat)
                                                     .addOnSuccessListener {
@@ -315,10 +317,49 @@ class LoginActivity : AppCompatActivity() {
                                                                     docRef.document(subsubdoc.id)
                                                                         .update(
                                                                             "chatId",
-                                                                            document.id
-                                                                        )
+                                                                            subsubdoc.id
+                                                                        ).addOnCompleteListener {
+                                                                            db.collection("users")
+                                                                                .document(auth.currentUser!!.uid)
+                                                                                .collection("chats")
+                                                                                .document(ipcaChat.chatId!!)
+                                                                                .set(ipcaChat)
+                                                                                .addOnCompleteListener {
+                                                                                    docRef.document(
+                                                                                        subsubdoc.id
+                                                                                    ).collection(
+                                                                                        "users"
+                                                                                    ).document(
+                                                                                        auth.currentUser!!.uid
+                                                                                    ).set(user)
+                                                                                }
+                                                                        }
                                                                 }
                                                             }
+                                                    }
+                                            } else {
+                                                println(3)
+                                                docRef.whereEqualTo("chatName", ipcaChat).get()
+                                                    .addOnSuccessListener { subsubdocs ->
+                                                        println(4)
+                                                        for (subsubdoc in subsubdocs) {
+                                                            println(5)
+                                                            db.collection("users")
+                                                                .document(auth.currentUser!!.uid)
+                                                                .collection("chats")
+                                                                .document(ipcaChat.chatId!!)
+                                                                .set(ipcaChat)
+                                                                .addOnCompleteListener {
+                                                                    docRef.document(
+                                                                        subsubdoc.id
+                                                                    ).collection(
+                                                                        "users"
+                                                                    ).document(
+                                                                        auth.currentUser!!.uid
+                                                                    ).set(user)
+
+                                                                }
+                                                        }
                                                     }
                                             }
                                         }
@@ -328,5 +369,4 @@ class LoginActivity : AppCompatActivity() {
                 }
         }
     }
-
 }
