@@ -58,7 +58,7 @@ class ProfileFragment : Fragment() {
             binding.textViewBio.text = userInfo.bio
 
             val userDb = dbFirebase.collection("users").document(userID!!)
-            val userNewInfo = User(userInfo.userId,userInfo.name, userInfo.photoUrl, userInfo.email, userInfo.bio, userInfo.lastSeen, userInfo.isOnline!!).toHash()
+            val userNewInfo = User(userInfo.userId,userInfo.name, userInfo.photoUrl, userInfo.email, userInfo.bio, userInfo.lastSeen!!, userInfo.isOnline!!).toHash()
 
             userDb.update(userNewInfo).addOnCompleteListener {
                 if (!it.isSuccessful) {

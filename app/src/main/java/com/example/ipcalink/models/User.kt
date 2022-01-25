@@ -15,7 +15,7 @@ class User {
     lateinit var bio: String
     @field:JvmField // use this annotation if your Boolean field is prefixed with 'is'
     var isOnline: Boolean? = null
-    lateinit var lastSeen: Timestamp
+    var lastSeen: Timestamp? = null
 
     constructor()
 
@@ -45,7 +45,7 @@ class User {
         hashMap.put("email"  , email)
         hashMap.put("bio"  , bio)
         isOnline?.let { hashMap.put("isOnline"  , it) }
-        hashMap.put("lastSeen"  , lastSeen)
+        hashMap.put("lastSeen"  , lastSeen!!)
         return hashMap
     }
 

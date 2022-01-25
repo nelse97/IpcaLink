@@ -1,6 +1,7 @@
 package com.example.ipcalink.messages
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -36,6 +37,7 @@ class PrivateMessagesFragment : Fragment() {
     private lateinit var authUserUid: String
     var userExistingPrivateChats = ArrayList<String>()
     var c: Calendar = Calendar.getInstance()
+    lateinit var dataPasser: OnDataPass
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -71,7 +73,6 @@ class PrivateMessagesFragment : Fragment() {
             null)
 
         userChats.add(newChat)
-
         chatsAdapter.notifyDataSetChanged()*/
 
 
@@ -79,59 +80,73 @@ class PrivateMessagesFragment : Fragment() {
         return binding.root
     }
 
-    private fun verifyCurrentPrivateChats() {
-        for (userChat in userChats) {
-            if (userChat.chatType == "private") {
-                db.collection("chats").document(userChat.chatId!!).collection("users")
-                        .get()
-                        .addOnSuccessListener { documentSnapshot ->
-                            for (document in documentSnapshot) {
-                                val chatUser = document.toObject<User>()
-                                if (chatUser.userId != authUserUid) {
-                                    userExistingPrivateChats.add(chatUser.userId)
-                                }
-                            }
-                        }
-            }
-        }
+    interface OnDataPass {
+        fun onDataPass(data: ArrayList<String>)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        dataPasser = context as OnDataPass
+    }
+
+    fun passData(data: ArrayList<String>){
+        dataPasser.onDataPass(data)
     }
 
     override fun onStart() {
         super.onStart()
-        userChats.clear()
         //get list of all user chats
         db.collection("users").document(authUserUid).collection("chats")
-                .addSnapshotListener { chats, e ->
-                    if (e != null) {
-                        Toast.makeText(
-                                activity,
-                                "Ocorreu um erro ao tentar listar todos os seus chats. Tente novamente mais tarde.",
-                                Toast.LENGTH_SHORT
-                        ).show()
-                        Log.d("chatsFragment", e.message.toString())
-                        return@addSnapshotListener
-                    }
-                    //userExistingPrivateChats.clear()
-                    userChats.clear()
-                    for (chat in chats!!) {
-                        val newChat = chat.toObject<PrivateUserChat>()
-                        userChats.add(newChat)
-                    }
-                    Log.d("PrivateMessages", userChats.size.toString())
-                    if (userChats.size == 0) {
-                        noChatsShowNotice()
-                    } else {
-                        //get a list of the users current private chats
-                        //verifyCurrentPrivateChats()
-                        chatsAdapter.notifyDataSetChanged()
-                    }
-
+            .addSnapshotListener { chats, e ->
+                if (e != null) {
+                    Toast.makeText(
+                        activity,
+                        "Ocorreu um erro ao tentar listar todos os seus chats. Tente novamente mais tarde.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    Log.d("chatsFragment", e.message.toString())
+                    return@addSnapshotListener
                 }
+                userChats.clear()
+                for (chat in chats!!) {
+                    val newChat = chat.toObject<PrivateUserChat>()
+                    userChats.add(newChat)
+                }
+                Log.d("PrivateMessages", userChats.size.toString())
+                if (userChats.size == 0) {
+                    noChatsShowNotice()
+                } else {
+                    //get a list of the users current private chats
+                    chatsAdapter.notifyDataSetChanged()
+                    verifyCurrentPrivateChats()
+                }
+
+            }
     }
 
     override fun onStop() {
         super.onStop()
         db.clearPersistence()
+    }
+
+    private fun verifyCurrentPrivateChats() {
+        //clear existing private chats
+        userExistingPrivateChats.clear()
+        for (userChat in userChats) {
+            if (userChat.chatType == "private") {
+                db.collection("chats").document(userChat.chatId!!).collection("users")
+                    .get()
+                    .addOnSuccessListener { documentSnapshot ->
+                        for (document in documentSnapshot) {
+                            val chatUser = document.toObject<User>()
+                            if (chatUser.userId != authUserUid) {
+                                userExistingPrivateChats.add(chatUser.userId)
+                            }
+                        }
+                        passData(userExistingPrivateChats)
+                    }
+            }
+        }
     }
 
     inner class PrivateChatsAdapter(private val clickListener: (PrivateUserChat) -> Unit) :
