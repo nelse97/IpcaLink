@@ -110,11 +110,29 @@ class LoginActivity : AppCompatActivity() {
                         .addOnCompleteListener(this) { task ->
                             if (task.isSuccessful) {
 
-                                //create/update firestoredatabase values
-                                createdata()
+                                val user = auth.currentUser
 
                                 // Sign in success, update UI with the signed-in user's information
-                                checkIfEmailisVerified()
+                                if (user!!.isEmailVerified) {
+
+                                    //create/update firestoredatabase values
+                                    createdata()
+
+                                    val sp = getSharedPreferences("firstlogin", Activity.MODE_PRIVATE)
+                                    val firstlogin = sp.getBoolean("firstlogin", true)
+
+                                    if (firstlogin) {
+                                        startActivity(Intent(this@LoginActivity, BoardingActivity::class.java))
+                                        finish()
+                                    } else {
+                                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                                        finish()
+                                    }
+                                } else {
+                                    FirebaseAuth.getInstance().signOut()
+                                    binding.editTextEmail.error = "Email não verificado"
+                                }
+
                             } else {
                                 //error notice
                                 binding.editTextEmail.error =
@@ -135,29 +153,6 @@ class LoginActivity : AppCompatActivity() {
         //reset password
         binding.textViewPasswordReset.setOnClickListener {
             startActivity(Intent(this@LoginActivity, ResetPasswordActivity::class.java))
-        }
-    }
-
-    //check email verification and first login
-    private fun checkIfEmailisVerified() {
-
-        val user = auth.currentUser
-
-        if (user!!.isEmailVerified) {
-
-            val sp = getSharedPreferences("firstlogin", Activity.MODE_PRIVATE)
-            val firstlogin = sp.getBoolean("firstlogin", true)
-
-            if (firstlogin) {
-                startActivity(Intent(this@LoginActivity, BoardingActivity::class.java))
-                finish()
-            } else {
-                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-                finish()
-            }
-        } else {
-            FirebaseAuth.getInstance().signOut()
-            binding.editTextEmail.error = "Email não verificado"
         }
     }
 
