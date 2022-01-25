@@ -69,17 +69,6 @@ class RecyclerViewAdapter internal constructor(
         val currentItem: Events = recyclerList[position]
 
 
-        /*holder.itemView.setOnClickListener {
-            AlertDialog.Builder(holder.itemView.context)
-                .setMessage("Delete this event?")
-                .setPositiveButton("Delete") { _, _ ->
-
-                    deleteEvent(recyclerList[position], holder.itemView.context)
-                }
-                .setNegativeButton("Close", null)
-                .show()
-        }*/
-
         holder.itemView.setOnClickListener {
 
             val intent = Intent(context, EditEventActivity::class.java)
@@ -147,30 +136,30 @@ class RecyclerViewAdapter internal constructor(
 
 
         val localStartDate = LocalDate.parse(DateFormater(startDate))
-        val localendDate = LocalDate.parse(DateFormater(endDate))
+        val localEndDate = LocalDate.parse(DateFormater(endDate))
 
-        val dayDiff = ChronoUnit.DAYS.between(localStartDate, localendDate)
+        val dayDiff = ChronoUnit.DAYS.between(localStartDate, localEndDate)
 
         var date = localStartDate
 
         var i = 0
 
+        val event_ = Events(event.id,
+            event.title,
+            event.description,
+            event.sendDate,
+            event.senderId,
+            event.startDate,
+            event.endDate)
+
         while (i <= dayDiff) {
-            binding.calendar.notifyDateChanged(date)
 
             date?.let {
                 recyclerMap[date] = recyclerMap[date].orEmpty().minus(
-                    Events(
-                        event.id,
-                        event.title,
-                        event.description,
-                        event.sendDate,
-                        event.senderId,
-                        event.startDate,
-                        event.endDate
-                    )
+                    event_
                 )
-                updateAdapterForDate(it)
+                updateAdapterForDate(it, "delete",  event_)
+                binding.calendar.notifyDateChanged(date)
             }
 
             date = date.plusDays(1)
@@ -184,34 +173,29 @@ class RecyclerViewAdapter internal constructor(
                 deleteEvents(event, currentChatId, currentChatName)
             }
             .setNegativeButton("Cancel") { _, _ ->
-                recyclerMap.clear()
+                //recyclerMap.clear()
 
-                date = localStartDate
+                /*date = localStartDate
                 i = 0
 
                 while (i <= dayDiff) {
-                    binding.calendar.notifyDateChanged(date)
 
                     date?.let {
                         recyclerMap[date] = recyclerMap[date].orEmpty().plus(
-                            Events(
-                                event.id,
-                                event.title,
-                                event.description,
-                                event.sendDate,
-                                event.senderId,
-                                event.startDate,
-                                event.endDate
-                            )
+                            event_
                         )
-                        updateAdapterForDate(it)
+                        updateAdapterForDate(it, "add", event_)
+
+                        binding.calendar.notifyDateChanged(date)
+
                     }
 
                     date = date.plusDays(1)
 
-                    i++
-                }
+                    i++*/
             }.show()
+
+
 
         //deleteEvents(event, currentChatId, currentChatName)
     }
@@ -224,7 +208,6 @@ class RecyclerViewAdapter internal constructor(
                     if (!it.isSuccessful) {
                         return@addOnCompleteListener
                     } else {
-                        println("Success")
                         binding.calendar.notifyCalendarChanged()
                     }
                 }
@@ -244,18 +227,12 @@ class RecyclerViewAdapter internal constructor(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun updateAdapterForDate(date: LocalDate) {
-
-        recyclerList.clear()
+    private fun updateAdapterForDate(date: LocalDate, action : String, event_ : Events) {
 
 
-        recyclerList.removeAll(recyclerMap[date].orEmpty())
-
-        //val month = monthTitleFormatter.format(date.month)
-        //binding.textViewMonth.text = month
-        //binding.textViewYear.text = date.year.toString()
-
+        recyclerList.remove(event_)
 
         notifyDataSetChanged()
+
     }
 }

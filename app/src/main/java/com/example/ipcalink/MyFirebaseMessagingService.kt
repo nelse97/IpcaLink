@@ -161,7 +161,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        //notificationManager.cancel(0)
 
 
         // Since android Oreo notification channel is needed.
@@ -173,6 +172,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
+        //notificationManager.notify(1 /* ID of notification */, notificationBuilder.build())
+        //notificationManager.cancel(0)
     }
 
     companion object {

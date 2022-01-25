@@ -8,10 +8,11 @@ import androidx.fragment.app.Fragment
 import com.example.ipcalink.calendar.CalendarFragment
 import com.example.ipcalink.databinding.ActivityMainBinding
 import com.example.ipcalink.fragments.ProfileFragment
-import com.example.ipcalink.fragments.ReminderFragment
+//import com.example.ipcalink.fragments.ReminderFragment
 import com.example.ipcalink.login.LoginActivity
 import com.example.ipcalink.messages.MessagesFragment
 import com.example.ipcalink.messages.NewMessageActivity
+import com.example.ipcalink.notifications.PushNotificationFragment
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -20,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val messagesFragment = MessagesFragment()
     private val calendarFragment = CalendarFragment()
-    private val reminderFragment = ReminderFragment()
+    private val reminderFragment = PushNotificationFragment()
     private val profileFragment = ProfileFragment()
     private var currentFragment = 1
 

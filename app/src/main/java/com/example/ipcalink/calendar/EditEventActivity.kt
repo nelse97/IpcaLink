@@ -107,8 +107,7 @@ class EditEventActivity : AppCompatActivity() {
 
         if(chatId.isNotEmpty()) {
             searchChat {
-                GlobalScope.launch(Dispatchers.Main) {
-                    searchChatsWithEvents(eventIdString)
+                searchChatsWithEvents(eventIdString) {
                     val startDate = getDate(eventToEdit[0].startDate!!.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
                     val endDate = getDate(eventToEdit[0].endDate!!.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
 
@@ -177,40 +176,6 @@ class EditEventActivity : AppCompatActivity() {
                 binding.editTextDecription.setText(eventToEdit[0].description)
             }
         }
-
-        /*if(chatsWithEventsList.isNullOrEmpty()) {
-            searchUserEvent(eventIdString!!) {
-                val startDate = getDate(eventToEdit[0].startDate!!.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
-                val endDate = getDate(eventToEdit[0].endDate!!.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
-
-                val localStartDate = LocalDate.parse(DateFormater(startDate))
-                val localendDate = LocalDate.parse(DateFormater(endDate))
-                calendar1.set(localStartDate.year, localStartDate.monthValue-1, localStartDate.dayOfMonth)
-                calendar2.set(localendDate.year, localendDate.monthValue-1, localendDate.dayOfMonth)
-
-                val startDateFormattedString =
-                    CalendarHelper.DateFormaterCalendarIngToCalendarPt(calendar1.time.toString())
-
-                val endDateFormattedString =
-                    CalendarHelper.DateFormaterCalendarIngToCalendarPt(calendar1.time.toString())
-
-                val startHour = getHours(startDate)
-                val startMinute = getMinutes(startDate)
-                val startTime = "$startHour:$startMinute"
-
-                val endHour = getHours(endDate)
-                val endMinute = getMinutes(endDate)
-                val endTime = "$endHour:$endMinute"
-
-                binding.textViewStartDate.text = startDateFormattedString
-                binding.textViewEndDate.text = endDateFormattedString
-                binding.textViewStartTime.text = startTime
-                binding.textViewEndTime.text = endTime
-                binding.editTextTitle.setText(eventToEdit[0].title)
-                binding.editTextDecription.setText(eventToEdit[0].description)
-            }
-        }*/
-
     }
 
     @SuppressLint("SimpleDateFormat", "ResourceType", "SetTextI18n")
@@ -384,7 +349,6 @@ class EditEventActivity : AppCompatActivity() {
 
                 val dateFormattedString =
                     CalendarHelper.DateFormaterCalendarIngToCalendarPt(calendar1.time.toString())
-                //val chosenDate = LocalDate.parse(dateFormattedString)
                 binding.textViewStartDate.text = dateFormattedString
 
             }
@@ -462,11 +426,9 @@ class EditEventActivity : AppCompatActivity() {
 
         val bottomSheetDialog1 = BottomSheetDialog(this, R.style.SheetDialog)
 
-        //val values = resources.getStringArray(R.array.time)
         binding.hourPicker.minValue = 0
         binding.hourPicker.maxValue = hours.size - 1
         binding.hourPicker.displayedValues = hours
-        //mBottomSheetDialog.setContentView()
         bottomSheetDialog1.show()
 
         val bottomSheetDialog2 = BottomSheetDialog(this, R.style.SheetDialog)
@@ -475,19 +437,8 @@ class EditEventActivity : AppCompatActivity() {
         binding.minutePicker.minValue = 0
         binding.minutePicker.maxValue = minutes.size - 1
         binding.minutePicker.displayedValues = minutes
-        //mBottomSheetDialog.setContentView(it)
         bottomSheetDialog2.show()
 
-        /*var hourStr = "00"
-        var minuteStr = "00"
-
-        binding.hourPicker.setOnValueChangedListener { picker, oldVal, newVal ->
-            hourStr = if (newVal < 10) "0${newVal}" else "$newVal"
-        }
-
-        binding.minutePicker.setOnValueChangedListener { picker, oldVal, newVal ->
-            minuteStr = if (newVal < 10) "0${newVal}" else "$newVal"
-        }*/
 
         binding.cardViewCancel.setOnClickListener {
             binding.CardViewTimePicker.visibility = View.GONE
@@ -537,8 +488,6 @@ class EditEventActivity : AppCompatActivity() {
                 binding.textViewEndTime.text = "$hourStr:$minuteStr"
             }
         }
-
-
     }
 
 
@@ -565,16 +514,6 @@ class EditEventActivity : AppCompatActivity() {
                 Log.d("", "Event added to chat: $eventChat")
             }
         }
-
-        /*val startDate = getDate(timeStampStart.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
-        val endDate = getDate(timeStampEnd.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
-
-        val even = Event(eventChat.id, title, body, sendDate, senderId, startDate, endDate, subject).toHash()
-
-        //Return to Profile view activity the edited user
-        returnIntent.putExtra("event", startDate)
-        returnIntent.putExtra("end_date", endDate)
-        setResult(Activity.RESULT_OK, returnIntent)*/
     }
 
 
@@ -600,16 +539,6 @@ class EditEventActivity : AppCompatActivity() {
                 Log.d("", "Event setting to chat: $eventChat")
             }
         }
-
-        /*val startDate = getDate(timeStampStart.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
-        val endDate = getDate(timeStampEnd.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
-
-        val even = Event(eventChat.id, title, body, sendDate, senderId, startDate, endDate, subject).toHash()
-
-        //Return to Profile view activity the edited user
-        returnIntent.putExtra("event", startDate)
-        returnIntent.putExtra("end_date", endDate)
-        setResult(Activity.RESULT_OK, returnIntent)*/
     }
 
     private fun deleteEventFromGroup(chatId : String, eventIdString : String) {
@@ -651,33 +580,7 @@ class EditEventActivity : AppCompatActivity() {
                 Log.d("", "User event edited: $eventUser")
             }
         }
-
-        /*val startDate = getDate(timeStampStart.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
-        val endDate = getDate(timeStampEnd.seconds * 1000, "yyyy-MM-dd'T'HH:mm:ss.SSS")
-
-        val even = Event(eventChat.id, title, body, sendDate, senderId, startDate, endDate, subject).toHash()
-
-        //Return to Profile view activity the edited user
-        returnIntent.putExtra("event", startDate)
-        returnIntent.putExtra("end_date", endDate)
-        setResult(Activity.RESULT_OK, returnIntent)*/
     }
-
-    /*fun getDate(milliSeconds: Long, dateFormat: String?): String {
-        // Create a DateFormatter object for displaying date in specified format.
-        val formatter = SimpleDateFormat(dateFormat)
-
-        // Create a calendar object that will convert the date and time value in milliseconds to date.
-        val calendar: Calendar = Calendar.getInstance()
-        calendar.timeInMillis = milliSeconds
-        return formatter.format(calendar.time)
-    }*/
-
-    /*override fun onTimeSet(view: TimePicker, hourOfDay: Int, minute: Int) {
-        val hourStr = if (hourOfDay < 10) "0${hourOfDay}" else "$hourOfDay"
-        val minuteStr = if (minute < 10) "0${minute}" else "$minute"
-        binding.textViewStartTime.text = "${hourStr}:${minuteStr}"
-    }*/
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -730,30 +633,6 @@ class EditEventActivity : AppCompatActivity() {
         }
     }
 
-    /*fun getChats(chatsIds :  ArrayList<String>?) {
-        for (chatId in chatsIds!!) {
-            dbFirebase.collection("chats").document(chatId).collection("events").get().addOnCompleteListener {
-
-                if (it.exception != null) {
-                    Log.w("ShowNotificationsFragment", "Listen failed.", it.exception)
-                    return@addOnCompleteListener
-                }
-
-                for (query in it.result!!) {
-
-                    val usersChats = UsersChats.fromHash(query)
-
-                    chatsList.add(UsersChats(usersChats.chatId, usersChats.chatName, usersChats.chatType, usersChats.photoUrl, usersChats.lastMessage,
-                        usersChats.lastMessageSenderId, usersChats.lastMessageTimestamp))
-
-                }
-
-                chatsAdapter?.notifyDataSetChanged()
-
-            }
-        }
-    }*/
-
     fun searchChat(callback : ()-> Unit) {
         dbFirebase.collection("users").document(userUID!!).collection("chats").get().addOnCompleteListener {
 
@@ -774,7 +653,7 @@ class EditEventActivity : AppCompatActivity() {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private suspend fun searchChatsWithEvents(eventIdString : String) {
+    private fun searchChatsWithEvents(eventIdString : String, callback : ()-> Unit) {
         for (userChat in userChatsList) {
             dbFirebase.collection("chats").document(userChat.chatId!!).collection("events").get().addOnSuccessListener { documents ->
 
@@ -798,9 +677,10 @@ class EditEventActivity : AppCompatActivity() {
                         }
                     }
                 }
+            }.addOnCompleteListener {
+                callback()
             }
         }
-        delay(300)
     }
 
     private fun searchUserEvent(eventIdString : String, callback : ()-> Unit) {

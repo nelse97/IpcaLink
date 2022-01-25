@@ -31,12 +31,6 @@ abstract class SwipeToDeleteCallback(context: Context) :
         return false
     }
 
-    /*override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        val adapter = binding.recyclerViewEvents.adapter as RecyclerViewAdapter
-        adapter.removeAt(viewHolder.adapterPosition)
-    }*/
-
-
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onChildDraw(
         c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
@@ -58,12 +52,6 @@ abstract class SwipeToDeleteCallback(context: Context) :
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
             return
         }
-
-        /*if(!isCurrentlyActive) {
-            clearCanvas(c, itemView.left.toFloat(), itemView.top.toFloat(), itemView.right.toFloat(), itemView.bottom.toFloat())
-            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-            return
-        }*/
 
         // Draw the red delete background
         background.color = ColorStateList.valueOf(backgroundColor)
