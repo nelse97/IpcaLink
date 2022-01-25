@@ -32,7 +32,6 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.squareup.okhttp.Dispatcher
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -213,7 +212,6 @@ class EditEventActivity : AppCompatActivity() {
                 !binding.textViewStartTime.text.isNullOrEmpty() &&
                 !binding.textViewEndTime.text.isNullOrEmpty()  ) {
 
-                println("teste")
 
                 val title = binding.editTextTitle.text.toString()
                 val description = binding.editTextDecription.text.toString()
@@ -247,6 +245,7 @@ class EditEventActivity : AppCompatActivity() {
                     //if chats ids list is not empty the event will be saved in a chat or more
                     if(!chatsIdsList.isNullOrEmpty()) {
 
+
                         val orderedChatsIdsList : ArrayList<String> = ArrayList()
                         val orderedOldChatsIdsList : ArrayList<String> = ArrayList()
 
@@ -258,9 +257,14 @@ class EditEventActivity : AppCompatActivity() {
                         for(oldChatId in oldChatIdList.sortedDescending()) {
                             orderedOldChatsIdsList.add(oldChatId)
                         }
+                        println("orderedChatsIdsList")
+                        println(orderedChatsIdsList)
+                        println("orderedOldChatsIdsList")
+                        println(orderedOldChatsIdsList)
 
-                        if(orderedChatsIdsList.containsAll(orderedOldChatsIdsList)) {
+                        if(orderedChatsIdsList == orderedOldChatsIdsList) {
                             for(chatId in chatsIdsList) {
+                                println("Entrou")
                                 editEventToGroups(chatId, eventIdString, title, description, timeStampSend, timeStampStart, timeStampEnd, userUID!!)
                             }
                             finish()
@@ -280,6 +284,7 @@ class EditEventActivity : AppCompatActivity() {
                                     deleteEventFromGroup(chatId, eventIdString)
                                 }
                             }
+                            finish()
                         }
                     } else {
                         editEventToUser(eventIdString, title, description, timeStampSend, timeStampStart, timeStampEnd)
@@ -647,6 +652,7 @@ class EditEventActivity : AppCompatActivity() {
                 userChatsList.add(usersChats)
 
             }
+        }.addOnCompleteListener {
             callback()
         }
     }

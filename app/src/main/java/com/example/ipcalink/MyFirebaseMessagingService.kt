@@ -173,6 +173,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
         //notificationManager.notify(1 /* ID of notification */, notificationBuilder.build())
+
         //notificationManager.cancel(0)
     }
 
