@@ -17,12 +17,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.view.animation.OvershootInterpolator
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.ablanco.zoomy.Zoomy
 import com.bumptech.glide.Glide
 import com.example.chatappfirebase.Models.Message
 import com.example.ipcalink.R
@@ -39,6 +41,16 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
+import com.ablanco.zoomy.ZoomListener
+
+import com.ablanco.zoomy.DoubleTapListener
+
+import com.ablanco.zoomy.LongPressListener
+
+import com.ablanco.zoomy.TapListener
+
+
+
 
 
 class PrivateChatActivity : AppCompatActivity() {
@@ -279,12 +291,35 @@ class PrivateChatActivity : AppCompatActivity() {
             holder.tvMessageTime.text = date
 
             if (message.photoUrl != "") {
+
                 // Create a reference to a file from a Google Cloud Storage URI
                 holder.tvMessageBody.visibility = View.GONE
                 holder.tvMessageIv.visibility = View.VISIBLE
                 Glide.with(this@PrivateChatActivity)
                     .load(message.photoUrl)
                     .into(holder.tvMessageIv)
+
+
+                val builder: Zoomy.Builder = Zoomy.Builder(this@PrivateChatActivity)
+                    .target(holder.tvMessageIv)
+                    .tapListener {
+                        //View tapped, do stuff
+                    }
+                    .longPressListener {
+                        //View long pressed, do stuff
+                    }.doubleTapListener {
+                        //View double tapped, do stuff
+                    }
+                    .zoomListener(object : ZoomListener {
+                        override fun onViewStartedZooming(view: View) {
+                        }
+
+                        override fun onViewEndedZooming(view: View) {
+                            //View ended zooming
+                        }
+                    })
+
+                builder.register()
             } else {
                 holder.tvMessageIv.setImageURI(null)
                 holder.tvMessageIv.visibility = View.GONE
