@@ -44,7 +44,8 @@ class AddEventActivity : AppCompatActivity() {
 
     private val myLocale = Locale("pt", "PT")
 
-    private var calendar = Calendar.getInstance()
+    private var calendar1 = Calendar.getInstance()
+    private var calendar2 = Calendar.getInstance()
 
     private val userUID = Firebase.auth.uid
 
@@ -56,8 +57,9 @@ class AddEventActivity : AppCompatActivity() {
     private var chatsAdapter: RecyclerView.Adapter<*>? = null
     private var layoutManager: LinearLayoutManager? = null
 
-    private var lastSavedStartDate: String = "14:00"
-    private var lastSavedEndDate: String = "16:00"
+    private var lastSavedStartTime: String = "14:00"
+    private var lastSavedEndTime: String = "16:00"
+
 
     //lateinit var timePicker: SupportedDatePickerDialog
 
@@ -74,7 +76,7 @@ class AddEventActivity : AppCompatActivity() {
     public override fun onStart() {
         super.onStart()
 
-        Locale.setDefault(myLocale)
+
 
         Locale.setDefault(myLocale)
         val config = baseContext.resources.configuration
@@ -91,25 +93,33 @@ class AddEventActivity : AppCompatActivity() {
         binding.recyclerViewGroups.itemAnimator = DefaultItemAnimator()
         binding.recyclerViewGroups.adapter = chatsAdapter
 
-        val dateString = intent.getStringExtra("date")
+        if(calendarSharedPreferences(this).control == "firstTime") {
+            val dateString = intent.getStringExtra("date")!!
 
-        val date = LocalDate.parse(dateString)
+            val date = LocalDate.parse(dateString)
 
-        calendar.set(date.year, date.monthValue - 1, date.dayOfMonth)
+            calendar1.set(date.year, date.monthValue - 1, date.dayOfMonth)
+            calendar2.set(date.year, date.monthValue - 1, date.dayOfMonth)
 
-        val dateFormattedString = DateFormaterCalendarIngToCalendarPt(calendar.time.toString())
-        binding.textViewStartDate.text = dateFormattedString
-        binding.textViewEndDate.text = dateFormattedString
-        binding.textViewStartTime.text = lastSavedStartDate
-        binding.textViewEndTime.text = lastSavedEndDate
+            val date1FormattedString = DateFormaterCalendarIngToCalendarPt(calendar1.time.toString())
+            val date2FormattedString = DateFormaterCalendarIngToCalendarPt(calendar2.time.toString())
+
+
+            binding.textViewStartDate.text = date1FormattedString
+            binding.textViewEndDate.text = date2FormattedString
+            binding.textViewStartTime.text = lastSavedStartTime
+            binding.textViewEndTime.text = lastSavedEndTime
+        }
+
+        calendarSharedPreferences(this).control = "notFirstTime"
 
         binding.toggleButton.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 binding.textViewStartTime.text = "00:00"
                 binding.textViewEndTime.text = "23:59"
             } else {
-                binding.textViewStartTime.text = lastSavedStartDate
-                binding.textViewEndTime.text = lastSavedEndDate
+                binding.textViewStartTime.text = lastSavedStartTime
+                binding.textViewEndTime.text = lastSavedEndTime
             }
         }
 
@@ -249,13 +259,11 @@ class AddEventActivity : AppCompatActivity() {
         val startDateSetListener =
             DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
 
-                calendar.set(Calendar.YEAR, year)
-                calendar.set(Calendar.MONTH, monthOfYear)
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                calendar1.set(Calendar.YEAR, year)
+                calendar1.set(Calendar.MONTH, monthOfYear)
+                calendar1.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
-
-                val dateFormattedString =
-                    DateFormaterCalendarIngToCalendarPt(calendar.time.toString())
+                val dateFormattedString = DateFormaterCalendarIngToCalendarPt(calendar1.time.toString())
                 //val chosenDate = LocalDate.parse(dateFormattedString)
                 binding.textViewStartDate.text = dateFormattedString
 
@@ -264,12 +272,12 @@ class AddEventActivity : AppCompatActivity() {
         val endDateSetListener =
             DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
 
-                calendar.set(Calendar.YEAR, year)
-                calendar.set(Calendar.MONTH, monthOfYear)
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                calendar2.set(Calendar.YEAR, year)
+                calendar2.set(Calendar.MONTH, monthOfYear)
+                calendar2.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
                 val dateFormattedString =
-                    DateFormaterCalendarIngToCalendarPt(calendar.time.toString())
+                    DateFormaterCalendarIngToCalendarPt(calendar2.time.toString())
                 //val chosenDate = LocalDate.parse(dateFormattedString)
                 binding.textViewEndDate.text = dateFormattedString
             }
@@ -281,9 +289,9 @@ class AddEventActivity : AppCompatActivity() {
                 R.style.MyDatePickerDialogTheme,
                 startDateSetListener,
                 // set DatePickerDialog to point to today's date when it loads up
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH)
+                calendar1.get(Calendar.YEAR),
+                calendar1.get(Calendar.MONTH),
+                calendar1.get(Calendar.DAY_OF_MONTH)
             ).show()
         }
 
@@ -293,9 +301,9 @@ class AddEventActivity : AppCompatActivity() {
                 R.style.MyDatePickerDialogTheme,
                 endDateSetListener,
                 // set DatePickerDialog to point to today's date when it loads up
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH)
+                calendar2.get(Calendar.YEAR),
+                calendar2.get(Calendar.MONTH),
+                calendar2.get(Calendar.DAY_OF_MONTH)
             ).show()
         }
     }
@@ -406,11 +414,11 @@ class AddEventActivity : AppCompatActivity() {
 
             if (time == "startTime") {
                 //binding.CardViewTimePicker.visibility = View.GONE
-                lastSavedStartDate = "$hourStr:$minuteStr"
+                lastSavedStartTime = "$hourStr:$minuteStr"
                 binding.textViewStartTime.text = "$hourStr:$minuteStr"
             } else {
                 //binding.CardViewTimePicker.visibility = View.GONE
-                lastSavedEndDate = "$hourStr:$minuteStr"
+                lastSavedEndTime = "$hourStr:$minuteStr"
                 binding.textViewEndTime.text = "$hourStr:$minuteStr"
             }
         }
