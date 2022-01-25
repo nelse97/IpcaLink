@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ipcalink.R
 import com.example.ipcalink.calendar.CalendarHelper.DateFormater
+import com.example.ipcalink.calendar.CalendarHelper.DateFormaterCalendarIngToCalendarPt
 import com.example.ipcalink.calendar.CalendarHelper.getDate
 import com.example.ipcalink.calendar.CalendarHelper.getHours
 import com.example.ipcalink.calendar.CalendarHelper.getMinutes
@@ -81,7 +82,6 @@ class EditEventActivity : AppCompatActivity() {
         _binding = ActivityAddEventBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        Locale.setDefault(myLocale)
 
         Locale.setDefault(myLocale)
         val config = baseContext.resources.configuration
@@ -116,11 +116,9 @@ class EditEventActivity : AppCompatActivity() {
                     calendar1.set(localStartDate.year, localStartDate.monthValue-1, localStartDate.dayOfMonth)
                     calendar2.set(localendDate.year, localendDate.monthValue-1, localendDate.dayOfMonth)
 
-                    val startDateFormattedString =
-                        CalendarHelper.DateFormaterCalendarIngToCalendarPt(calendar1.time.toString())
+                    val startDateFormattedString = DateFormaterCalendarIngToCalendarPt(calendar1.time.toString())
 
-                    val endDateFormattedString =
-                        CalendarHelper.DateFormaterCalendarIngToCalendarPt(calendar2.time.toString())
+                    val endDateFormattedString = DateFormaterCalendarIngToCalendarPt(calendar2.time.toString())
 
                     val startHour = getHours(startDate)
                     val startMinute = getMinutes(startDate)
@@ -347,8 +345,7 @@ class EditEventActivity : AppCompatActivity() {
                 calendar1.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
 
-                val dateFormattedString =
-                    CalendarHelper.DateFormaterCalendarIngToCalendarPt(calendar1.time.toString())
+                val dateFormattedString = DateFormaterCalendarIngToCalendarPt(calendar1.time.toString())
                 binding.textViewStartDate.text = dateFormattedString
 
             }
@@ -360,8 +357,7 @@ class EditEventActivity : AppCompatActivity() {
                 calendar2.set(Calendar.MONTH, monthOfYear)
                 calendar2.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
-                val dateFormattedString =
-                    CalendarHelper.DateFormaterCalendarIngToCalendarPt(calendar2.time.toString())
+                val dateFormattedString = DateFormaterCalendarIngToCalendarPt(calendar2.time.toString())
                 //val chosenDate = LocalDate.parse(dateFormattedString)
                 binding.textViewEndDate.text = dateFormattedString
             }

@@ -372,9 +372,10 @@ class CalendarFragment : Fragment() {
 
             //val dayOfWeek = selectedDate!!.dayOfWeek
             val date = selectedDate
+            calendarSharedPreferences(requireContext()).control = "firstTime"
 
             val intent = Intent(context, AddEventActivity::class.java)
-            //intent.putExtra("dayOfWeek", dayOfWeek.toString())
+
             intent.putExtra("date", date.toString())
 
             startActivity(intent)

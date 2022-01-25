@@ -6,13 +6,21 @@
         <entry key="..\:/Users/Jorge/Desktop/Projeto IPCA LINK/IpcaLink/app/src/main/res/layout/activity_add_event.xml" value="0.25" />
         <entry key="..\:/Users/Jorge/Desktop/Projeto IPCA LINK/IpcaLink/app/src/main/res/layout/activity_events_add_groups.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Jorge/Desktop/Projeto IPCA LINK/IpcaLink/app/src/main/res/layout/activity_files.xml" value="0.2078125" />
-        <entry key="..\:/Users/Jorge/Desktop/Projeto IPCA LINK/IpcaLink/app/src/main/res/layout/fragment_calendar.xml" value="0.33" />
+        <entry key="..\:/Users/Jorge/Desktop/Projeto IPCA LINK/IpcaLink/app/src/main/res/layout/fragment_boarding1.xml" value="0.17831813576494426" />
+        <entry key="..\:/Users/Jorge/Desktop/Projeto IPCA LINK/IpcaLink/app/src/main/res/layout/fragment_boarding2.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Jorge/Desktop/Projeto IPCA LINK/IpcaLink/app/src/main/res/layout/fragment_calendar.xml" value="0.2" />
+        <entry key="..\:/Users/Jorge/Desktop/Projeto IPCA LINK/IpcaLink/app/src/main/res/layout/fragment_messages.xml" value="0.17831813576494426" />
+        <entry key="..\:/Users/Jorge/Desktop/Projeto IPCA LINK/IpcaLink/app/src/main/res/layout/fragment_private_messages.xml" value="0.17831813576494426" />
         <entry key="..\:/Users/Jorge/Desktop/Projeto IPCA LINK/IpcaLink/app/src/main/res/layout/fragment_profile.xml" value="0.17831813576494426" />
         <entry key="..\:/Users/Jorge/Desktop/Projeto IPCA LINK/IpcaLink/app/src/main/res/layout/fragment_push_notification.xml" value="0.33" />
         <entry key="..\:/Users/Jorge/Desktop/Projeto IPCA LINK/IpcaLink/app/src/main/res/layout/fragment_reminder.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Jorge/Desktop/Projeto IPCA LINK/IpcaLink/app/src/main/res/layout/fragment_school_messages.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Jorge/Desktop/Projeto IPCA LINK/IpcaLink/app/src/main/res/layout/fragment_show_notificacoes.xml" value="0.17831813576494426" />
         <entry key="..\:/Users/Jorge/Desktop/Projeto IPCA LINK/IpcaLink/app/src/main/res/layout/list_item.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Jorge/Desktop/Projeto IPCA LINK/IpcaLink/app/src/main/res/layout/new_private_chat_row.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Jorge/Desktop/Projeto IPCA LINK/IpcaLink/app/src/main/res/layout/notification.xml" value="0.17831813576494426" />
+        <entry key="..\:/Users/Jorge/Desktop/Projeto IPCA LINK/IpcaLink/app/src/main/res/layout/row_view_calendar_chat_groups.xml" value="0.9" />
+        <entry key="..\:/Users/Jorge/Desktop/Projeto IPCA LINK/IpcaLink/app/src/main/res/layout/row_view_calendar_events.xml" value="0.17831813576494426" />
         <entry key="..\:/Users/Jorge/Desktop/Projeto IPCA LINK/IpcaLink/app/src/main/res/layout/row_view_notification.xml" value="0.33" />
         <entry key="..\:/Users/Jorge/Desktop/Projeto IPCA LINK/IpcaLink/app/src/main/res/menu/add_button_menu.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Jorge/Desktop/Projeto IPCA LINK/IpcaLink/app/src/main/res/menu/intro_nav_menu.xml" value="0.36666666666666664" />
