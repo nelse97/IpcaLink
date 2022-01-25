@@ -57,6 +57,7 @@ class MainActivity : AppCompatActivity(), PrivateMessagesFragment.OnDataPass {
         }*/
 
         binding.fabAddPrivateMessage.setOnClickListener {
+
             val intent = Intent(this, NewMessageActivity::class.java)
             intent.putExtra("existingChats", userExistingPrivateChats)
             startActivity(intent)
@@ -68,7 +69,7 @@ class MainActivity : AppCompatActivity(), PrivateMessagesFragment.OnDataPass {
             replaceAllBottomNavIcons()
             binding.mainBottomNavMessagesUnderline.visibility = View.VISIBLE
             binding.ibMessages.setImageResource(R.drawable.ic_selected_messages_icon)
-            //verifyCurrentFragment(1)
+            verifyCurrentFragment(1)
         }
 
         binding.ibCalendar.setOnClickListener {
@@ -77,7 +78,7 @@ class MainActivity : AppCompatActivity(), PrivateMessagesFragment.OnDataPass {
             replaceAllBottomNavIcons()
             binding.mainBottomNavCalendarUnderline.visibility = View.VISIBLE
             binding.ibCalendar.setImageResource(R.drawable.ic_selected_calendar_icon)
-           //verifyCurrentFragment(2)
+           verifyCurrentFragment(2)
         }
 
         binding.ibReminder.setOnClickListener {
@@ -86,7 +87,7 @@ class MainActivity : AppCompatActivity(), PrivateMessagesFragment.OnDataPass {
             replaceAllBottomNavIcons()
             binding.mainBottomNavReminderUnderline.visibility = View.VISIBLE
             binding.ibReminder.setImageResource(R.drawable.ic_selected_reminder_icon)
-            //verifyCurrentFragment(3)
+            verifyCurrentFragment(3)
         }
 
         binding.ibProfileImage.setOnClickListener {
@@ -94,7 +95,7 @@ class MainActivity : AppCompatActivity(), PrivateMessagesFragment.OnDataPass {
             disableAllUnderlines()
             replaceAllBottomNavIcons()
             binding.mainBottomNavProfileUnderline.visibility = View.VISIBLE
-            //verifyCurrentFragment(4)
+            verifyCurrentFragment(4)
         }
     }
 
@@ -103,7 +104,6 @@ class MainActivity : AppCompatActivity(), PrivateMessagesFragment.OnDataPass {
             val transaction = supportFragmentManager.beginTransaction()
             transaction.replace(R.id.frameContainer, fragment)
             transaction.commit()
-
         }
     }
 
@@ -137,20 +137,18 @@ class MainActivity : AppCompatActivity(), PrivateMessagesFragment.OnDataPass {
         userExistingPrivateChats = data
     }
 
-    /*
-    this function will verify which current fragment is displayed
-    and hide the fbaAdd when on notification fragment and profile fragment
+
 
     fun verifyCurrentFragment(fragmentId: Int) {
         if(fragmentId == 3 || fragmentId == 4) {
-            binding.fabAdd.visibility = View.GONE
+            binding.fabAddPrivateMessage.visibility = View.GONE
         } else {
-            binding.fabAdd.visibility = View.VISIBLE
+            binding.fabAddPrivateMessage.visibility = View.VISIBLE
             if(fragmentId == 1) {
                 currentFragment = 1
             } else {
                 currentFragment = 2
             }
         }
-    }*/
+    }
 }
