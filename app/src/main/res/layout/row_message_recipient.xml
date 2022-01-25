@@ -55,7 +55,7 @@
                     android:id="@+id/tvRowChatMessage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/white"
+                    android:textColor="#272727"
                     android:textSize="16sp"
                     android:visibility="visible" />
             </LinearLayout>

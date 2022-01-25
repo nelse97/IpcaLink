@@ -24,6 +24,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import de.hdodenhof.circleimageview.CircleImageView
 import java.lang.Exception
+import java.util.*
+import kotlin.collections.ArrayList
 
 class NewMessageActivity : AppCompatActivity() {
 
@@ -63,10 +65,9 @@ class NewMessageActivity : AppCompatActivity() {
 
         //get current user username
         db.collection("users").document(authUserUid).get()
-            .addOnCompleteListener {
-                if (it.isSuccessful) {
-                    currentUserInfo = it.result!!.toObject<User>()!!
-                }
+            .addOnSuccessListener {
+                    currentUserInfo = it.toObject<User>()!!
+                Log.d("userInfoEmail", currentUserInfo.email)
             }
 
         binding.rvNewChat.layoutManager = linearLayoutManager
@@ -90,8 +91,15 @@ class NewMessageActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s!!.length > 2) {
-                    searchedUsersList.clear()
-                    searchUsers(s.toString())
+                    if((s[0] == 'a' || s[0] == 'A') && s[1].isDigit()) {
+                        searchUsersByEmail(s.toString())
+                    } else {
+                        var searchQuery = s.toString()
+                        searchQuery = searchQuery.substring(0, 1).uppercase(Locale.getDefault()) + searchQuery.substring(1)
+                            .lowercase(Locale.getDefault())
+                        //searchQuery.replaceFirstChar { if (it.isLowerCase()) it.uppercase(Locale.getDefault()) else it.toString() }
+                        searchUsersByName(searchQuery)
+                    }
                 }
             }
         })
@@ -173,7 +181,7 @@ class NewMessageActivity : AppCompatActivity() {
 
     }
 
-    fun searchUsers(searchQuery: String) {
+    fun searchUsersByEmail(searchQuery: String) {
         db.collection("users")
             .whereGreaterThanOrEqualTo("email", searchQuery)
             .whereNotEqualTo("email", currentUserInfo.email)
@@ -183,6 +191,25 @@ class NewMessageActivity : AppCompatActivity() {
                 for (document in documents) {
                     val searchedUser: User? = null
                     searchedUsersList.add(document.toObject())
+                }
+                newChatsAdapter.notifyDataSetChanged()
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting searched users: ", exception)
+            }
+    }
+
+    fun searchUsersByName(searchQuery: String) {
+        db.collection("users")
+            .whereGreaterThanOrEqualTo("name", searchQuery)
+            .get()
+            .addOnSuccessListener { documents ->
+                searchedUsersList.clear()
+                for (document in documents) {
+                    val searchedUser: User = document.toObject()
+                    if(searchedUser.email != currentUserInfo.email) {
+                        searchedUsersList.add(document.toObject())
+                    }
                 }
                 newChatsAdapter.notifyDataSetChanged()
             }
