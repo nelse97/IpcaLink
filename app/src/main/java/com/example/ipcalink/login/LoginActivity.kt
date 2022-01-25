@@ -4,19 +4,24 @@ import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
 import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import android.text.InputType.*
 import android.util.Log
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.ipcalink.FcmToken
 import com.example.ipcalink.MainActivity
 import com.example.ipcalink.R
+import com.example.ipcalink.calendar.Extensions.myLocale
 import com.example.ipcalink.databinding.ActivityLoginBinding
 import com.example.ipcalink.models.Chats
 import com.example.ipcalink.models.IpcaUser
 import com.example.ipcalink.models.Subjects
+import com.example.ipcalink.models.User
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
@@ -24,6 +29,10 @@ import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -156,7 +165,19 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun createUser() {
+
+        val calendar = Calendar.getInstance()
+        calendar.timeZone = TimeZone.getTimeZone(ZoneId.of("UTC"))
+        val format = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", myLocale)
+        val sendDateString = format.format(calendar.time)
+
+        val sendDateLong = Date.parse(sendDateString)
+        val sendDate = Date(sendDateLong)
+        val timeStampSend = Timestamp(sendDate)
+
+        val newUser = User(auth.currentUser!!.uid, user.name, "", auth.currentUser!!.email!!, "", timeStampSend,true )
         db.collection("users")
             .document(auth.currentUser!!.uid)
             .get()
@@ -164,11 +185,12 @@ class LoginActivity : AppCompatActivity() {
                 if (!it.result!!.exists()) {
                     db.collection("users")
                         .document(auth.currentUser!!.uid)
-                        .set(user)
+                        .set(newUser)
                 }
             }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun createdata() {
 
         user = IpcaUser("", auth.currentUser!!.email!!, "", "", auth.currentUser!!.uid)
