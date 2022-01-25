@@ -110,8 +110,8 @@ class PrivateChatActivity : AppCompatActivity() {
         val chatName = intent.getStringExtra("chatName").toString()
         chatType = intent.getStringExtra("chatType").toString()
         var photoUrl = ""
-        if (intent.getStringExtra("photoUrl") != null) {
-            photoUrl = intent.getStringExtra("photoUrl")!!
+        if (intent.getStringExtra("chatPhotoUrl") != null) {
+            photoUrl = intent.getStringExtra("chatPhotoUrl")!!
         }
 
         //load chat name
@@ -233,7 +233,6 @@ class PrivateChatActivity : AppCompatActivity() {
                     Log.d("PrivateChatActivity", e.message.toString())
                     return@addSnapshotListener
                 } else {
-                    //userExistingPrivateChats.clear()
                     messagesList.clear()
                     for (message in messages!!) {
                         val newMessage = message.toObject<Message>()

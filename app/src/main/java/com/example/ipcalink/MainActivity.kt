@@ -2,28 +2,30 @@ package com.example.ipcalink
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.ipcalink.calendar.CalendarFragment
 import com.example.ipcalink.databinding.ActivityMainBinding
 import com.example.ipcalink.fragments.ProfileFragment
-//import com.example.ipcalink.fragments.ReminderFragment
+import com.example.ipcalink.fragments.ReminderFragment
 import com.example.ipcalink.login.LoginActivity
 import com.example.ipcalink.messages.MessagesFragment
 import com.example.ipcalink.messages.NewMessageActivity
-import com.example.ipcalink.notifications.PushNotificationFragment
+import com.example.ipcalink.messages.PrivateMessagesFragment
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), PrivateMessagesFragment.OnDataPass {
 
     private lateinit var binding: ActivityMainBinding
     private val messagesFragment = MessagesFragment()
     private val calendarFragment = CalendarFragment()
-    private val reminderFragment = PushNotificationFragment()
+    private val reminderFragment = ReminderFragment()
     private val profileFragment = ProfileFragment()
     private var currentFragment = 1
+    var userExistingPrivateChats = ArrayList<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -55,7 +57,9 @@ class MainActivity : AppCompatActivity() {
         }*/
 
         binding.fabAddPrivateMessage.setOnClickListener {
-            startActivity(Intent(this, NewMessageActivity::class.java))
+            val intent = Intent(this, NewMessageActivity::class.java)
+            intent.putExtra("existingChats", userExistingPrivateChats)
+            startActivity(intent)
         }
 
         binding.ibMessages.setOnClickListener {
@@ -73,7 +77,7 @@ class MainActivity : AppCompatActivity() {
             replaceAllBottomNavIcons()
             binding.mainBottomNavCalendarUnderline.visibility = View.VISIBLE
             binding.ibCalendar.setImageResource(R.drawable.ic_selected_calendar_icon)
-            //verifyCurrentFragment(2)
+           //verifyCurrentFragment(2)
         }
 
         binding.ibReminder.setOnClickListener {
@@ -127,6 +131,10 @@ class MainActivity : AppCompatActivity() {
         Firebase.auth.signOut()
         startActivity(Intent(this, LoginActivity::class.java))
         finish()
+    }
+
+    override fun onDataPass(data: ArrayList<String>) {
+        userExistingPrivateChats = data
     }
 
     /*

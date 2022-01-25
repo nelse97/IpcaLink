@@ -1,6 +1,7 @@
 package com.example.ipcalink.messages
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -36,10 +37,11 @@ class PrivateMessagesFragment : Fragment() {
     private lateinit var authUserUid: String
     var userExistingPrivateChats = ArrayList<String>()
     var c: Calendar = Calendar.getInstance()
+    lateinit var dataPasser: OnDataPass
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View {
 
         // Inflate the layout for this fragment
@@ -71,7 +73,6 @@ class PrivateMessagesFragment : Fragment() {
             null)
 
         userChats.add(newChat)
-
         chatsAdapter.notifyDataSetChanged()*/
 
 
@@ -79,26 +80,21 @@ class PrivateMessagesFragment : Fragment() {
         return binding.root
     }
 
-    private fun verifyCurrentPrivateChats() {
-        for (userChat in userChats) {
-            if (userChat.chatType == "private") {
-                db.collection("chats").document(userChat.chatId!!).collection("users")
-                    .get()
-                    .addOnSuccessListener { documentSnapshot ->
-                        for (document in documentSnapshot) {
-                            val chatUser = document.toObject<User>()
-                            if (chatUser.userId != authUserUid) {
-                                userExistingPrivateChats.add(chatUser.userId)
-                            }
-                        }
-                    }
-            }
-        }
+    interface OnDataPass {
+        fun onDataPass(data: ArrayList<String>)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        dataPasser = context as OnDataPass
+    }
+
+    fun passData(data: ArrayList<String>){
+        dataPasser.onDataPass(data)
     }
 
     override fun onStart() {
         super.onStart()
-        userChats.clear()
         //get list of all user chats
         db.collection("users").document(authUserUid).collection("chats")
             .addSnapshotListener { chats, e ->
@@ -111,7 +107,6 @@ class PrivateMessagesFragment : Fragment() {
                     Log.d("chatsFragment", e.message.toString())
                     return@addSnapshotListener
                 }
-                //userExistingPrivateChats.clear()
                 userChats.clear()
                 for (chat in chats!!) {
                     val newChat = chat.toObject<PrivateUserChat>()
@@ -122,8 +117,8 @@ class PrivateMessagesFragment : Fragment() {
                     noChatsShowNotice()
                 } else {
                     //get a list of the users current private chats
-                    //verifyCurrentPrivateChats()
                     chatsAdapter.notifyDataSetChanged()
+                    verifyCurrentPrivateChats()
                 }
 
             }
@@ -134,8 +129,28 @@ class PrivateMessagesFragment : Fragment() {
         db.clearPersistence()
     }
 
+    private fun verifyCurrentPrivateChats() {
+        //clear existing private chats
+        userExistingPrivateChats.clear()
+        for (userChat in userChats) {
+            if (userChat.chatType == "private") {
+                db.collection("chats").document(userChat.chatId!!).collection("users")
+                    .get()
+                    .addOnSuccessListener { documentSnapshot ->
+                        for (document in documentSnapshot) {
+                            val chatUser = document.toObject<User>()
+                            if (chatUser.userId != authUserUid) {
+                                userExistingPrivateChats.add(chatUser.userId)
+                            }
+                        }
+                        passData(userExistingPrivateChats)
+                    }
+            }
+        }
+    }
+
     inner class PrivateChatsAdapter(private val clickListener: (PrivateUserChat) -> Unit) :
-        RecyclerView.Adapter<PrivateChatsAdapter.MyViewHolder>() {
+            RecyclerView.Adapter<PrivateChatsAdapter.MyViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
             val row = LayoutInflater.from(activity).inflate(R.layout.chat_row, parent, false)
@@ -180,10 +195,8 @@ class PrivateMessagesFragment : Fragment() {
 
         inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             var chatImage: CircleImageView = itemView.findViewById(R.id.rowChatIv)
-            var chatUnreadMessagesBackground: ImageView =
-                itemView.findViewById(R.id.rowChatUnreadMessagesBackground)
-            var chatUnreadMessagesCount: TextView =
-                itemView.findViewById(R.id.chatRowUnreadMessagesCount)
+            var chatUnreadMessagesBackground: ImageView = itemView.findViewById(R.id.rowChatUnreadMessagesBackground)
+            var chatUnreadMessagesCount: TextView = itemView.findViewById(R.id.chatRowUnreadMessagesCount)
             var isOnline: ImageView = itemView.findViewById(R.id.ivIsOnlineRowChat)
             var chatTitle: TextView = itemView.findViewById(R.id.rowChatTitle)
             var chatLastMessage: TextView = itemView.findViewById(R.id.rowChatLastMessage)
