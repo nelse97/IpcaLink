@@ -152,11 +152,9 @@ class EditEventActivity : AppCompatActivity() {
                 calendar1.set(localStartDate.year, localStartDate.monthValue-1, localStartDate.dayOfMonth)
                 calendar2.set(localendDate.year, localendDate.monthValue-1, localendDate.dayOfMonth)
 
-                val startDateFormattedString =
-                    CalendarHelper.DateFormaterCalendarIngToCalendarPt(calendar1.time.toString())
+                val startDateFormattedString = DateFormaterCalendarIngToCalendarPt(calendar1.time.toString())
 
-                val endDateFormattedString =
-                    CalendarHelper.DateFormaterCalendarIngToCalendarPt(calendar2.time.toString())
+                val endDateFormattedString = DateFormaterCalendarIngToCalendarPt(calendar2.time.toString())
 
                 val startHour = getHours(startDate)
                 val startMinute = getMinutes(startDate)
@@ -180,6 +178,8 @@ class EditEventActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     public override fun onStart() {
         super.onStart()
+
+        println("testeeeee2")
 
         binding.toggleButton.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked) {
@@ -213,7 +213,7 @@ class EditEventActivity : AppCompatActivity() {
                 !binding.textViewStartTime.text.isNullOrEmpty() &&
                 !binding.textViewEndTime.text.isNullOrEmpty()  ) {
 
-
+                println("teste")
 
                 val title = binding.editTextTitle.text.toString()
                 val description = binding.editTextDecription.text.toString()
@@ -283,11 +283,14 @@ class EditEventActivity : AppCompatActivity() {
                         }
                     } else {
                         editEventToUser(eventIdString, title, description, timeStampSend, timeStampStart, timeStampEnd)
+                        println("oldChatIdList")
+                        println(oldChatIdList)
                         if(!oldChatIdList.isNullOrEmpty()) {
                             for(chatId in oldChatIdList) {
                                 deleteEventFromGroup(chatId, eventIdString)
                             }
                         }
+                        finish()
                     }
                 } else {
                     val toast = Toast.makeText(this, "Por favor insira uma data de fim de evento maior que a de inicio", Toast.LENGTH_SHORT)
@@ -552,8 +555,6 @@ class EditEventActivity : AppCompatActivity() {
             } else {
                 Log.d("", "Event deleted from chat: $eventChat")
             }
-
-            finish()
         }
     }
 
@@ -589,12 +590,14 @@ class EditEventActivity : AppCompatActivity() {
                 val photos = data?.getStringArrayListExtra("selectedChatsPhotoList")
                 val ids = data?.getStringArrayListExtra("selectedChatsIdsList")
                 val names = data?.getStringArrayListExtra("selectedChatsNameList")
-                val oldIds = data?.getStringArrayListExtra("oldSelectedChatsIdsList")
+                //val oldIds = data?.getStringArrayListExtra("oldSelectedChatsIdsList")
 
                 chatsPhotoList = photos!!
                 chatsIdsList = ids!!
                 chatsNameList = names!!
-                oldChatIdList = oldIds!!
+                //oldChatIdList = oldIds!!
+
+
                 chatsAdapter?.notifyDataSetChanged()
 
             }
@@ -664,12 +667,13 @@ class EditEventActivity : AppCompatActivity() {
 
                             eventToEdit.add(event)
 
-                            if(calendarSharedPreferences(this).control == "firstTime") {
-                                chatsPhotoList.add(userChat.photoUrl!!)
-                                chatsIdsList.add(userChat.chatId!!)
-                                chatsNameList.add(userChat.chatName!!)
-                                chatsAdapter?.notifyDataSetChanged()
-                            }
+                            //if(calendarSharedPreferences(this).control == "firstTime") {
+                            chatsPhotoList.add(userChat.photoUrl!!)
+                            chatsIdsList.add(userChat.chatId!!)
+                            chatsNameList.add(userChat.chatName!!)
+                            oldChatIdList.add(userChat.chatId!!)
+                            chatsAdapter?.notifyDataSetChanged()
+                            //}
                         }
                     }
                 }
@@ -692,6 +696,7 @@ class EditEventActivity : AppCompatActivity() {
                     }
                 }
             }
+        }.addOnCompleteListener {
             callback()
         }
     }

@@ -34,8 +34,6 @@ class EventsAddGroupsActivity : AppCompatActivity() {
     private var selectedChatsIdsList: ArrayList<String> = ArrayList()
     private var selectedChatsNameList: ArrayList<String> = ArrayList()
 
-    private var oldSelectedChatsIdsList: ArrayList<String> = ArrayList()
-
     private var selectedChatsPhotoList: ArrayList<String> = ArrayList()
     private var layoutManager: LinearLayoutManager? = null
 
@@ -59,17 +57,20 @@ class EventsAddGroupsActivity : AppCompatActivity() {
         (this as AppCompatActivity?)!!.supportActionBar!!.hide()
 
 
-        val ids = intent.getStringArrayListExtra("chatsIdsList")
+        val ids1 = intent.getStringArrayListExtra("chatsIdsList")
+        val ids2 = intent.getStringArrayListExtra("chatsIdsList")
         val names = intent.getStringArrayListExtra("chatsNameList")
         val photos = intent.getStringArrayListExtra("chatsPhotoList")
 
-        if (ids != null && names != null && photos != null) {
-            selectedChatsIdsList = ids
+        if (ids1 != null && names != null && photos != null && ids2 != null) {
+            selectedChatsIdsList = ids1
             selectedChatsNameList = names
             selectedChatsPhotoList = photos
+            //oldSelectedChatsIdsList = ids2
         }
 
-        calendarSharedPreferences(this).control = "notFirstTime"
+
+        //calendarSharedPreferences(this).control = "notFirstTime"
 
 
         insertingChats()
@@ -91,7 +92,7 @@ class EventsAddGroupsActivity : AppCompatActivity() {
             returnIntent.putExtra("selectedChatsPhotoList", selectedChatsPhotoList)
             returnIntent.putExtra("selectedChatsIdsList", selectedChatsIdsList)
             returnIntent.putExtra("selectedChatsNameList", selectedChatsNameList)
-            returnIntent.putExtra("oldSelectedChatsIdsList", oldSelectedChatsIdsList)
+            //returnIntent.putExtra("oldSelectedChatsIdsList", oldSelectedChatsIdsList)
 
             setResult(Activity.RESULT_OK, returnIntent)
             finish()
