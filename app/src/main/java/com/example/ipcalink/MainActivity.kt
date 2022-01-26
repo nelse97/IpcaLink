@@ -137,18 +137,11 @@ class MainActivity : AppCompatActivity(), PrivateMessagesFragment.OnDataPass {
         userExistingPrivateChats = data
     }
 
-
-
     fun verifyCurrentFragment(fragmentId: Int) {
-        if(fragmentId == 3 || fragmentId == 4) {
+        if(fragmentId == 2 || fragmentId == 3 || fragmentId == 4) {
             binding.fabAddPrivateMessage.visibility = View.GONE
         } else {
             binding.fabAddPrivateMessage.visibility = View.VISIBLE
-            if(fragmentId == 1) {
-                currentFragment = 1
-            } else {
-                currentFragment = 2
-            }
         }
     }
 }

@@ -57,13 +57,22 @@ class PrivateMessagesFragment : Fragment() {
         binding.rvPrivateChats.layoutManager = linearLayoutManager
 
         chatsAdapter = PrivateChatsAdapter {
-            val intent = Intent(activity, PrivateChatActivity::class.java)
-            intent.putExtra("chatId", it.chatId)
-            intent.putExtra("chatName", it.chatName)
-            intent.putExtra("chatType", it.chatType)
-            intent.putExtra("chatPhotoUrl", it.photoUrl)
-            intent.putExtra("receiverUserId", it.chatUserId)
-            startActivity(intent)
+            if(it.chatType == "private") {
+                val intent = Intent(activity, PrivateChatActivity::class.java)
+                intent.putExtra("chatId", it.chatId)
+                intent.putExtra("chatName", it.chatName)
+                intent.putExtra("chatType", it.chatType)
+                intent.putExtra("chatPhotoUrl", it.photoUrl)
+                intent.putExtra("receiverUserId", it.chatUserId)
+                startActivity(intent)
+            } else if(it.chatType == "group") {
+                val intent = Intent(activity, PrivateChatActivity::class.java)
+                intent.putExtra("chatId", it.chatId)
+                intent.putExtra("chatName", it.chatName)
+                intent.putExtra("chatPhotoUrl", it.photoUrl)
+                startActivity(intent)
+            }
+
         }
 
         //bind adapter to private chats recycler view

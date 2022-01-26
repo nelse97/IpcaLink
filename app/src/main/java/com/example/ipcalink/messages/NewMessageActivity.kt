@@ -80,6 +80,11 @@ class NewMessageActivity : AppCompatActivity() {
             }
         }
 
+        binding.buttonAddGroup.setOnClickListener {
+            startActivity(Intent(this, NewGroupChatActivity::class.java))
+            finish()
+        }
+
         binding.rvNewChat.adapter = newChatsAdapter
 
         binding.textView10.addTextChangedListener(object : TextWatcher {

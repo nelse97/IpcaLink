@@ -14,8 +14,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.IpcaLink">
         <activity
-            android:name=".messages.NewGroupChatActivity"
+            android:name=".messages.GroupChatActivity"
             android:exported="false" />
+        <activity
+            android:name=".messages.NewGroupChatActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".messages.NewMessageActivity"
             android:exported="false" />

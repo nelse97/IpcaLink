@@ -1,143 +1,179 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#004E38"
-    android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".messages.NewGroupChatActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageButton
-            android:id="@+id/ibBackButton"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="4dp"
-            android:background="@null"
-            android:paddingStart="10dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_back_arrow_white"
-            app:layout_constraintBottom_toBottomOf="@+id/textViewNewMessage"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/textViewNewMessage" />
-
-        <TextView
-            android:id="@+id/textViewNewMessage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:fontFamily="@font/montserrat_bold"
-            android:text="Novo Grupo"
-            android:textAlignment="center"
-            android:textColor="#FFFFFF"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/circleImageView6"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_marginTop="16dp"
-            android:src="@drawable/padrao"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewNewMessage" />
-
-        <TextView
-            android:id="@+id/textView16"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="20dp"
-            android:text="TextView"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/circleImageView6"
-            app:layout_constraintStart_toStartOf="@+id/circleImageView6"
-            app:layout_constraintTop_toBottomOf="@+id/circleImageView6" />
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="23dp"
-            android:layout_height="23dp"
-            app:cardBackgroundColor="@color/colorPrimary"
-            app:cardCornerRadius="250dp"
-            app:layout_constraintBottom_toBottomOf="@+id/circleImageView6"
-            app:layout_constraintEnd_toEndOf="@+id/circleImageView6">
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_gravity="center"
-                app:cardBackgroundColor="#272727"
-                app:cardCornerRadius="250dp"
-                app:layout_constraintBottom_toBottomOf="@+id/circleImageView6"
-                app:layout_constraintEnd_toEndOf="@+id/circleImageView6">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:scaleType="center"
-                    android:src="@drawable/ic_pencil_white" />
-
-            </androidx.cardview.widget.CardView>
-
-        </androidx.cardview.widget.CardView>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/custom_card_view"
-        android:orientation="vertical"
-        android:paddingTop="25dp">
+        android:background="#004E38"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvSelectedUsers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="25dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etGroupChatName" />
+
+            <ImageButton
+                android:id="@+id/ibBackButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_margin="4dp"
+                android:background="@null"
+                android:paddingStart="10dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_back_arrow_white"
+                app:layout_constraintBottom_toBottomOf="@+id/textViewNewMessage"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textViewNewMessage" />
+
+            <TextView
+                android:id="@+id/textViewNewMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="Novo Grupo"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/circleImageView6"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/padrao"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewNewMessage" />
+
+            <EditText
+                android:id="@+id/etGroupChatName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@null"
+                android:hint="Clique para editar o nome do grupo..."
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@+id/circleImageView6"
+                app:layout_constraintStart_toStartOf="@+id/circleImageView6"
+                app:layout_constraintTop_toBottomOf="@+id/circleImageView6" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                app:cardBackgroundColor="@color/colorPrimary"
+                app:cardCornerRadius="250dp"
+                app:layout_constraintBottom_toBottomOf="@+id/circleImageView6"
+                app:layout_constraintEnd_toEndOf="@+id/circleImageView6">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    app:cardBackgroundColor="#272727"
+                    app:cardCornerRadius="250dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/circleImageView6"
+                    app:layout_constraintEnd_toEndOf="@+id/circleImageView6">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:scaleType="center"
+                        android:src="@drawable/ic_pencil_white" />
+
+                </androidx.cardview.widget.CardView>
+
+            </androidx.cardview.widget.CardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_margin="15dp"
-            android:background="@drawable/custom_round_box_green_stroke"
-            android:inputType="textPersonName"
-            android:orientation="horizontal"
-            android:paddingStart="15dp">
-
-            <ImageButton
-                android:id="@+id/ibReminder"
-                android:layout_width="25dp"
-                android:layout_height="20dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="4dp"
-                android:background="@null"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_search_grey" />
-
-            <EditText
-                android:id="@+id/textView10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="10dp"
-                android:background="@null"
-                android:fontFamily="@font/montserrat_regular"
-                android:hint="Procura por nome ou e-mail"
-                android:textColor="#979797"
-                android:textSize="14sp" />
-        </LinearLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvNewChat"
-            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="15dp" />
+            android:background="@drawable/custom_card_view"
+            android:orientation="vertical"
+            android:paddingTop="25dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="15dp"
+                android:background="@drawable/custom_round_box_green_stroke"
+                android:inputType="textPersonName"
+                android:orientation="horizontal"
+                android:paddingStart="15dp">
+
+                <ImageButton
+                    android:id="@+id/ibReminder"
+                    android:layout_width="25dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="4dp"
+                    android:background="@null"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_search_grey" />
+
+                <EditText
+                    android:id="@+id/textView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="10dp"
+                    android:background="@null"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:hint="Procura por nome ou e-mail"
+                    android:textColor="#979797"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvSearchedUsers"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="15dp" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddGroupChat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="100dp"
+        android:backgroundTint="#272727"
+        android:clickable="true"
+        android:focusable="true"
+        android:scaleType="fitCenter"
+        app:fabCustomSize="60dp"
+        app:maxImageSize="14dp"
+        app:srcCompat="@drawable/ic_front_arrow_white"
+        app:tint="@android:color/white" />
 
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -385,7 +385,6 @@ class CalendarFragment : Fragment() {
     @SuppressLint("NotifyDataSetChanged")
     private fun insertingChats() {
 
-
         dbFirebase.collection("users").document(userUID!!).collection("chats")
             .addSnapshotListener { value, error ->
 
