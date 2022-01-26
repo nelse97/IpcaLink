@@ -30,7 +30,7 @@
     <LinearLayout
         android:id="@+id/bottomAppBar"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="68sp"
         android:layout_gravity="bottom"
         android:background="@drawable/custom_bottom_app_bar">
 
