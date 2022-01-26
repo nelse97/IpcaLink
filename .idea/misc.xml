@@ -77,8 +77,17 @@
         <entry key="..\:/Code/Repositories/IpcaLink/app/src/main/res/drawable/temp_icon.xml" value="0.3880208333333333" />
         <entry key="..\:/Code/Repositories/IpcaLink/app/src/main/res/drawable/toggle_arrow_drawable.xml" value="0.3880208333333333" />
         <entry key="..\:/Code/Repositories/IpcaLink/app/src/main/res/drawable/toggle_drawable.xml" value="0.3880208333333333" />
+        <entry key="..\:/Code/Repositories/IpcaLink/app/src/main/res/layout/activity_add_event.xml" value="0.2776268115942029" />
+        <entry key="..\:/Code/Repositories/IpcaLink/app/src/main/res/layout/activity_boarding.xml" value="0.2776268115942029" />
+        <entry key="..\:/Code/Repositories/IpcaLink/app/src/main/res/layout/activity_files.xml" value="0.371875" />
+        <entry key="..\:/Code/Repositories/IpcaLink/app/src/main/res/layout/activity_login.xml" value="0.2776268115942029" />
         <entry key="..\:/Code/Repositories/IpcaLink/app/src/main/res/layout/activity_main.xml" value="0.371875" />
+        <entry key="..\:/Code/Repositories/IpcaLink/app/src/main/res/layout/activity_register.xml" value="0.2776268115942029" />
+        <entry key="..\:/Code/Repositories/IpcaLink/app/src/main/res/layout/activity_reset_password.xml" value="0.2776268115942029" />
         <entry key="..\:/Code/Repositories/IpcaLink/app/src/main/res/layout/activity_splash.xml" value="0.371875" />
+        <entry key="..\:/Code/Repositories/IpcaLink/app/src/main/res/layout/fragment_boarding1.xml" value="0.2776268115942029" />
+        <entry key="..\:/Code/Repositories/IpcaLink/app/src/main/res/layout/fragment_boarding2.xml" value="0.2776268115942029" />
+        <entry key="..\:/Code/Repositories/IpcaLink/app/src/main/res/layout/fragment_boarding3.xml" value="0.2776268115942029" />
         <entry key="..\:/Code/Repositories/IpcaLink/app/src/main/res/layout/fragment_calendar.xml" value="0.2807971014492754" />
         <entry key="..\:/Code/Repositories/IpcaLink/app/src/main/res/layout/fragment_multimedia_files.xml" value="0.20885416666666667" />
         <entry key="..\:/Code/Repositories/IpcaLink/app/src/main/res/layout/fragment_profile.xml" value="0.371875" />

@@ -50,6 +50,7 @@
         android:layout_marginBottom="80dp"
         android:background="@drawable/button_background"
         android:text="Seguinte"
+        android:textColor="@color/white"
         android:textAllCaps="false"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
