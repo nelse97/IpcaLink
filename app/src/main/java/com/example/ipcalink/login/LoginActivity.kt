@@ -314,7 +314,7 @@ class LoginActivity : AppCompatActivity() {
                                 for (subdoc in subdocs) {
                                     val subject: Subjects = subdoc.toObject()
 
-                                    val ipcaChat = Chats("", subject.name, "subject", "", "", "")
+                                    val ipcaChat = Chats(auth.currentUser!!.uid, subject.name, "subject", "", "", "")
                                     val docRef = db.collection("chatsIpca")
                                     docRef.whereEqualTo("chatName", ipcaChat.chatName).get()
                                         .addOnCompleteListener {
@@ -379,6 +379,26 @@ class LoginActivity : AppCompatActivity() {
                                                         }
                                                     }
                                             }
+                                            docRef.document(auth.currentUser!!.uid)
+                                                .set(ipcaChat)
+                                                .addOnSuccessListener {
+                                                    db.collection("users")
+                                                        .document(auth.currentUser!!.uid)
+                                                        .collection("chats")
+                                                        .document(ipcaChat.chatId!!)
+                                                        .set(ipcaChat)
+                                                        .addOnCompleteListener {
+                                                            docRef.document(
+                                                                auth.currentUser!!.uid
+                                                            ).collection(
+                                                                "users"
+                                                            ).document(
+                                                                auth.currentUser!!.uid
+                                                            ).set(user)
+
+                                                        }
+
+                                                }
                                         }
                                 }
                             }
