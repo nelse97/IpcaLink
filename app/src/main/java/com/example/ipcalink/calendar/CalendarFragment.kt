@@ -271,19 +271,17 @@ class CalendarFragment : Fragment() {
                     binding.textViewYear.text = firstDate.yearMonth.year.toString()
                     binding.textViewMonth.text = month
                 } else {
-                    var month = monthTitleFormatter.format(lastDate)
-                    month =
-                        month.substring(0, 1).uppercase(Locale.getDefault()) + month.substring(1)
-                            .lowercase(Locale.getDefault())
-
-                    binding.textViewMonth.text = month
                     if (firstDate.year == lastDate.year) {
+                        var month = monthTitleFormatter.format(lastDate)
+                        month =
+                            month.substring(0, 1).uppercase(Locale.getDefault()) + month.substring(1)
+                                .lowercase(Locale.getDefault())
+
+                        binding.textViewMonth.text = month
                         binding.textViewYear.text = firstDate.yearMonth.year.toString()
                     } else {
-                        /*binding.textViewMonth.text =
-                            monthTitleFormatter.format(firstDate) + "-" + monthTitleFormatter.format(lastDate)*/
                         binding.textViewYear.text =
-                            "${firstDate.yearMonth.year} - ${lastDate.yearMonth.year}"
+                            "${lastDate.yearMonth.year}"
                     }
                 }
             }

@@ -32,7 +32,6 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.squareup.okhttp.Dispatcher
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.time.LocalDate
@@ -152,11 +151,9 @@ class EditEventActivity : AppCompatActivity() {
                 calendar1.set(localStartDate.year, localStartDate.monthValue-1, localStartDate.dayOfMonth)
                 calendar2.set(localendDate.year, localendDate.monthValue-1, localendDate.dayOfMonth)
 
-                val startDateFormattedString =
-                    CalendarHelper.DateFormaterCalendarIngToCalendarPt(calendar1.time.toString())
+                val startDateFormattedString = DateFormaterCalendarIngToCalendarPt(calendar1.time.toString())
 
-                val endDateFormattedString =
-                    CalendarHelper.DateFormaterCalendarIngToCalendarPt(calendar2.time.toString())
+                val endDateFormattedString = DateFormaterCalendarIngToCalendarPt(calendar2.time.toString())
 
                 val startHour = getHours(startDate)
                 val startMinute = getMinutes(startDate)
@@ -180,6 +177,8 @@ class EditEventActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     public override fun onStart() {
         super.onStart()
+
+        println("testeeeee2")
 
         binding.toggleButton.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked) {
@@ -214,7 +213,6 @@ class EditEventActivity : AppCompatActivity() {
                 !binding.textViewEndTime.text.isNullOrEmpty()  ) {
 
 
-
                 val title = binding.editTextTitle.text.toString()
                 val description = binding.editTextDecription.text.toString()
 
@@ -247,6 +245,7 @@ class EditEventActivity : AppCompatActivity() {
                     //if chats ids list is not empty the event will be saved in a chat or more
                     if(!chatsIdsList.isNullOrEmpty()) {
 
+
                         val orderedChatsIdsList : ArrayList<String> = ArrayList()
                         val orderedOldChatsIdsList : ArrayList<String> = ArrayList()
 
@@ -258,9 +257,14 @@ class EditEventActivity : AppCompatActivity() {
                         for(oldChatId in oldChatIdList.sortedDescending()) {
                             orderedOldChatsIdsList.add(oldChatId)
                         }
+                        println("orderedChatsIdsList")
+                        println(orderedChatsIdsList)
+                        println("orderedOldChatsIdsList")
+                        println(orderedOldChatsIdsList)
 
-                        if(orderedChatsIdsList.containsAll(orderedOldChatsIdsList)) {
+                        if(orderedChatsIdsList == orderedOldChatsIdsList) {
                             for(chatId in chatsIdsList) {
+                                println("Entrou")
                                 editEventToGroups(chatId, eventIdString, title, description, timeStampSend, timeStampStart, timeStampEnd, userUID!!)
                             }
                             finish()
@@ -280,14 +284,18 @@ class EditEventActivity : AppCompatActivity() {
                                     deleteEventFromGroup(chatId, eventIdString)
                                 }
                             }
+                            finish()
                         }
                     } else {
                         editEventToUser(eventIdString, title, description, timeStampSend, timeStampStart, timeStampEnd)
+                        println("oldChatIdList")
+                        println(oldChatIdList)
                         if(!oldChatIdList.isNullOrEmpty()) {
                             for(chatId in oldChatIdList) {
                                 deleteEventFromGroup(chatId, eventIdString)
                             }
                         }
+                        finish()
                     }
                 } else {
                     val toast = Toast.makeText(this, "Por favor insira uma data de fim de evento maior que a de inicio", Toast.LENGTH_SHORT)
@@ -552,8 +560,6 @@ class EditEventActivity : AppCompatActivity() {
             } else {
                 Log.d("", "Event deleted from chat: $eventChat")
             }
-
-            finish()
         }
     }
 
@@ -589,12 +595,14 @@ class EditEventActivity : AppCompatActivity() {
                 val photos = data?.getStringArrayListExtra("selectedChatsPhotoList")
                 val ids = data?.getStringArrayListExtra("selectedChatsIdsList")
                 val names = data?.getStringArrayListExtra("selectedChatsNameList")
-                val oldIds = data?.getStringArrayListExtra("oldSelectedChatsIdsList")
+                //val oldIds = data?.getStringArrayListExtra("oldSelectedChatsIdsList")
 
                 chatsPhotoList = photos!!
                 chatsIdsList = ids!!
                 chatsNameList = names!!
-                oldChatIdList = oldIds!!
+                //oldChatIdList = oldIds!!
+
+
                 chatsAdapter?.notifyDataSetChanged()
 
             }
@@ -644,6 +652,7 @@ class EditEventActivity : AppCompatActivity() {
                 userChatsList.add(usersChats)
 
             }
+        }.addOnCompleteListener {
             callback()
         }
     }
@@ -664,12 +673,13 @@ class EditEventActivity : AppCompatActivity() {
 
                             eventToEdit.add(event)
 
-                            if(calendarSharedPreferences(this).control == "firstTime") {
-                                chatsPhotoList.add(userChat.photoUrl!!)
-                                chatsIdsList.add(userChat.chatId!!)
-                                chatsNameList.add(userChat.chatName!!)
-                                chatsAdapter?.notifyDataSetChanged()
-                            }
+                            //if(calendarSharedPreferences(this).control == "firstTime") {
+                            chatsPhotoList.add(userChat.photoUrl!!)
+                            chatsIdsList.add(userChat.chatId!!)
+                            chatsNameList.add(userChat.chatName!!)
+                            oldChatIdList.add(userChat.chatId!!)
+                            chatsAdapter?.notifyDataSetChanged()
+                            //}
                         }
                     }
                 }
@@ -692,6 +702,7 @@ class EditEventActivity : AppCompatActivity() {
                     }
                 }
             }
+        }.addOnCompleteListener {
             callback()
         }
     }

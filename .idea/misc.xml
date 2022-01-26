@@ -48,25 +48,6 @@
         <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/layout/fragment_profile.xml" value="0.2957427536231884" />
         <entry key="..\:/Users/gmart/StudioProjects/IpcaLink/app/src/main/res/layout/list_item.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/gmart/StudioProjects/IpcaLinkMeu/app/src/main/res/layout/fragment_profile.xml" value="0.36666666666666664" />
-        <entry key="app/src/main/res/drawable/checkbox_check_background.xml" value="0.25" />
-        <entry key="app/src/main/res/drawable/checkbox_custom.xml" value="0.2604166666666667" />
-        <entry key="app/src/main/res/drawable/checkbox_uncheck_background.xml" value="0.2604166666666667" />
-        <entry key="app/src/main/res/drawable/circular_togle_off.xml" value="0.2604166666666667" />
-        <entry key="app/src/main/res/drawable/circular_toogle_drawable.xml" value="0.2604166666666667" />
-        <entry key="app/src/main/res/drawable/circular_toogle_on.xml" value="0.2604166666666667" />
-        <entry key="app/src/main/res/drawable/ic_unselected_messages_icon.xml" value="0.21770833333333334" />
-        <entry key="app/src/main/res/layout/activity_group_chat.xml" value="0.23385416666666667" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.19479166666666667" />
-        <entry key="app/src/main/res/layout/activity_new_group_chat.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_new_message.xml" value="0.24427083333333333" />
-        <entry key="app/src/main/res/layout/activity_private_chat.xml" value="0.18697916666666667" />
-        <entry key="app/src/main/res/layout/chat_row.xml" value="0.24427083333333333" />
-        <entry key="app/src/main/res/layout/fragment_calendar.xml" value="0.21979166666666666" />
-        <entry key="app/src/main/res/layout/fragment_private_messages.xml" value="0.18697916666666667" />
-        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.2015625" />
-        <entry key="app/src/main/res/layout/new_group_chat_row.xml" value="0.24427083333333333" />
-        <entry key="app/src/main/res/layout/new_private_chat_row.xml" value="0.24427083333333333" />
-        <entry key="app/src/main/res/layout/selected_user_row.xml" value="0.2689367616400278" />
       </map>
     </option>
   </component>

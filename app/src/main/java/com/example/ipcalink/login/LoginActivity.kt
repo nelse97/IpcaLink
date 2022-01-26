@@ -4,19 +4,24 @@ import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
 import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import android.text.InputType.*
 import android.util.Log
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.ipcalink.FcmToken
 import com.example.ipcalink.MainActivity
 import com.example.ipcalink.R
+import com.example.ipcalink.calendar.Extensions.myLocale
 import com.example.ipcalink.databinding.ActivityLoginBinding
 import com.example.ipcalink.models.Chats
 import com.example.ipcalink.models.IpcaUser
 import com.example.ipcalink.models.Subjects
+import com.example.ipcalink.models.User
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
@@ -24,6 +29,10 @@ import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -110,11 +119,29 @@ class LoginActivity : AppCompatActivity() {
                         .addOnCompleteListener(this) { task ->
                             if (task.isSuccessful) {
 
-                                //create/update firestoredatabase values
-                                createdata()
+                                val user = auth.currentUser
 
                                 // Sign in success, update UI with the signed-in user's information
-                                checkIfEmailisVerified()
+                                if (user!!.isEmailVerified) {
+
+                                    //create/update firestoredatabase values
+                                    createdata()
+
+                                    val sp = getSharedPreferences("firstlogin", Activity.MODE_PRIVATE)
+                                    val firstlogin = sp.getBoolean("firstlogin", true)
+
+                                    if (firstlogin) {
+                                        startActivity(Intent(this@LoginActivity, BoardingActivity::class.java))
+                                        finish()
+                                    } else {
+                                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                                        finish()
+                                    }
+                                } else {
+                                    FirebaseAuth.getInstance().signOut()
+                                    binding.editTextEmail.error = "Email não verificado"
+                                }
+
                             } else {
                                 //error notice
                                 binding.editTextEmail.error =
@@ -138,29 +165,32 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    //check email verification and first login
-    private fun checkIfEmailisVerified() {
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun createUser() {
 
-        val user = auth.currentUser
+        val calendar = Calendar.getInstance()
+        calendar.timeZone = TimeZone.getTimeZone(ZoneId.of("UTC"))
+        val format = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", myLocale)
+        val sendDateString = format.format(calendar.time)
 
-        if (user!!.isEmailVerified) {
+        val sendDateLong = Date.parse(sendDateString)
+        val sendDate = Date(sendDateLong)
+        val timeStampSend = Timestamp(sendDate)
 
-            val sp = getSharedPreferences("firstlogin", Activity.MODE_PRIVATE)
-            val firstlogin = sp.getBoolean("firstlogin", true)
-
-            if (firstlogin) {
-                startActivity(Intent(this@LoginActivity, BoardingActivity::class.java))
-                finish()
-            } else {
-                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-                finish()
+        val newUser = User(auth.currentUser!!.uid, user.name, "", auth.currentUser!!.email!!, "", timeStampSend,true )
+        db.collection("users")
+            .document(auth.currentUser!!.uid)
+            .get()
+            .addOnCompleteListener {
+                if (!it.result!!.exists()) {
+                    db.collection("users")
+                        .document(auth.currentUser!!.uid)
+                        .set(newUser)
+                }
             }
-        } else {
-            FirebaseAuth.getInstance().signOut()
-            binding.editTextEmail.error = "Email não verificado"
-        }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun createdata() {
 
         user = IpcaUser("", auth.currentUser!!.email!!, "", "", auth.currentUser!!.uid)
@@ -170,28 +200,18 @@ class LoginActivity : AppCompatActivity() {
             .whereEqualTo("email", auth.currentUser!!.email)
             .get()
             .addOnSuccessListener { documents ->
-                println(1)
 
                 for (document in documents) {
                     docid = document.id
                     user = document.toObject()
-                    println(user.name)
                 }
+                createUser()
                 if (!documents.isEmpty) {
                     callback()
                 }
+
             }.addOnCompleteListener {
-                db.collection("users")
-                    .document(auth.currentUser!!.uid)
-                    .get()
-                    .addOnCompleteListener {
-                        if (!it.result!!.exists()) {
-                            db.collection("users")
-                                .document(auth.currentUser!!.uid)
-                                .set(user)
-                        }
-                        println(user.userId)
-                    }
+                createUser()
             }
 
 
@@ -202,7 +222,6 @@ class LoginActivity : AppCompatActivity() {
             }
 
             // Get new FCM registration token
-            println(task.result)
             FcmToken.fcmToken = task.result
 
         }).addOnSuccessListener {
@@ -277,7 +296,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun callback() {
-        println(schoolYear)
         if (schoolYear != "null") {
             db.collection("ipca")
                 .document(docid)
@@ -286,7 +304,6 @@ class LoginActivity : AppCompatActivity() {
                 .get()
                 .addOnSuccessListener { documents ->
                     for (document in documents) {
-                        println(document.id)
                         db.collection("ipca")
                             .document(docid)
                             .collection("cursos")
@@ -297,11 +314,13 @@ class LoginActivity : AppCompatActivity() {
                                 for (subdoc in subdocs) {
                                     val subject: Subjects = subdoc.toObject()
 
-                                    val ipcaChat = Chats("", subject.name, "subject", "", "", "")
+                                    val ipcaChat = Chats(auth.currentUser!!.uid, subject.name, "subject", "", "", "")
                                     val docRef = db.collection("chatsIpca")
                                     docRef.whereEqualTo("chatName", ipcaChat.chatName).get()
                                         .addOnCompleteListener {
+                                            println(1)
                                             if (it.result!!.isEmpty) {
+                                                println(2)
                                                 docRef.document()
                                                     .set(ipcaChat)
                                                     .addOnSuccessListener {
@@ -315,12 +334,71 @@ class LoginActivity : AppCompatActivity() {
                                                                     docRef.document(subsubdoc.id)
                                                                         .update(
                                                                             "chatId",
-                                                                            document.id
-                                                                        )
+                                                                            subsubdoc.id
+                                                                        ).addOnCompleteListener {
+                                                                            db.collection("users")
+                                                                                .document(auth.currentUser!!.uid)
+                                                                                .collection("chats")
+                                                                                .document(ipcaChat.chatId!!)
+                                                                                .set(ipcaChat)
+                                                                                .addOnCompleteListener {
+                                                                                    docRef.document(
+                                                                                        subsubdoc.id
+                                                                                    ).collection(
+                                                                                        "users"
+                                                                                    ).document(
+                                                                                        auth.currentUser!!.uid
+                                                                                    ).set(user)
+                                                                                }
+                                                                        }
                                                                 }
                                                             }
                                                     }
+                                            } else {
+                                                println(3)
+                                                docRef.whereEqualTo("chatName", ipcaChat).get()
+                                                    .addOnSuccessListener { subsubdocs ->
+                                                        println(4)
+                                                        for (subsubdoc in subsubdocs) {
+                                                            println(5)
+                                                            db.collection("users")
+                                                                .document(auth.currentUser!!.uid)
+                                                                .collection("chats")
+                                                                .document(ipcaChat.chatId!!)
+                                                                .set(ipcaChat)
+                                                                .addOnCompleteListener {
+                                                                    docRef.document(
+                                                                        subsubdoc.id
+                                                                    ).collection(
+                                                                        "users"
+                                                                    ).document(
+                                                                        auth.currentUser!!.uid
+                                                                    ).set(user)
+
+                                                                }
+                                                        }
+                                                    }
                                             }
+                                            docRef.document(auth.currentUser!!.uid)
+                                                .set(ipcaChat)
+                                                .addOnSuccessListener {
+                                                    db.collection("users")
+                                                        .document(auth.currentUser!!.uid)
+                                                        .collection("chats")
+                                                        .document(ipcaChat.chatId!!)
+                                                        .set(ipcaChat)
+                                                        .addOnCompleteListener {
+                                                            docRef.document(
+                                                                auth.currentUser!!.uid
+                                                            ).collection(
+                                                                "users"
+                                                            ).document(
+                                                                auth.currentUser!!.uid
+                                                            ).set(user)
+
+                                                        }
+
+                                                }
                                         }
                                 }
                             }
@@ -328,5 +406,4 @@ class LoginActivity : AppCompatActivity() {
                 }
         }
     }
-
 }
