@@ -4,8 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#004E38"
@@ -54,7 +53,7 @@
                 android:layout_marginStart="21dp"
                 android:layout_marginTop="25dp"
                 android:fontFamily="@font/montserrat_medium"
-                android:textColor="@color/colorPrimary"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toStartOf="@+id/textView"
                 app:layout_constraintStart_toStartOf="parent"
@@ -68,7 +67,7 @@
                 android:layout_marginTop="25dp"
                 android:fontFamily="@font/montserrat_medium"
                 android:text=", "
-                android:textColor="@color/colorPrimary"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="18sp"
                 app:layout_constraintStart_toEndOf="@+id/textViewMonth"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -80,7 +79,7 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="25dp"
                 android:fontFamily="@font/montserrat_medium"
-                android:textColor="@color/colorPrimary"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="18sp"
                 app:layout_constraintStart_toEndOf="@+id/textView"
                 app:layout_constraintTop_toTopOf="parent"
@@ -122,7 +121,7 @@
                 android:layout_gravity="bottom|center_horizontal"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/toggle_arrow_drawable"
-                android:backgroundTint="#004E38"
+                android:backgroundTint="?attr/colorPrimary"
                 android:padding="2dp"
                 android:textOff=""
                 android:textOn=""
@@ -140,7 +139,7 @@
                 android:layout_marginEnd="281dp"
                 android:fontFamily="@font/montserrat_medium"
                 android:text="Eventos"
-                android:textColor="@color/colorPrimary"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -162,7 +161,7 @@
                 android:layout_marginTop="25dp"
                 android:layout_marginEnd="30dp"
                 android:background="@drawable/outline_tune_black_24dp"
-                android:backgroundTint="@color/colorPrimary"
+                android:backgroundTint="?attr/colorPrimary"
                 android:textOff=""
                 android:textOn=""
                 app:layout_constraintEnd_toEndOf="parent"
@@ -204,6 +203,5 @@
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

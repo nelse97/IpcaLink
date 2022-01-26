@@ -281,7 +281,7 @@ class CalendarFragment : Fragment() {
                         binding.textViewYear.text = firstDate.yearMonth.year.toString()
                     } else {
                         binding.textViewYear.text =
-                            "${firstDate.yearMonth.year} - ${lastDate.yearMonth.year}"
+                            "${lastDate.yearMonth.year}"
                     }
                 }
             }
